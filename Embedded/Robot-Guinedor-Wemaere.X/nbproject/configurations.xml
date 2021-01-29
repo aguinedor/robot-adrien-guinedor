@@ -7,6 +7,9 @@
       <itemPath>ChipConfig.h</itemPath>
       <itemPath>IO.h</itemPath>
       <itemPath>timer.h</itemPath>
+      <itemPath>robot.h</itemPath>
+      <itemPath>toolbox.h</itemPath>
+      <itemPath>PWM.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -19,6 +22,9 @@
       <itemPath>ChipConfig.c</itemPath>
       <itemPath>IO.c</itemPath>
       <itemPath>timer.c</itemPath>
+      <itemPath>robot.c</itemPath>
+      <itemPath>toolbox.c</itemPath>
+      <itemPath>PWM.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -36,12 +42,14 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>ICD4Tool</platformTool>
         <languageToolchain>XC16</languageToolchain>
-        <languageToolchainVersion>1.41</languageToolchainVersion>
+        <languageToolchainVersion>1.60</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <packs>
         <pack name="dsPIC33E-GM-GP-MC-GU-MU_DFP" vendor="Microchip" version="1.2.58"/>
       </packs>
+      <ScriptingSettings>
+      </ScriptingSettings>
       <compileType>
         <linkerTool>
           <linkerLibItems>
