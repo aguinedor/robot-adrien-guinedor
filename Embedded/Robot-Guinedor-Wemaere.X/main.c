@@ -3,6 +3,7 @@
 #include <xc.h>
 #include "ChipConfig.h"
 #include "IO.H"
+#include "timer.h"
 
 int main(void) 
 {
@@ -12,10 +13,12 @@ int main(void)
     LED_BLANCHE=1;
     LED_BLEUE=1;
     LED_ORANGE=1;
+    InitTimer23() ;
+    InitTimer1() ;
     
     while(1)
+        
     {
-        LED_BLANCHE = !LED_BLANCHE;
     }
     return (EXIT_SUCCESS);
 }

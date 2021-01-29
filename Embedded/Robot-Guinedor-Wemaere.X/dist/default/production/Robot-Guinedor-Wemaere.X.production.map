@@ -4,17 +4,10 @@ Tool Name:
   c:\program files (x86)\microchip\xc16\v1.41\bin\bin\..\bin/elf-ld.exe
 
 Command:
-  -TC:\\Users\\TABLE8\\AppData\\Local\\Temp\\tmp00002094.00 \
-  -TC:\\Users\\TABLE8\\AppData\\Local\\Temp\\tmp00002094.01 \
-  -TC:\\Users\\TABLE8\\AppData\\Local\\Temp\\tmp00002094.02 \
-  -TC:\\Users\\TABLE8\\AppData\\Local\\Temp\\tmp00002094.03 \
-  -TC:\\Users\\TABLE8\\AppData\\Local\\Temp\\tmp00002094.04 \
-  -TC:\\Users\\TABLE8\\AppData\\Local\\Temp\\tmp00002094.05 \
-  -TC:\\Users\\TABLE8\\AppData\\Local\\Temp\\tmp00002094.06 \
   -p33EP512GM306 \
   --mdfp=C:/Users/TABLE8/.mchp_packs/Microchip/dsPIC33E-GM-GP-MC-GU-MU_DFP/1.2.58/xc16 \
   -o \
-  dist/default/debug/Robot-Guinedor-Wemaere.X.debug.elf \
+  dist/default/production/Robot-Guinedor-Wemaere.X.production.elf \
   -Lc:/program files (x86)/microchip/xc16/v1.41/bin/bin/.. \
   -LC:/Users/TABLE8/.mchp_packs/Microchip/dsPIC33E-GM-GP-MC-GU-MU_DFP/1.2.58/xc16/bin/../support/PIC24E/gld \
   -LC:/Users/TABLE8/.mchp_packs/Microchip/dsPIC33E-GM-GP-MC-GU-MU_DFP/1.2.58/xc16/bin/../support/dsPIC33E/gld \
@@ -26,16 +19,13 @@ Command:
   -Lc:/program files (x86)/microchip/xc16/v1.41/bin/bin/../../support/dsPIC33C/gld \
   -Lc:/program files (x86)/microchip/xc16/v1.41/bin/bin/../../support/dsPIC33E/gld \
   -Lc:/program files (x86)/microchip/xc16/v1.41/bin/bin/../../support/dsPIC33F/gld \
-  build/default/debug/main.o \
-  build/default/debug/ChipConfig.o \
-  build/default/debug/IO.o \
-  build/default/debug/timer.o \
+  build/default/production/main.o \
+  build/default/production/ChipConfig.o \
+  build/default/production/IO.o \
+  build/default/production/timer.o \
   --local-stack \
   --defsym=__MPLAB_BUILD=1 \
-  --defsym=__MPLAB_DEBUG=1 \
-  --defsym=__DEBUG=1 \
-  --defsym=__MPLAB_DEBUGGER_ICD4=1 \
-  -Tp33EP512GM306.gld.07 \
+  -Tp33EP512GM306.gld.00 \
   --stack=16 \
   --check-sections \
   --data-init \
@@ -47,10 +37,10 @@ Command:
   --stackguard=16 \
   --no-force-link \
   --smart-io \
-  -Map=dist/default/debug/Robot-Guinedor-Wemaere.X.debug.map \
+  -Map=dist/default/production/Robot-Guinedor-Wemaere.X.production.map \
   --report-mem \
   --memorysummary \
-  dist/default/debug/memoryfile.xml \
+  dist/default/production/memoryfile.xml \
   -start-group \
   --library=lega-pic30-elf \
   --library=m-elf \
@@ -95,24 +85,17 @@ Default Scalar Model: Small
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200               0x154           0x1fe  (510)
-.text                        0x354                0xce           0x135  (309)
+.text                        0x354                0xd2           0x13b  (315)
 
-                 Total "program" memory used (bytes):          0x333  (819) <1%
+                 Total "program" memory used (bytes):          0x339  (825) <1%
 
 
 "data" Memory  [Origin = 0x1000, Length = 0xc000]
 
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
-reserve_data_0x1000         0x1000                0x1c            0x1c  (28)
-reserve_data_0x101c         0x101c                 0x2             0x2  (2)
-reserve_data_0x101e         0x101e                 0x2             0x2  (2)
-reserve_data_0x1020         0x1020                 0x2             0x2  (2)
-reserve_data_0x1022         0x1022                 0x2             0x2  (2)
-reserve_data_0x1024         0x1024                 0x4             0x4  (4)
-reserve_data_0x1028         0x1028                0x28            0x28  (40)
 
-                 Total "data" memory used (bytes):           0x50  (80) <1%
+                 Total "data" memory used (bytes):              0  (0) 
 
 
 Dynamic Memory Usage
@@ -120,9 +103,9 @@ Dynamic Memory Usage
 region                     address                      maximum length  (dec)
 ------                     -------                      ---------------------
 heap                             0                                   0  (0)
-stack                       0x1050                              0xbfb0  (49072)
+stack                       0x1000                              0xc000  (49152)
 
-                 Maximum dynamic memory (bytes):         0xbfb0  (49072)
+                 Maximum dynamic memory (bytes):         0xc000  (49152)
 
 Note: Project is using a large data memory model when small data memory model is sufficient.
 
@@ -180,49 +163,11 @@ FUID3            0x800ffe           0x000002
 
 Linker script and memory map
 
-
-reserve_data_0x1000
-                    0x1000         0x1c
-                    0x101c                  . = 0x1c
- *fill*             0x1000         0x1c00
-
-reserve_data_0x101c
-                    0x101c          0x2
-                    0x101e                  . = 0x2
- *fill*             0x101c          0x200
-
-reserve_data_0x101e
-                    0x101e          0x2
-                    0x1020                  . = 0x2
- *fill*             0x101e          0x200
-
-reserve_data_0x1020
-                    0x1020          0x2
-                    0x1022                  . = 0x2
- *fill*             0x1020          0x200
-
-reserve_data_0x1022
-                    0x1022          0x2
-                    0x1024                  . = 0x2
- *fill*             0x1022          0x200
-
-reserve_data_0x1024
-                    0x1024          0x4
-                    0x1028                  . = 0x4
- *fill*             0x1024          0x400
-
-reserve_data_0x1028
-                    0x1028         0x28
-                    0x1050                  . = 0x28
- *fill*             0x1028         0x2800
-LOAD build/default/debug/main.o
-LOAD build/default/debug/ChipConfig.o
-LOAD build/default/debug/IO.o
-LOAD build/default/debug/timer.o
+LOAD build/default/production/main.o
+LOAD build/default/production/ChipConfig.o
+LOAD build/default/production/IO.o
+LOAD build/default/production/timer.o
                     0x0001                  __MPLAB_BUILD = 0x1
-                    0x0001                  __MPLAB_DEBUG = 0x1
-                    0x0001                  __DEBUG = 0x1
-                    0x0001                  __MPLAB_DEBUGGER_ICD4 = 0x1
 LOAD p33EP512GM306
 LOAD c:/program files (x86)/microchip/xc16/v1.41/bin/bin/../../lib\libfx-elf.a
                     0x557f0                  __FICD = 0x557f0
@@ -260,7 +205,7 @@ LOAD c:/program files (x86)/microchip/xc16/v1.41/bin/bin/../../lib\libfx-elf.a
  *(.user_init)
  *(.handle)
  *(.isr*)
- .isr.text        0x0002fa         0x54 build/default/debug/timer.o
+ .isr.text        0x0002fa         0x54 build/default/production/timer.o
                   0x0002fa                  __T3Interrupt
                   0x000324                  __T1Interrupt
  .isr             0x00034e          0x4 default_isr
@@ -294,7 +239,7 @@ __FOSCSEL
 
 __FGS             0x0557fa          0x2
  *(__FGS.sec*)
- __FGS.sec        0x0557fa          0x2 /CW/_FGS(้า
+ __FGS.sec        0x0557fa          0x2 /CW/_FGSx)ผ
                   0x0557fa                  __FGS.sec
 
 __FUID0
@@ -314,39 +259,39 @@ __FUID3
 
 .debug_info       0x000000       0x19ad
  *(.debug_info)
- .debug_info      0x000000        0x394 build/default/debug/main.o
- .debug_info      0x000394        0x55b build/default/debug/ChipConfig.o
- .debug_info      0x0008ef        0x47b build/default/debug/IO.o
- .debug_info      0x000d6a        0xc43 build/default/debug/timer.o
+ .debug_info      0x000000        0x394 build/default/production/main.o
+ .debug_info      0x000394        0x55b build/default/production/ChipConfig.o
+ .debug_info      0x0008ef        0x47b build/default/production/IO.o
+ .debug_info      0x000d6a        0xc43 build/default/production/timer.o
  *(.gnu.linkonce.wi.*)
 
 .debug_abbrev     0x000000        0x2c2
  *(.debug_abbrev)
- .debug_abbrev    0x000000         0x8c build/default/debug/main.o
- .debug_abbrev    0x00008c         0xc3 build/default/debug/ChipConfig.o
- .debug_abbrev    0x00014f         0x99 build/default/debug/IO.o
- .debug_abbrev    0x0001e8         0xda build/default/debug/timer.o
+ .debug_abbrev    0x000000         0x8c build/default/production/main.o
+ .debug_abbrev    0x00008c         0xc3 build/default/production/ChipConfig.o
+ .debug_abbrev    0x00014f         0x99 build/default/production/IO.o
+ .debug_abbrev    0x0001e8         0xda build/default/production/timer.o
 
-.debug_line       0x000000        0x456
+.debug_line       0x000000        0x458
  *(.debug_line)
- .debug_line      0x000000        0x107 build/default/debug/main.o
- .debug_line      0x000107        0x112 build/default/debug/ChipConfig.o
- .debug_line      0x000219        0x10a build/default/debug/IO.o
- .debug_line      0x000323        0x133 build/default/debug/timer.o
+ .debug_line      0x000000        0x109 build/default/production/main.o
+ .debug_line      0x000109        0x112 build/default/production/ChipConfig.o
+ .debug_line      0x00021b        0x10a build/default/production/IO.o
+ .debug_line      0x000325        0x133 build/default/production/timer.o
 
 .debug_frame      0x000000        0x124
  *(.debug_frame)
- .debug_frame     0x000000         0x30 build/default/debug/main.o
- .debug_frame     0x000030         0x30 build/default/debug/ChipConfig.o
- .debug_frame     0x000060         0x30 build/default/debug/IO.o
- .debug_frame     0x000090         0x94 build/default/debug/timer.o
+ .debug_frame     0x000000         0x30 build/default/production/main.o
+ .debug_frame     0x000030         0x30 build/default/production/ChipConfig.o
+ .debug_frame     0x000060         0x30 build/default/production/IO.o
+ .debug_frame     0x000090         0x94 build/default/production/timer.o
 
 .debug_str        0x000000         0x95
  *(.debug_str)
- .debug_str       0x000000         0x12 build/default/debug/main.o
- .debug_str       0x000012         0x16 build/default/debug/ChipConfig.o
- .debug_str       0x000028         0x14 build/default/debug/IO.o
- .debug_str       0x00003c         0x59 build/default/debug/timer.o
+ .debug_str       0x000000         0x12 build/default/production/main.o
+ .debug_str       0x000012         0x16 build/default/production/ChipConfig.o
+ .debug_str       0x000028         0x14 build/default/production/IO.o
+ .debug_str       0x00003c         0x59 build/default/production/timer.o
 
 .debug_loc
  *(.debug_loc)
@@ -358,13 +303,13 @@ __FUID3
                   0x000000         0xb0
  *(.debug_pubnames)
  .debug_pubnames
-                  0x000000         0x1b build/default/debug/main.o
+                  0x000000         0x1b build/default/production/main.o
  .debug_pubnames
-                  0x00001b         0x25 build/default/debug/ChipConfig.o
+                  0x00001b         0x25 build/default/production/ChipConfig.o
  .debug_pubnames
-                  0x000040         0x1d build/default/debug/IO.o
+                  0x000040         0x1d build/default/production/IO.o
  .debug_pubnames
-                  0x00005d         0x53 build/default/debug/timer.o
+                  0x00005d         0x53 build/default/production/timer.o
 
 .debug_ranges
  *(.debug_ranges)
@@ -372,13 +317,13 @@ __FUID3
 .debug_aranges    0x000000         0x60
  *(.debug_aranges)
  .debug_aranges
-                  0x000000         0x18 build/default/debug/main.o
+                  0x000000         0x18 build/default/production/main.o
  .debug_aranges
-                  0x000018         0x18 build/default/debug/ChipConfig.o
+                  0x000018         0x18 build/default/production/ChipConfig.o
  .debug_aranges
-                  0x000030         0x18 build/default/debug/IO.o
+                  0x000030         0x18 build/default/production/IO.o
  .debug_aranges
-                  0x000048         0x18 build/default/debug/timer.o
+                  0x000048         0x18 build/default/production/timer.o
                     0x0000                  WREG0 = 0x0
                     0x0000                  _WREG0 = 0x0
                     0x0002                  WREG1 = 0x2
@@ -2209,71 +2154,71 @@ LOAD c:/program files (x86)/microchip/xc16/v1.41/bin/bin/../../lib\liblega-pic30
 LOAD c:/program files (x86)/microchip/xc16/v1.41/bin/bin/../../lib\libm-elf.a
 LOAD c:/program files (x86)/microchip/xc16/v1.41/bin/bin/../../lib\liblega-c-elf.a
 END GROUP
-OUTPUT(dist/default/debug/Robot-Guinedor-Wemaere.X.debug.elf elf32-pic30)
-LOAD /CW/_FGS(้า
+OUTPUT(dist/default/production/Robot-Guinedor-Wemaere.X.production.elf elf32-pic30)
+LOAD /CW/_FGSx)ผ
 LOAD default_isr
 
 .debug_pubtypes
                   0x000060        0x224
  .debug_pubtypes
-                  0x000060         0x59 build/default/debug/main.o
+                  0x000060         0x59 build/default/production/main.o
  .debug_pubtypes
-                  0x0000b9         0x61 build/default/debug/ChipConfig.o
+                  0x0000b9         0x61 build/default/production/ChipConfig.o
  .debug_pubtypes
-                  0x00011a         0x5d build/default/debug/IO.o
+                  0x00011a         0x5d build/default/production/IO.o
  .debug_pubtypes
-                  0x000177        0x10d build/default/debug/timer.o
+                  0x000177        0x10d build/default/production/timer.o
 
 __c30_signature
                   0x000284         0x24
  __c30_signature
-                  0x000284          0x6 build/default/debug/main.o
+                  0x000284          0x6 build/default/production/main.o
  __c30_signature
-                  0x00028a          0x6 build/default/debug/ChipConfig.o
+                  0x00028a          0x6 build/default/production/ChipConfig.o
  __c30_signature
-                  0x000290          0x6 build/default/debug/IO.o
+                  0x000290          0x6 build/default/production/IO.o
  __c30_signature
-                  0x000296          0x6 build/default/debug/timer.o
+                  0x000296          0x6 build/default/production/timer.o
  __c30_signature
                   0x00029c          0x6 c:/program files (x86)/microchip/xc16/v1.41/bin/bin/../../lib\liblega-pic30-elf.a(crt0_extendedep.o)
  __c30_signature
                   0x0002a2          0x6 c:/program files (x86)/microchip/xc16/v1.41/bin/bin/../../lib\liblega-pic30-elf.a(data_init_extended.o)
 
 .config_IESO      0x0557f8          0x2
- .config_IESO     0x0557f8          0x2 build/default/debug/ChipConfig.o
+ .config_IESO     0x0557f8          0x2 build/default/production/ChipConfig.o
 
 .config_FCKSM     0x0557f6          0x2
- .config_FCKSM    0x0557f6          0x2 build/default/debug/ChipConfig.o
+ .config_FCKSM    0x0557f6          0x2 build/default/production/ChipConfig.o
 
 .config_FWDTEN    0x0557f4          0x2
  .config_FWDTEN
-                  0x0557f4          0x2 build/default/debug/ChipConfig.o
+                  0x0557f4          0x2 build/default/production/ChipConfig.o
 
 .config_WDTWIN    0x0557f2          0x2
  .config_WDTWIN
-                  0x0557f2          0x2 build/default/debug/ChipConfig.o
+                  0x0557f2          0x2 build/default/production/ChipConfig.o
 
 .config_JTAGEN    0x0557f0          0x2
  .config_JTAGEN
-                  0x0557f0          0x2 build/default/debug/ChipConfig.o
+                  0x0557f0          0x2 build/default/production/ChipConfig.o
 
 .ivt._T3Interrupt
                   0x000024          0x2
  .ivt._T3Interrupt
-                  0x000024          0x2 build/default/debug/timer.o
+                  0x000024          0x2 build/default/production/timer.o
 
 .ivt._T1Interrupt
                   0x00001a          0x2
  .ivt._T1Interrupt
-                  0x00001a          0x2 build/default/debug/timer.o
+                  0x00001a          0x2 build/default/production/timer.o
 
-.text             0x000354         0xce
- .text            0x000354         0x56 build/default/debug/ChipConfig.o
+.text             0x000354         0xd2
+ .text            0x000354         0x56 build/default/production/ChipConfig.o
                   0x000354                  _InitOscillator
- .text            0x0003aa         0x50 build/default/debug/timer.o
+ .text            0x0003aa         0x50 build/default/production/timer.o
                   0x0003aa                  _InitTimer23
                   0x0003dc                  _InitTimer1
- .text            0x0003fa         0x1a build/default/debug/IO.o
+ .text            0x0003fa         0x1a build/default/production/IO.o
                   0x0003fa                  _InitIO
- .text            0x000414          0xe build/default/debug/main.o
+ .text            0x000414         0x12 build/default/production/main.o
                   0x000414                  _main
