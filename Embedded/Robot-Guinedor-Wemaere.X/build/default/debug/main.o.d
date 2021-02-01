@@ -1,4 +1,6 @@
 build/default/debug/main.o:  \
 main.c  \
 ChipConfig.h  \
-IO.H 
+IO.H  \
+timer.h  \
+PWM.h 

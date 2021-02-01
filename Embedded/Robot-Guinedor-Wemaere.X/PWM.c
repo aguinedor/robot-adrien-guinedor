@@ -1,8 +1,8 @@
 #include <xc.h> // library xc.h inclut tous les uC
-#include ?IO.h?
-#include ?PWM.h?
-#include ?Robot.h?
-#include ?ToolBox.h?
+#include "IO.h"
+#include "PWM.h"
+#include "Robot.h"
+#include "ToolBox.h"
 
 #define PWMPER 40.0
 unsigned char acceleration = 20;
@@ -24,15 +24,25 @@ IOCON6bits.POLL = 1; //High = 1
 IOCON6bits.PMOD = 0b01; //Set PWM Mode to Redundant
 FCLCON6 = 0x0003; //Désactive la gestion des faults
 
-/* Enable PWM Module */
+ /*Enable PWM Module */
 PTCONbits.PTEN = 1;
 }
 
 void PWMSetSpeed(float vitesseEnPourcents)
 {
 robotState.vitesseGaucheCommandeCourante = vitesseEnPourcents;
-MOTEUR_GAUCHE_L_PWM_ENABLE = 0; //Pilotage de la pin en mode IO
+if(vitesseEnPourcents>0)
+{
+    MOTEUR_GAUCHE_L_PWM_ENABLE = 0; //Pilotage  de la pin en mode IO
 MOTEUR_GAUCHE_L_IO_OUTPUT = 1; //Mise à 1 de la pin
 MOTEUR_GAUCHE_H_PWM_ENABLE = 1; //Pilotage de la pin en mode PWM
-MOTEUR_GAUCHE_DUTY_CYCLE = Abs(robotState.vitesseGaucheCommandeCourante*PWMPER);
+MOTEUR_GAUCHE_DUTY_CYCLE = Abs(robotState.vitesseGaucheCommandeCourante*PWMPER); 
+}
+else{
+   MOTEUR_GAUCHE_L_PWM_ENABLE = 1; //Pilotage  de la pin en mode IO
+MOTEUR_GAUCHE_H_IO_OUTPUT = 1; //Mise à 1 de la pin
+MOTEUR_GAUCHE_H_PWM_ENABLE = 0; //Pilotage de la pin en mode PWM
+MOTEUR_GAUCHE_DUTY_CYCLE = Abs(robotState.vitesseGaucheCommandeCourante*PWMPER); 
+}
+
 }
