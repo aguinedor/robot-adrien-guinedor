@@ -18,10 +18,13 @@ int main(void)
     InitTimer1() ;
     
     InitPWM();
-    PWMSetSpeed(10);
+    PWMSetSpeed(10,MOTEUR_DROIT);
+    PWMSetSpeed(10,MOTEUR_GAUCHE);
+    
     
     while(1)        
     {
+        
     }
     return (EXIT_SUCCESS);
 }

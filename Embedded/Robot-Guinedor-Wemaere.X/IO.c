@@ -25,6 +25,9 @@ void InitIO()
     // Moteurs 
     _TRISB14=0; //Moteur 1 IN1
     _TRISB15=0; //moteur 1 IN2
+    
+    _TRISC6=0; //Moteur 1 IN1
+    _TRISC7=0; //moteur 1 IN2
 
     //********** Configuration des entrées : _TRISxx = 1 ********************************    
 }
