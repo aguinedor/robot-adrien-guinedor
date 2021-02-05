@@ -3,5 +3,7 @@
 
 void InitTimer23(void) ;
 void InitTimer1(void) ;
+void SetFreqTimer1(float freq);
+extern unsigned long timestamp;
 
 #endif /* TIMER_H */

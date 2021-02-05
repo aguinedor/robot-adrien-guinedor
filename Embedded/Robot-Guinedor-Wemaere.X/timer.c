@@ -2,9 +2,11 @@
 #include "timer.h"
 #include "IO.h"
 #include "PWM.h"
+#include "ADC.h"
+#include "main.h"
 // Initialisation d?un timer 32 bits
 
-void InitTimer23(void) {
+/*void InitTimer23(void) {
     T3CONbits.TON = 0; // Stop any 16?bit Timer3 operation
     T2CONbits.TON = 0; // Stop any 16/32? bit Timer3 operation
     T2CONbits.T32 = 1; // Enable 32?bit Timer mode
@@ -24,7 +26,7 @@ void InitTimer23(void) {
 
 void __attribute__((interrupt, no_auto_psv)) _T3Interrupt(void) {
     IFS0bits . T3IF = 0; // Cle a r Timer3 I n t e r r u p t Flag
-    /*if(toggle ==0)
+    if(toggle ==0)
     {
         PWMSetSpeed(20,MOTEUR_DROIT);
         PWMSetSpeed(20,MOTEUR_GAUCHE);
@@ -35,30 +37,46 @@ void __attribute__((interrupt, no_auto_psv)) _T3Interrupt(void) {
         PWMSetSpeed(-20,MOTEUR_DROIT);
         PWMSetSpeed(-20,MOTEUR_GAUCHE);
         toggle=0;
-    }*/
+    }
     PWMUpdateSpeed();        
-}
+}*/
 // I n i t i a l i s a t i on d ?un time r 16 b i t s
 
-/*void InitTimer1(void) {
+void InitTimer1(void) {
     //Timer1 pour h o r o d a t e r l e s mesures ( 1ms)
     T1CONbits.TON = 0; // Di s a bl e Timer
-    T1CONbits.TCKPS = 0b11; // Prescaler
-    // 11 = 1: 2 5 6 p r e s c a l e v al u e
-    // 10 = 1: 6 4 p r e s c a l e v al u e
-    // 01 = 1: 8 p r e s c a l e v al u e
-    // 00 = 1: 1 p r e s c a l e v al u e
-
-
     T1CONbits.TCS = 0; // cl o c k s o u r c e = i n t e r n a l cl o c k
-    PR1 = 3125;
-    IFS0bits.T1IF = 0; // Cle a r Timer I n t e r r u p t Flag
+    PR1 = 3125;IFS0bits.T1IF = 0; // Cle a r Timer I n t e r r u p t Flag
     IEC0bits.T1IE = 1; // Enable Timer i n t e r r u p t
     T1CONbits.TON = 1; // Enable Timer
+    SetFreqTimer1(50);
 }
 // I n t e r r u p t i o n du time r 1
 
 void __attribute__((interrupt, no_auto_psv)) _T1Interrupt(void) {
     IFS0bits.T1IF = 0;
-    PWMUpdateSpeed();
-}*/
+    InitADC1();
+}
+void SetFreqTimer1(float freq)
+{
+T1CONbits.TCKPS = 0b00; //00 = 1:1 prescaler value
+if(FCY /freq > 65535)
+{
+T1CONbits.TCKPS = 0b01; //01 = 1:8 prescaler value
+if(FCY /freq / 8 > 65535)
+{
+T1CONbits.TCKPS = 0b10; //10 = 1:64 prescaler value
+if(FCY /freq / 64 > 65535)
+{
+T1CONbits.TCKPS = 0b11; //11 = 1:256 prescaler value
+PR1 = (int)(FCY / freq / 256);
+}
+else
+PR1 = (int)(FCY / freq / 64);
+}
+else
+PR1 = (int)(FCY / freq / 8);
+}
+else
+PR1 = (int)(FCY / freq);
+}
