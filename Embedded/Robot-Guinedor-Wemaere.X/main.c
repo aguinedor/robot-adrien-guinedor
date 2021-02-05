@@ -5,6 +5,7 @@
 #include "IO.H"
 #include "timer.h"
 #include "PWM.h"
+#include "robot.h"
 
 int main(void) 
 {
@@ -14,13 +15,15 @@ int main(void)
     LED_BLANCHE=1;
     LED_BLEUE=1;
     LED_ORANGE=1;
-    InitTimer23() ;
-    InitTimer1() ;
+    
+    
     
     InitPWM();
-    PWMSetSpeed(10,MOTEUR_DROIT);
-    PWMSetSpeed(10,MOTEUR_GAUCHE);
+    PwmSetSpeedConsigne(30, MOTEUR_DROIT);
+    PwmSetSpeedConsigne(30, MOTEUR_GAUCHE);
     
+    //InitTimer1() ;
+    InitTimer23() ;
     
     while(1)        
     {

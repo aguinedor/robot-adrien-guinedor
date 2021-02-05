@@ -18,7 +18,7 @@ void InitIO()
 
     //********** Configuration des sorties : _TRISxx = 0 ********************************
     // LED
-    _TRISC10 = 0;  // LED Orange
+    _TRISC10 = 0; // LED Orange
     _TRISG6 = 0; //LED Blanche
     _TRISG7 = 0; // LED Bleue
     

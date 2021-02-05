@@ -1,7 +1,7 @@
 #include <xc.h>
 #include "timer.h"
 #include "IO.h"
-
+#include "PWM.h"
 // Initialisation d?un timer 32 bits
 
 void InitTimer23(void) {
@@ -18,17 +18,29 @@ void InitTimer23(void) {
     IFS0bits.T3IF = 0; // Cle a r Timer3 I n t e r r u p t Flag
     IEC0bits.T3IE = 1; // Enable Timer3 i n t e r r u p t
     T2CONbits.TON = 1; // S t a r t 32?b i t Timer
-    /* Example code f o r Timer3 ISR */
+    
 }
 // I n t e r r u p t i o n du time r 32 b i t s s u r 2?3
 
 void __attribute__((interrupt, no_auto_psv)) _T3Interrupt(void) {
     IFS0bits . T3IF = 0; // Cle a r Timer3 I n t e r r u p t Flag
-    LED_ORANGE = !LED_ORANGE;
+    /*if(toggle ==0)
+    {
+        PWMSetSpeed(20,MOTEUR_DROIT);
+        PWMSetSpeed(20,MOTEUR_GAUCHE);
+        toggle=1;
+    }
+    else
+    {
+        PWMSetSpeed(-20,MOTEUR_DROIT);
+        PWMSetSpeed(-20,MOTEUR_GAUCHE);
+        toggle=0;
+    }*/
+    PWMUpdateSpeed();        
 }
 // I n i t i a l i s a t i on d ?un time r 16 b i t s
 
-void InitTimer1(void) {
+/*void InitTimer1(void) {
     //Timer1 pour h o r o d a t e r l e s mesures ( 1ms)
     T1CONbits.TON = 0; // Di s a bl e Timer
     T1CONbits.TCKPS = 0b11; // Prescaler
@@ -48,5 +60,5 @@ void InitTimer1(void) {
 
 void __attribute__((interrupt, no_auto_psv)) _T1Interrupt(void) {
     IFS0bits.T1IF = 0;
-    LED_BLANCHE = !LED_BLANCHE;
-}
+    PWMUpdateSpeed();
+}*/

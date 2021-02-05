@@ -1,5 +1,6 @@
 #ifndef ROBOT_H
 #define ROBOT_H
+//float acceleration = 5;
 
 typedef struct robotStateBITS {
     union {
