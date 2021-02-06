@@ -7,6 +7,7 @@
 #include "PWM.h"
 #include "robot.h"
 #include "ADC.h" 
+#include "main.h"
 
 #define STATE_ATTENTE 0
 #define STATE_ATTENTE_EN_COURS 1
@@ -139,7 +140,7 @@ break;
 
 unsigned char nextStateRobot=0;
 
-void SetNextRobotStateInAutomaticMode()
+void SetNextRobotStateInAutomaticMode(void)
 {
 unsigned char positionObstacle = PAS_D_OBSTACLE;
 
