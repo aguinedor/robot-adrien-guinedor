@@ -6,16 +6,16 @@
 #include "main.h"
 // Initialisation d?un timer 32 bits
 unsigned long timestamp;
-/*void InitTimer23(void) {
+void InitTimer23(void) {
     T3CONbits.TON = 0; // Stop any 16?bit Timer3 operation
     T2CONbits.TON = 0; // Stop any 16/32? bit Timer3 operation
     T2CONbits.T32 = 1; // Enable 32?bit Timer mode
     T2CONbits.TCS = 0; // Select internal instruction cycle clock
     T2CONbits.TCKPS = 0b00; // S e l e c t 1: 1 P r e s c a l e r
-    TMR3 = 0x00; // Cle a r 32?b i t Timer (msw)
-    TMR2 = 0x00; // Cle a r 32?b i t Timer ( l sw )
-    PR3 = 0x04C4; // Load 32?b i t p e ri o d v al u e (msw)
-    PR2 = 0xB400; // Load 32?b i t p e ri o d v al u e ( l sw )
+    TMR3 = 0x00; // Clear 32bit Timer (msw)
+    TMR2 = 0x00; // Clear 32bit Timer (lsw)
+    PR3 = 0x04C4; // Load 32bit period value (msw)
+    PR2 = 0xB400; // Load 32bit p e ri o d v al u e (lsw)
     IPC2bits.T3IP = 0x01; // Se t Timer3 I n t e r r u p t P r i o r i t y L e v el
     IFS0bits.T3IF = 0; // Cle a r Timer3 I n t e r r u p t Flag
     IEC0bits.T3IE = 1; // Enable Timer3 i n t e r r u p t
@@ -26,20 +26,20 @@ unsigned long timestamp;
 
 void __attribute__((interrupt, no_auto_psv)) _T3Interrupt(void) {
     IFS0bits . T3IF = 0; // Cle a r Timer3 I n t e r r u p t Flag
-    if(toggle ==0)
-    {
-        PWMSetSpeed(20,MOTEUR_DROIT);
-        PWMSetSpeed(20,MOTEUR_GAUCHE);
-        toggle=1;
-    }
-    else
-    {
-        PWMSetSpeed(-20,MOTEUR_DROIT);
-        PWMSetSpeed(-20,MOTEUR_GAUCHE);
-        toggle=0;
-    }
-    PWMUpdateSpeed();        
-}*/
+//    if(toggle ==0)
+//    {
+//        PWMSetSpeed(20,MOTEUR_DROIT);
+//        PWMSetSpeed(20,MOTEUR_GAUCHE);
+//        toggle=1;
+//    }
+//    else
+//    {
+//        PWMSetSpeed(-20,MOTEUR_DROIT);
+//        PWMSetSpeed(-20,MOTEUR_GAUCHE);
+//        toggle=0;
+//    }
+    
+}
 // I n i t i a l i s a t i on d'un timer 16bits
 
 void InitTimer1(void) {
@@ -72,7 +72,8 @@ void InitTimer1(void) {
 
 void __attribute__((interrupt, no_auto_psv)) _T1Interrupt(void) {
     IFS0bits.T1IF = 0;
-    InitADC1();
+    ADC1StartConversionSequence();
+    PWMUpdateSpeed(); 
 }
 
 void InitTimer4(void) {
