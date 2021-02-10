@@ -4,4 +4,6 @@ ChipConfig.h  \
 IO.H  \
 timer.h  \
 PWM.h  \
- robot.h 
+ robot.h  \
+ADC.h  \
+main.h 

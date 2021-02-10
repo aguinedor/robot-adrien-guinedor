@@ -40,15 +40,13 @@ int main(void)
     LED_BLEUE=1;
     LED_ORANGE=1;
     
-    
-    
     InitPWM();
     
     
     //InitTimer1() ;
-    /*InitTimer23() ;
-    PWMSetSpeedConsigne(30, MOTEUR_DROIT);
-    PWMSetSpeedConsigne(30, MOTEUR_GAUCHE);*/
+    //InitTimer23() ;
+    //PWMSetSpeedConsigne(30, MOTEUR_DROIT);
+    //PWMSetSpeedConsigne(30, MOTEUR_GAUCHE);
     
     
     while(1)        
