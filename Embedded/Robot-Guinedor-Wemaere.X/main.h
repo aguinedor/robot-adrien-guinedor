@@ -3,6 +3,7 @@
 
 #define FCY 4000000
 
+
 void OperatingSystemLoop(void);
 void SetNextRobotStateInAutomaticMode(void);
 #endif
