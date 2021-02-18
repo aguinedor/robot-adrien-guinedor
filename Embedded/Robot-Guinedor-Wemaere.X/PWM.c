@@ -5,7 +5,7 @@
 #include "ToolBox.h"
 
 #define PWMPER 40.0
-float acceleration=5;
+float acceleration=3;
 
 void InitPWM(void)
 {
