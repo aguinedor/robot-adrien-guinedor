@@ -5,7 +5,7 @@
 #include "ToolBox.h"
 
 #define PWMPER 40.0
-float acceleration=3;
+float acceleration=20;
 
 void InitPWM(void)
 {
@@ -116,10 +116,10 @@ void PWMSetSpeedConsigne(float vitesseEnpourcents, int moteur)
 {
     if(moteur==0)
     {
-        robotState.vitesseDroiteConsigne=vitesseEnpourcents;
+        robotState.vitesseDroiteConsigne=-vitesseEnpourcents;
     }
     else
     {
-       robotState.vitesseGaucheConsigne=vitesseEnpourcents; 
+       robotState.vitesseGaucheConsigne=-vitesseEnpourcents; 
     }
 }
