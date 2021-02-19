@@ -77,7 +77,7 @@ void __attribute__((interrupt, no_auto_psv)) _T1Interrupt(void) {
 }
 
 void InitTimer4(void) {
-    float freq=1000;
+    float freq=150;
     //Timer4 pour horodater les mesures (1ms)
     T4CONbits.TON = 0; // Disable Timer
     T4CONbits.TCS = 0; // clock source = internalclock
