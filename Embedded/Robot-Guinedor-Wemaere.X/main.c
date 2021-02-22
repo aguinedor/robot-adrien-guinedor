@@ -38,7 +38,7 @@
 #define VITESSE_MOYENNE   25
 #define VITESSE_CROISIERE 35
 
- unsigned int a,b,c,mode,vr=0,vm=15,rdm=0; // distance pour les telemetres (a-b-c) et vitesses (manoeuvre, moyenne, croisière)
+ unsigned int mode,vr=15,vm=15,rdm=0; //  vitesses (manoeuvre,route) et modes
 
 int main(void) 
 {
@@ -98,9 +98,24 @@ int main(void)
     return (EXIT_SUCCESS);
 }
 
+unsigned char stateRobot;
 
 void OperatingSystemLoop(void)
 {
+            if(mode==1)
+            {   
+                vr=15;
+                vm=15;
+            }
+            else if (mode==2)
+                vr=20;
+            else if (mode==3)
+                vr=25;
+            else if (mode==4)
+            {
+                vr=10;
+                vm=10;
+            }
     switch (stateRobot)
     {
         case STATE_ATTENTE:
@@ -115,17 +130,8 @@ void OperatingSystemLoop(void)
         break;
 
         case STATE_AVANCE:
-            if(mode==1)
-                vr=15;
-            else if (mode==2)
-                vr=25;
-            else if (mode==3)
-                vr=35;
-            else if (mode==4)
-            {
-                vr=10;
-                vm=10;
-            }
+            LED_BLEUE=1;
+            rdm+=1;
         PWMSetSpeedConsigne(vr, MOTEUR_DROIT);
         PWMSetSpeedConsigne(vr, MOTEUR_GAUCHE);
         stateRobot = STATE_AVANCE_EN_COURS;
@@ -154,8 +160,8 @@ void OperatingSystemLoop(void)
 
         case STATE_TOURNE_SUR_PLACE_GAUCHE:
             LED_BLANCHE=1;
-        PWMSetSpeedConsigne(vm, MOTEUR_DROIT);
-        PWMSetSpeedConsigne(-vm, MOTEUR_GAUCHE);
+        PWMSetSpeedConsigne(15, MOTEUR_DROIT);
+        PWMSetSpeedConsigne(-15, MOTEUR_GAUCHE);
         stateRobot = STATE_TOURNE_SUR_PLACE_GAUCHE_EN_COURS;
         break;
         case STATE_TOURNE_SUR_PLACE_GAUCHE_EN_COURS:
@@ -164,8 +170,8 @@ void OperatingSystemLoop(void)
 
         case STATE_TOURNE_SUR_PLACE_DROITE:
             LED_ORANGE=1;
-        PWMSetSpeedConsigne(-vm, MOTEUR_DROIT);
-        PWMSetSpeedConsigne(vm, MOTEUR_GAUCHE);
+        PWMSetSpeedConsigne(-15, MOTEUR_DROIT);
+        PWMSetSpeedConsigne(15, MOTEUR_GAUCHE);
         stateRobot = STATE_TOURNE_SUR_PLACE_DROITE_EN_COURS;
         break;
         case STATE_TOURNE_SUR_PLACE_DROITE_EN_COURS:
@@ -178,24 +184,25 @@ void OperatingSystemLoop(void)
     }
 }
 
-
+unsigned char nextStateRobot=0;
 
 void SetNextRobotStateInAutomaticMode(void)
 {
-    rdm+=1;
+    unsigned char positionObstacle=PAS_D_OBSTACLE;
+    
 
     //Détermination de la position des obstacles en fonction des télémètres
 
-    if ( robotState.distanceTelemetreGauche < 30 ||
-    robotState.distanceTelemetreCentre < 20 ||
-    robotState.distanceTelemetreDroit < 30 )
+    if ( robotState.distanceTelemetreGauche < 35 ||
+    robotState.distanceTelemetreCentre < 25 ||
+    robotState.distanceTelemetreDroit < 35 )
     {
         mode=1;
-        etat(20,30,20,30,20);
+        positionObstacle=etat(15,25,15,25,15);
     }
-    else if(robotState.distanceTelemetreGauche < 50 ||
-    robotState.distanceTelemetreCentre < 60 ||
-    robotState.distanceTelemetreDroit < 50 )
+    else if(robotState.distanceTelemetreGauche < 60 ||
+    robotState.distanceTelemetreCentre < 50 ||
+    robotState.distanceTelemetreDroit < 60 )
     {
         mode=2;
     }
@@ -205,14 +212,14 @@ void SetNextRobotStateInAutomaticMode(void)
     {
        mode=3 ;
     }
-    else if(robotState.distanceTelemetreGauche2 < 10 && robotState.distanceTelemetreDroit2 < 10 ) //cas tunnel
+    else if(robotState.distanceTelemetreGauche2 < 10 && robotState.distanceTelemetreDroit2 < 10 && robotState.distanceTelemetreCentre > 10  ) //cas tunnel
     {
         mode=4;
-        if (robotState.distanceTelemetreGauche < robotState.distanceTelemetreDroit)
+        if (robotState.distanceTelemetreGauche2 < robotState.distanceTelemetreDroit2)
             positionObstacle = OBSTACLE_SUR_LA_GAUCHE  ;
-        else if (robotState.distanceTelemetreGauche > robotState.distanceTelemetreDroit)
+        else if (robotState.distanceTelemetreGauche2 > robotState.distanceTelemetreDroit2)
             positionObstacle = OBSTACLE_SUR_LA_DROITE  ;
-        else if (robotState.distanceTelemetreGauche == robotState.distanceTelemetreDroit)
+        else if (robotState.distanceTelemetreGauche2 == robotState.distanceTelemetreDroit2)
             positionObstacle = PAS_D_OBSTACLE  ;
     }
 
@@ -236,17 +243,21 @@ void SetNextRobotStateInAutomaticMode(void)
     } 
     else if (positionObstacle == OBSTACLE_CUL_DE_SAC)
     {
-        if(robotState.distanceTelemetreGauche2 + robotState.distanceTelemetreGauche < robotState.distanceTelemetreDroit2 + robotState.distanceTelemetreDroit)
-            nextStateRobot=STATE_TOURNE_SUR_PLACE_DROITE;
-        else if(robotState.distanceTelemetreGauche2 + robotState.distanceTelemetreGauche > robotState.distanceTelemetreDroit2 + robotState.distanceTelemetreDroit)
-            nextStateRobot=STATE_TOURNE_SUR_PLACE_GAUCHE;
-        else if(robotState.distanceTelemetreGauche2 + robotState.distanceTelemetreGauche = robotState.distanceTelemetreDroit2 + robotState.distanceTelemetreDroit)
-        {
-            if (rdm%2==0)
-            nextStateRobot = STATE_TOURNE_SUR_PLACE_GAUCHE;
-            else
-            nextStateRobot = STATE_TOURNE_SUR_PLACE_DROITE;
-        }
+        positionObstacle=OBSTACLE_SUR_LA_DROITE;
+//        if(robotState.distanceTelemetreGauche2 < robotState.distanceTelemetreDroit2 && robotState.distanceTelemetreGauche < robotState.distanceTelemetreDroit)
+//            nextStateRobot=STATE_TOURNE_SUR_PLACE_DROITE;
+//              positionObstacle=OBSTACLE_SUR_LA_GAUCHE;
+//        else if(robotState.distanceTelemetreGauche2 > robotState.distanceTelemetreDroit2 && robotState.distanceTelemetreGauche > robotState.distanceTelemetreDroit)
+//           nextStateRobot=STATE_TOURNE_SUR_PLACE_GAUCHE;
+//              positionObstacle=OBSTACLE_SUR_LA_DROITE;
+                
+//        else if((robotState.distanceTelemetreGauche2 + robotState.distanceTelemetreGauche) == (robotState.distanceTelemetreDroit2 + robotState.distanceTelemetreDroit))
+//        {
+//            if (rdm%2==0)
+//            nextStateRobot = STATE_TOURNE_SUR_PLACE_GAUCHE;
+//            else
+//            nextStateRobot = STATE_TOURNE_SUR_PLACE_DROITE;
+//        }
     }
     //Si l?on n?est pas dans la transition de l?étape en cours
     if (nextStateRobot != stateRobot - 1);
