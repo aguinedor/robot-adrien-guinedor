@@ -44,8 +44,8 @@
 
 #define VITESSE_TUNNEL    10
 #define VITESSE_MANOEUVRE 15
-#define VITESSE_MOYENNE   25
-#define VITESSE_CROISIERE 35
+#define VITESSE_MOYENNE   20
+#define VITESSE_CROISIERE 25
 
  unsigned int mode,vr=15,rdm=0; //  vitesses (manoeuvre,route) et modes
 
@@ -113,12 +113,12 @@ void OperatingSystemLoop(void)
 {
             if(mode==1)
             {   
-                vr=15;
+                vr= VITESSE_MANOEUVRE ;
             }
             else if (mode==2)
-                vr=20;
+                vr= VITESSE_MOYENNE;
             else if (mode==3)
-                vr=25;
+                vr= VITESSE_CROISIERE;
     switch (stateRobot)
     {
         case STATE_ATTENTE:
@@ -133,7 +133,7 @@ void OperatingSystemLoop(void)
         break;
 
         case STATE_AVANCE:
-            rdm+=1;
+        rdm=rdm+1;
         PWMSetSpeedConsigne(vr, MOTEUR_DROIT);
         PWMSetSpeedConsigne(vr, MOTEUR_GAUCHE);
         stateRobot = STATE_AVANCE_EN_COURS;
@@ -179,8 +179,8 @@ void OperatingSystemLoop(void)
         break;
 
         case STATE_TOURNE_SUR_PLACE_GAUCHE:
-        PWMSetSpeedConsigne(15, MOTEUR_DROIT);
-        PWMSetSpeedConsigne(-15, MOTEUR_GAUCHE);
+        PWMSetSpeedConsigne(12, MOTEUR_DROIT);
+        PWMSetSpeedConsigne(-12, MOTEUR_GAUCHE);
         stateRobot = STATE_TOURNE_SUR_PLACE_GAUCHE_EN_COURS;
         break;
         case STATE_TOURNE_SUR_PLACE_GAUCHE_EN_COURS:
@@ -188,8 +188,8 @@ void OperatingSystemLoop(void)
         break;
 
         case STATE_TOURNE_SUR_PLACE_DROITE:
-        PWMSetSpeedConsigne(-15, MOTEUR_DROIT);
-        PWMSetSpeedConsigne(15, MOTEUR_GAUCHE);
+        PWMSetSpeedConsigne(-12, MOTEUR_DROIT);
+        PWMSetSpeedConsigne(12, MOTEUR_GAUCHE);
         stateRobot = STATE_TOURNE_SUR_PLACE_DROITE_EN_COURS;
         break;
         case STATE_TOURNE_SUR_PLACE_DROITE_EN_COURS:
@@ -229,9 +229,9 @@ void SetNextRobotStateInAutomaticMode(void)
 
     //Détermination de la position des obstacles en fonction des télémètres
 
-    if ( robotState.distanceTelemetreGauche < 35 ||
-    robotState.distanceTelemetreCentre < 25 ||
-    robotState.distanceTelemetreDroit < 35 )
+    if (robotState.distanceTelemetreGauche < 30 ||
+    robotState.distanceTelemetreCentre < 35 ||
+    robotState.distanceTelemetreDroit < 30 )
     {
         mode=1;
         positionObstacle=etat();
@@ -244,7 +244,7 @@ void SetNextRobotStateInAutomaticMode(void)
     }
     else if (robotState.distanceTelemetreGauche > 50 ||
     robotState.distanceTelemetreCentre > 60 ||
-    robotState.distanceTelemetreDroit > 50 )
+    robotState.distanceTelemetreDroit > 50  )
     {
        mode=3 ;
     }
