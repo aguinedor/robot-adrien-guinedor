@@ -1,6 +1,6 @@
 #ifndef ETAT_H
 #define	ETAT_H
 
-int etat(int gauche2,int gauche,int centre,int droit,int droit2);
+int etat(void);
 
 #endif /*ETAT_H*/
