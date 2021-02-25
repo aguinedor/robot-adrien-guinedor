@@ -10,7 +10,7 @@
 #define OBSTACLE_SUR_LA_DROITE 4 //tourne sur place vers la gauche
 #define OBSTACLE_EN_FACE 5 //tourne sur place vers la gauche/la droite 
 #define TUNNEL_GAUCHE 6
-#define TUNNEL_DROITE 7
+ #define TUNNEL_DROITE 7
 
 int obstacle;
 
@@ -40,13 +40,13 @@ int etat(void)
             else if (robotState.distanceTelemetreGauche2 > robotState.distanceTelemetreDroit2)
                 obstacle = TUNNEL_DROITE  ;
             else if (robotState.distanceTelemetreGauche2 == robotState.distanceTelemetreDroit2)
-                obstacle = PAS_D_OBSTACLE  ;
+                obstacle = PAS_D_OBSTACLE  ; 
         }
         
-        else if ( robotState.distanceTelemetreGauche2 < 15) //cas n° 30 
+        else if ( robotState.distanceTelemetreGauche2 < 20) //cas n° 30 
         obstacle = OBSTACLE_A_GAUCHE;
         
-        else if (robotState.distanceTelemetreDroit2 < 15) //cas n° 30
+        else if (robotState.distanceTelemetreDroit2 < 20) //cas n° 30
         obstacle = OBSTACLE_A_DROITE;
         
         else 
