@@ -73,31 +73,6 @@ int main(void)
             volts =((float) result [3])*3.3/4096*3.2;
             robotState.distanceTelemetreGauche2 = 34 / volts-5 ;
         }
-        
-//        if (robotState.distanceTelemetreDroit > 10)
-//        {
-//            LED_ORANGE=1;
-//        }
-//        else
-//        {
-//            LED_ORANGE=0;
-//        }
-//        if (robotState.distanceTelemetreDroit2 > 10)
-//        {
-//            LED_BLEUE=1;
-//        }
-//        else
-//        {
-//            LED_BLEUE=0;
-//        }
-//        if (robotState.distanceTelemetreGauche2 > 10)
-//        {
-//            LED_BLANCHE=1;
-//        }
-//        else
-//        {
-//            LED_BLANCHE=0;
-//        }
    }
     return (EXIT_SUCCESS);
 }
@@ -107,13 +82,11 @@ unsigned char stateRobot;
 void OperatingSystemLoop(void)
 {
             if(mode==1)
-            {   
-                vr= 15;
-            }
-            else if (mode==2)
-                vr= 20;
+                vr= 15;          //vitesse de manoeuvre, obstacle a proximité
+            else if (mode==2)  
+                vr= 20;          //vitesse moyenne, pour ralentir
             else if (mode==3)
-                vr= 25;
+                vr= 25;          //vitesse d epointe, obstacle a + de 60cm
     switch (stateRobot)
     {
         case STATE_ATTENTE:
@@ -224,7 +197,7 @@ void SetNextRobotStateInAutomaticMode(void)
 
     //Détermination de la position des obstacles en fonction des télémètres
 
-    if ( robotState.distanceTelemetreGauche2 < 20 ||
+    if ( robotState.distanceTelemetreGauche2 < 20 ||            // obstacle proche, vitesse faible et detection/esquive des obstacles en cours
     robotState.distanceTelemetreGauche < 30 ||
     robotState.distanceTelemetreCentre < 35 ||
     robotState.distanceTelemetreDroit < 30 ||
@@ -233,7 +206,7 @@ void SetNextRobotStateInAutomaticMode(void)
         mode=1;
         positionObstacle=etat();
     }
-    else if( robotState.distanceTelemetreGauche2 < 40 ||
+    else if( robotState.distanceTelemetreGauche2 < 40 ||        // obstacle moyenement proche, vitesse moyenne
     robotState.distanceTelemetreGauche < 50 ||
     robotState.distanceTelemetreCentre < 60 ||
     robotState.distanceTelemetreDroit < 50 ||
@@ -241,7 +214,7 @@ void SetNextRobotStateInAutomaticMode(void)
     {
         mode=2;
     }
-    else if (robotState.distanceTelemetreGauche2 >= 40 ||
+    else if (robotState.distanceTelemetreGauche2 >= 40 ||       // obstacle assez loin, vitesse de pointe
     robotState.distanceTelemetreGauche >= 50 ||
     robotState.distanceTelemetreCentre >= 60 ||
     robotState.distanceTelemetreDroit >= 50 ||
@@ -272,7 +245,8 @@ void SetNextRobotStateInAutomaticMode(void)
     nextStateRobot = STATE_DROITE_TUNNEL;
     else if (positionObstacle == TUNNEL_DROITE)
     nextStateRobot = STATE_GAUCHE_TUNNEL;
-    //Si l?on n?est pas dans la transition de l?étape en cours
+    
+    //Si l'on n?est pas dans la transition de l?étape en cours
     if (nextStateRobot != stateRobot - 1);
     stateRobot = nextStateRobot;
 }
