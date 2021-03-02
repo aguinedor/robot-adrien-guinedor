@@ -86,7 +86,7 @@ void OperatingSystemLoop(void)
             else if (mode==2)  
                 vr= 20;          //vitesse moyenne, pour ralentir
             else if (mode==3)
-                vr= 25;          //vitesse d epointe, obstacle a + de 60cm
+                vr= 25;          //vitesse de pointe, obstacle a + de 60cm
     switch (stateRobot)
     {
         case STATE_ATTENTE:
