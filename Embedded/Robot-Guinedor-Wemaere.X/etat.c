@@ -16,8 +16,8 @@ int obstacle;
 
 int etat(void)
 { 
-        if (robotState.distanceTelemetreGauche < 30 && //cas n° 1
-        robotState.distanceTelemetreDroit < 30 ) 
+        if (robotState.distanceTelemetreGauche < 25 && //cas n° 1
+        robotState.distanceTelemetreDroit < 25 ) 
         obstacle = OBSTACLE_EN_FACE;    
         
         else if (robotState.distanceTelemetreCentre < 35 ) //cas n° 3
@@ -39,14 +39,14 @@ int etat(void)
                 obstacle = TUNNEL_GAUCHE  ;
             else if (robotState.distanceTelemetreGauche2 > robotState.distanceTelemetreDroit2)
                 obstacle = TUNNEL_DROITE  ;
-            else if (robotState.distanceTelemetreGauche2 == robotState.distanceTelemetreDroit2)
-                obstacle = PAS_D_OBSTACLE  ; 
+//            else if (robotState.distanceTelemetreGauche2 == robotState.distanceTelemetreDroit2)
+//                obstacle = PAS_D_OBSTACLE  ; 
         }
-        
-        else if ( robotState.distanceTelemetreGauche2 < 20) //cas n° 30 
+         
+        else if ( robotState.distanceTelemetreGauche2 < 15) //cas n° 30 
         obstacle = OBSTACLE_A_GAUCHE;
         
-        else if (robotState.distanceTelemetreDroit2 < 20) //cas n° 30
+        else if (robotState.distanceTelemetreDroit2 < 15) //cas n° 30
         obstacle = OBSTACLE_A_DROITE;
         
         else 
