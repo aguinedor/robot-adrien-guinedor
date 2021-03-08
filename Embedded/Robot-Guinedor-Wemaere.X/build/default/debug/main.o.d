@@ -1,7 +1,7 @@
 build/default/debug/main.o:  \
 main.c  \
 ChipConfig.h  \
-IO.H  \
+IO.h  \
 timer.h  \
 PWM.h  \
  robot.h  \

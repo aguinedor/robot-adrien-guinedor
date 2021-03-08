@@ -35,9 +35,9 @@ int etat(void)
         
         else if(robotState.distanceTelemetreGauche2 < 10 && robotState.distanceTelemetreDroit2 < 10 ) //cas tunnel
         {
-            if (robotState.distanceTelemetreGauche2 < robotState.distanceTelemetreDroit2)
+            if ((robotState.distanceTelemetreGauche2 < robotState.distanceTelemetreDroit2)||(robotState.distanceTelemetreGauche < 5))
                 obstacle = TUNNEL_GAUCHE  ;
-            else if (robotState.distanceTelemetreGauche2 > robotState.distanceTelemetreDroit2)
+            else if ((robotState.distanceTelemetreGauche2 > robotState.distanceTelemetreDroit2)||(robotState.distanceTelemetreDroit < 5))
                 obstacle = TUNNEL_DROITE  ;
 //            else if (robotState.distanceTelemetreGauche2 == robotState.distanceTelemetreDroit2)
 //                obstacle = PAS_D_OBSTACLE  ; 

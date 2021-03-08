@@ -57,6 +57,7 @@ ANSELCbits.ANSC11 = 1;
 ANSELGbits.ANSG9 = 1;
 ANSELBbits.ANSB1 = 1;
 
+
 AD1CSSLbits.CSS15 =1; // Enable AN15 for scan
 AD1CSSLbits.CSS6=1; // Enable AN6 for scan
 AD1CSSLbits.CSS11=1; // Enable AN11 for scan

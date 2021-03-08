@@ -27,6 +27,9 @@
 #define MOTEUR_DROIT_H_PWM_ENABLE IOCON6bits.PENH
 #define MOTEUR_DROIT_DUTY_CYCLE PDC6
 
+//JACK
+#define JACK _RA1
+
 // Prototypes fonctions
 void InitIO();
 

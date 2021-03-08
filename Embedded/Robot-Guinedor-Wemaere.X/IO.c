@@ -15,9 +15,11 @@ void InitIO()
     ANSELE = 0;
     ANSELF = 0;
     ANSELG = 0;
-
+    
+    
     //********** Configuration des sorties : _TRISxx = 0 ********************************
     // LED
+    
     _TRISC10 = 0; // LED Orange
     _TRISG6 = 0; //LED Blanche
     _TRISG7 = 0; // LED Bleue
@@ -30,4 +32,6 @@ void InitIO()
     _TRISC7=0; //moteur 6 IN2
 
     //********** Configuration des entrées : _TRISxx = 1 ********************************    
+    _TRISA1=1; //JACK
+    
 }
