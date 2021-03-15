@@ -1,0 +1,15 @@
+C:\Github\robot-adrien-guinedor\c#\Interfacerobot\bin\Debug\Interfacerobot.exe.config
+C:\Github\robot-adrien-guinedor\c#\Interfacerobot\bin\Debug\Interfacerobot.exe
+C:\Github\robot-adrien-guinedor\c#\Interfacerobot\bin\Debug\Interfacerobot.pdb
+C:\Github\robot-adrien-guinedor\c#\Interfacerobot\obj\Debug\Interfacerobot.csprojAssemblyReference.cache
+C:\Github\robot-adrien-guinedor\c#\Interfacerobot\obj\Debug\MainWindow.g.cs
+C:\Github\robot-adrien-guinedor\c#\Interfacerobot\obj\Debug\App.g.cs
+C:\Github\robot-adrien-guinedor\c#\Interfacerobot\obj\Debug\Interfacerobot_MarkupCompile.cache
+C:\Github\robot-adrien-guinedor\c#\Interfacerobot\obj\Debug\Interfacerobot_MarkupCompile.lref
+C:\Github\robot-adrien-guinedor\c#\Interfacerobot\obj\Debug\MainWindow.baml
+C:\Github\robot-adrien-guinedor\c#\Interfacerobot\obj\Debug\Interfacerobot.g.resources
+C:\Github\robot-adrien-guinedor\c#\Interfacerobot\obj\Debug\Interfacerobot.Properties.Resources.resources
+C:\Github\robot-adrien-guinedor\c#\Interfacerobot\obj\Debug\Interfacerobot.csproj.GenerateResource.cache
+C:\Github\robot-adrien-guinedor\c#\Interfacerobot\obj\Debug\Interfacerobot.csproj.CoreCompileInputs.cache
+C:\Github\robot-adrien-guinedor\c#\Interfacerobot\obj\Debug\Interfacerobot.exe
+C:\Github\robot-adrien-guinedor\c#\Interfacerobot\obj\Debug\Interfacerobot.pdb
