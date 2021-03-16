@@ -42,6 +42,11 @@ namespace Interfacerobot
                 messagerie();
             }
         }
+
+        private void buttonEnvoyer_Click(object sender, RoutedEventArgs e)
+        {
+            TextBoxReception.Text = "";
+        }
     }
 }
 
