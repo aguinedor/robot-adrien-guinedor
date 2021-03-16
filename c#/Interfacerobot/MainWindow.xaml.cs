@@ -32,7 +32,7 @@ namespace Interfacerobot
         }
         private void messagerie()
         {
-            TextBoxReception.Text = TextBoxReception.Text + "\n" + "Message reçu: " + TextBoxEmission.Text;
+            TextBoxReception.Text = TextBoxReception.Text + "Message reçu: " + TextBoxEmission.Text + "\r\n";
             TextBoxEmission.Text = "";
         }
         private void TextBoxEmission_KeyUp(object sender, KeyEventArgs e)
