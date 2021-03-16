@@ -20,7 +20,7 @@ namespace Interfacerobot
     /// </summary>
     public partial class MainWindow : Window
     {
-        
+
         public MainWindow()
         {
             InitializeComponent();
@@ -28,13 +28,20 @@ namespace Interfacerobot
 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-         
-        }
 
-        private void buttonEnvoyer_Click(object sender, RoutedEventArgs e)
+        }
+        private void messagerie()
         {
-            TextBoxReception.Text = "Recu :" + TextBoxEmission.Text;
+            TextBoxReception.Text = TextBoxReception.Text + "\n" + "Message reçu: " + TextBoxEmission.Text;
             TextBoxEmission.Text = "";
+        }
+        private void TextBoxEmission_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                messagerie();
+            }
         }
     }
 }
+

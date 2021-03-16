@@ -27,7 +27,7 @@
         <GroupBox x:Name="Emission" Header="Emission" Margin="0" Background="#FFDDDDDD" BorderBrush="Black" Grid.Column="1" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Disabled">
             <TextBox x:Name="TextBoxEmission" Margin="0" TextWrapping="Wrap" Text="" TextChanged="textBox_TextChanged" Background="{x:Null}" BorderBrush="{x:Null}" AcceptsReturn="True" KeyUp="TextBoxEmission_KeyUp"/>
         </GroupBox>
-        <Button x:Name="buttonEnvoyer" Content="Envoyer" Grid.Column="1" Grid.Row="3" Margin="70,5,70,5" Width="75" Background="red" Click="buttonEnvoyer_Click"/>
+        <Button x:Name="buttonEnvoyer" Content="send" Grid.Column="1" Grid.Row="3" Margin="70,5,70,5" Width="75" Background="red"/>
 
     </Grid>
 </Window>
