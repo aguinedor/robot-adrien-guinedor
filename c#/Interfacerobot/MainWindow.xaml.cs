@@ -30,11 +30,7 @@ namespace Interfacerobot
         {
 
         }
-        private void messagerie()
-        {
-            TextBoxReception.Text = TextBoxReception.Text + "Message reçu: " + TextBoxEmission.Text + "\r\n";
-            TextBoxEmission.Text = "";
-        }
+        
         private void TextBoxEmission_KeyUp(object sender, KeyEventArgs e)
         {
             if(e.Key == Key.Enter)
@@ -46,6 +42,41 @@ namespace Interfacerobot
         private void buttonEnvoyer_Click(object sender, RoutedEventArgs e)
         {
             TextBoxReception.Text = "";
+        }
+        
+        private void messagerie()
+        {
+            TextBoxReception.Text = TextBoxReception.Text + "Message reçu: " + TextBoxEmission.Text + "\r\n";
+            TextBoxEmission.Text = "";
+        }
+
+        int cpt=0;
+        private void buttonColor_Click(object sender, RoutedEventArgs e)
+        {
+            if(cpt==0)
+            {
+                buttonColor.Background = Brushes.Red;
+                buttonColor.Content = "RED";
+                TextBoxEmission.Foreground = Brushes.Red;
+                TextBoxReception.Foreground = Brushes.Red;
+                cpt++;
+            }
+            else if (cpt==1)
+            {
+                buttonColor.Background = Brushes.Green;
+                buttonColor.Content = "GREEN";
+                TextBoxEmission.Foreground = Brushes.Green;
+                TextBoxReception.Foreground = Brushes.Green;
+                cpt++;
+            }
+            else if (cpt == 2)
+            {
+                buttonColor.Background = Brushes.White;
+                buttonColor.Content = "WHITE";
+                TextBoxEmission.Foreground = Brushes.White;
+                TextBoxReception.Foreground = Brushes.White;
+                cpt =0;
+            }
         }
     }
 }

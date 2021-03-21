@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Interfacerobot"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Background="White">
-    <Grid Background="Snow">
+    <Grid Background="Black">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="1*"/>
@@ -15,19 +15,20 @@
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="30" />
             <ColumnDefinition/>
             <ColumnDefinition Width="30"/>
             <ColumnDefinition/>
             <ColumnDefinition Width="30"/>
         </Grid.ColumnDefinitions>
-        <GroupBox x:Name="Reception" Header="Reception" Margin="0" Background="#FFDDDDDD" BorderBrush="Black" Grid.Column="3" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Disabled">
-            <TextBox x:Name="TextBoxReception" Margin="0" TextWrapping="Wrap" Text="" TextChanged="textBox_TextChanged" Background="{x:Null}" BorderBrush="{x:Null}" IsReadOnly="True" />
+        <GroupBox x:Name="Reception" Header="Reception" Foreground="White" Margin="0" Background="Black" BorderBrush="Black" Grid.Column="3" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+            <TextBox x:Name="TextBoxReception" Margin="0" TextWrapping="Wrap" Text="" TextChanged="textBox_TextChanged" Foreground="White" Background="{x:Null}" BorderBrush="{x:Null}" IsReadOnly="True" />
         </GroupBox>
-        <GroupBox x:Name="Emission" Header="Emission" Margin="0" Background="#FFDDDDDD" BorderBrush="Black" Grid.Column="1" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Disabled">
-            <TextBox x:Name="TextBoxEmission" Margin="0" TextWrapping="Wrap" Text="" TextChanged="textBox_TextChanged" Background="{x:Null}" BorderBrush="{x:Null}" AcceptsReturn="True" KeyUp="TextBoxEmission_KeyUp"/>
+        <GroupBox x:Name="Emission" Header="Emission" Foreground="White" Margin="0" Background="black" BorderBrush="Black" Grid.Column="1" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+            <TextBox x:Name="TextBoxEmission" Margin="0" TextWrapping="Wrap" Text="" TextChanged="textBox_TextChanged" Foreground="White" Background="{x:Null}" BorderBrush="{x:Null}" AcceptsReturn="True" KeyUp="TextBoxEmission_KeyUp"/>
         </GroupBox>
         <Button x:Name="buttonEnvoyer" Content="clear" Grid.Column="1" Grid.Row="3" Margin="70,5,70,5" Width="75" Background="red" Click="buttonEnvoyer_Click"/>
+        <Button x:Name="buttonColor" Content="WHITE" Grid.Column="3" Grid.Row="3" Margin="70,5,70,5" Width="75"  Background="White" Click="buttonColor_Click" />
 
     </Grid>
 </Window>
