@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-//using ExtendedSerialPort;
+using ExtendedSerialPort;
 
 
 namespace Interfacerobot
@@ -21,7 +21,7 @@ namespace Interfacerobot
     public partial class MainWindow : Window
     {
        
-       // ReliableSerialPort serialPort1 ;
+        ReliableSerialPort serialPort1 ;
 
 
         public MainWindow()
