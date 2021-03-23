@@ -88,6 +88,14 @@ namespace Interfacerobot {
         #line default
         #line hidden
         
+        
+        #line 32 "..\..\MainWindow.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.Button test;
+        
+        #line default
+        #line hidden
+        
         private bool _contentLoaded;
         
         /// <summary>
@@ -162,6 +170,15 @@ namespace Interfacerobot {
             
             #line 31 "..\..\MainWindow.xaml"
             this.buttonColor.Click += new System.Windows.RoutedEventHandler(this.buttonColor_Click);
+            
+            #line default
+            #line hidden
+            return;
+            case 7:
+            this.test = ((System.Windows.Controls.Button)(target));
+            
+            #line 32 "..\..\MainWindow.xaml"
+            this.test.Click += new System.Windows.RoutedEventHandler(this.test_Click);
             
             #line default
             #line hidden

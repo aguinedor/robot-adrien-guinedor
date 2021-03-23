@@ -28,3 +28,6 @@ D:\OneDrive\Drive\Documents\GitHub\robot-adrien-guinedor\c#\Interfacerobot\obj\D
 D:\OneDrive\Drive\Documents\GitHub\robot-adrien-guinedor\c#\Interfacerobot\obj\Debug\Interfacerobot.Properties.Resources.resources
 D:\OneDrive\Drive\Documents\GitHub\robot-adrien-guinedor\c#\Interfacerobot\obj\Debug\Interfacerobot.csproj.GenerateResource.cache
 D:\OneDrive\Drive\Documents\GitHub\robot-adrien-guinedor\c#\Interfacerobot\obj\Debug\Interfacerobot.csproj.CoreCompileInputs.cache
+C:\Github\robot-adrien-guinedor\c#\Interfacerobot\bin\Debug\ExtendedSerialPort.dll
+C:\Github\robot-adrien-guinedor\c#\Interfacerobot\bin\Debug\ExtendedSerialPort.pdb
+C:\Github\robot-adrien-guinedor\c#\Interfacerobot\obj\Debug\Interfacerobot.csproj.CopyComplete

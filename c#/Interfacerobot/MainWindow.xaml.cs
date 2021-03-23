@@ -14,22 +14,44 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ExtendedSerialPort;
+using System.Windows.Threading;
 
 
 namespace Interfacerobot
 {
     public partial class MainWindow : Window
     {
-       
-        ReliableSerialPort serialPort1 ;
-
+        ReliableSerialPort serialPort1;
+        DispatcherTimer timerAffichage;
+        
 
         public MainWindow()
         {
             InitializeComponent();
+            serialPort1 = new ReliableSerialPort("COM4", 115200, Parity.None, 8, StopBits.One);
+            //serialPort1 = new SerialPort("COM4", 115200, Parity.None, 8);
+            serialPort1.DataReceived += SerialPort1_DataReceived;
+            serialPort1.Open();
+
+            timerAffichage = new DispatcherTimer();
+            timerAffichage.Interval = new TimeSpan(0, 0, 0, 0, 100);
+            timerAffichage.Tick += TimerAffichage_Tick;
+            timerAffichage.Start();
+
         }
 
-        private void textBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void TimerAffichage_Tick(object sender, EventArgs e)
+        {
+            TextBoxReception.Text += ReceivedText;
+            ReceivedText = "";
+        }
+
+        private void SerialPort1_DataReceived(object sender, DataReceivedArgs e)
+        {
+            ReceivedText += Encoding.UTF8.GetString(e.Data, 0, e.Data.Length);
+        }
+
+        private void textBox_TextChanged(object sender, TextChangedEventArgs e) 
         {
 
         }
@@ -38,25 +60,33 @@ namespace Interfacerobot
         {
             if(e.Key == Key.Enter)
             {
-                messagerie();
+                sendMessage();
             }
         }
 
         private void buttonEnvoyer_Click(object sender, RoutedEventArgs e)
         {
+            ReceivedText = null;
+            TextBoxEmission.Text = "";
             TextBoxReception.Text = "";
+
         }
-        
-        private void messagerie()
+
+        string ReceivedText;
+        private void sendMessage()
         {
-            TextBoxReception.Text = TextBoxReception.Text + "Message reçu: " + TextBoxEmission.Text + "\r\n";
+            
+            //TextBoxReception.Text = TextBoxReception.Text + "Message reçu: " + TextBoxEmission.Text + "\r\n";
+            //TextBoxEmission.Text = "";
+            serialPort1.WriteLine(TextBoxEmission.Text);
             TextBoxEmission.Text = "";
         }
 
-        int cpt=0;
+        int cpt = 0;
         private void buttonColor_Click(object sender, RoutedEventArgs e)
         {
-            if(cpt==0)
+            
+            if (cpt==0)
             {
                 buttonColor.Background = Brushes.Red;
                 buttonColor.Content = "RED";
