@@ -23,13 +23,12 @@ namespace Interfacerobot
     {
         ReliableSerialPort serialPort1;
         DispatcherTimer timerAffichage;
-        
-
+        Robot robot = new Robot();
+        int i;
         public MainWindow()
         {
             InitializeComponent();
-            serialPort1 = new ReliableSerialPort("COM4", 115200, Parity.None, 8, StopBits.One);
-            //serialPort1 = new SerialPort("COM4", 115200, Parity.None, 8);
+            serialPort1 = new ReliableSerialPort("COM8", 115200, Parity.None, 8, StopBits.One);
             serialPort1.DataReceived += SerialPort1_DataReceived;
             serialPort1.Open();
 
@@ -42,13 +41,24 @@ namespace Interfacerobot
 
         private void TimerAffichage_Tick(object sender, EventArgs e)
         {
-            TextBoxReception.Text += ReceivedText;
-            ReceivedText = "";
+            /*TextBoxReception.Text += robot.ReceivedText;
+            robot.ReceivedText = "";*/
+            while(robot.byteListReceived.Count > 0)
+            {
+                //TextBoxReception.Text += robot.byteListReceived.Dequeue();
+                byte byteReceived = robot.byteListReceived.Dequeue();
+                string receivedText = "0x"+ byteReceived.ToString("X4") + " ";
+                TextBoxReception.Text += receivedText;
+            }
         }
 
         private void SerialPort1_DataReceived(object sender, DataReceivedArgs e)
         {
-            ReceivedText += Encoding.UTF8.GetString(e.Data, 0, e.Data.Length);
+            //robot.ReceivedText += Encoding.UTF8.GetString(e.Data, 0, e.Data.Length);
+            for (int i = 0; i < e.Data.Length; i++)
+            {
+                robot.byteListReceived.Enqueue(e.Data[i]);
+            }
         }
 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e) 
@@ -66,13 +76,12 @@ namespace Interfacerobot
 
         private void buttonEnvoyer_Click(object sender, RoutedEventArgs e)
         {
-            ReceivedText = null;
+            robot.ReceivedText = null;
             TextBoxEmission.Text = "";
             TextBoxReception.Text = "";
 
         }
 
-        string ReceivedText;
         private void sendMessage()
         {
             
@@ -80,6 +89,16 @@ namespace Interfacerobot
             //TextBoxEmission.Text = "";
             serialPort1.WriteLine(TextBoxEmission.Text);
             TextBoxEmission.Text = "";
+        }
+
+        private void buttonTest_Click(object sender, RoutedEventArgs e)
+        {
+            byte[] byteList= new byte[20];
+            for (i= 0;i < 20;i++)
+            {
+                byteList[i] = (byte)(2 * i);
+            }
+            serialPort1.Write(byteList,0,byteList.Length);
         }
 
         int cpt = 0;
@@ -111,6 +130,8 @@ namespace Interfacerobot
                 cpt =0;
             }
         }
+
+        
     }
 }
 

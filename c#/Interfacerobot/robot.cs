@@ -6,7 +6,19 @@ using System.Threading.Tasks;
 
 namespace Interfacerobot
 {
-    class Class1
+    public class Robot
     {
+        public Queue<byte> byteListReceived = new Queue<byte>();
+        public string ReceivedText = "";
+        public float distanceTelemetreGauche2 ;
+        public float distanceTelemetreGauche;
+        public float distanceTelemetreCentre;
+        public float distanceTelemetreDroit;
+        public float distanceTelemetreDroit2;
+
+        public Robot()
+        {
+
+        }
     }
 }

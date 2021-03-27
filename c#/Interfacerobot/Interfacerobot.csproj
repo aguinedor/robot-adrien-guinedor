@@ -63,6 +63,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="robot.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -95,7 +96,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Users\Table2\Downloads\ExtendedSerialPort\ExtendedSerialPort.csproj">
+    <ProjectReference Include="E:\ExtendedSerialPort\ExtendedSerialPort.csproj">
       <Project>{21ac599e-e3d5-4181-aa0f-7c2e00cca016}</Project>
       <Name>ExtendedSerialPort</Name>
     </ProjectReference>
