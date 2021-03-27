@@ -9,6 +9,7 @@
 #include "ADC.h" 
 #include "main.h"
 #include "etat.h"
+#include "UART.h"
 
 #define STATE_ATTENTE 0
 #define STATE_ATTENTE_EN_COURS 1
@@ -52,6 +53,7 @@ int main(void) {
     InitTimer1();
     InitTimer23();
     InitTimer4();
+    InitUART();
     //   PWMSetSpeedConsigne(-20, MOTEUR_DROIT);
     //   PWMSetSpeedConsigne(-20, MOTEUR_GAUCHE);
 
