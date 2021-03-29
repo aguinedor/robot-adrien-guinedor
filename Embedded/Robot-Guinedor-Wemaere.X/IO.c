@@ -34,4 +34,7 @@ void InitIO()
     //********** Configuration des entrées : _TRISxx = 1 ********************************    
     _TRISA1=1; //JACK
     
+    // échange données PC
+    _U1RXR=24; // config sortie RP vers entrée Rx1
+    _RP36R=0b00001; // config sortie Tx vers entrée RP 
 }

@@ -28,7 +28,7 @@ namespace Interfacerobot
         public MainWindow()
         {
             InitializeComponent();
-            serialPort1 = new ReliableSerialPort("COM8", 115200, Parity.None, 8, StopBits.One);
+            serialPort1 = new ReliableSerialPort("COM4", 115200, Parity.None, 8, StopBits.One);
             serialPort1.DataReceived += SerialPort1_DataReceived;
             serialPort1.Open();
 
@@ -41,14 +41,17 @@ namespace Interfacerobot
 
         private void TimerAffichage_Tick(object sender, EventArgs e)
         {
+            int x=0;
             /*TextBoxReception.Text += robot.ReceivedText;
             robot.ReceivedText = "";*/
             while(robot.byteListReceived.Count > 0)
             {
                 //TextBoxReception.Text += robot.byteListReceived.Dequeue();
                 byte byteReceived = robot.byteListReceived.Dequeue();
-                string receivedText = "0x"+ byteReceived.ToString("X4") + " ";
+                string receivedText = "0x" + byteReceived.ToString("X2") + " " ;
+                //char receivedText = Convert.ToChar(byteReceived);
                 TextBoxReception.Text += receivedText;
+
             }
         }
 
@@ -87,7 +90,7 @@ namespace Interfacerobot
             
             //TextBoxReception.Text = TextBoxReception.Text + "Message reçu: " + TextBoxEmission.Text + "\r\n";
             //TextBoxEmission.Text = "";
-            serialPort1.WriteLine(TextBoxEmission.Text);
+            serialPort1.Write(TextBoxEmission.Text);
             TextBoxEmission.Text = "";
         }
 

@@ -45,7 +45,8 @@
 
 unsigned int mode, vr = 15, rdm = 0; //  vitesses (manoeuvre,route) et modes
 
-int main(void) {
+int main(void) 
+{
     InitOscillator();
     InitIO();
     InitPWM();
@@ -57,7 +58,8 @@ int main(void) {
     //   PWMSetSpeedConsigne(-20, MOTEUR_DROIT);
     //   PWMSetSpeedConsigne(-20, MOTEUR_GAUCHE);
 
-    while (1) {
+    while (1) 
+    {
         if (ADCIsConversionFinished() == 1) {
             ADCClearConversionFinishedFlag();
             unsigned int * result = ADCGetResult();
@@ -88,6 +90,8 @@ int main(void) {
 //            else
 //                LED_BLEUE = 0;
         }
+        //SendMessageDirect((unsigned char*) "BONJOUR" , 7);
+        //__delay32(40000000);
     }
     return (EXIT_SUCCESS);
 }
