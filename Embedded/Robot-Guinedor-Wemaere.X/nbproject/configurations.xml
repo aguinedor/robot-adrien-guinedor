@@ -15,6 +15,7 @@
       <itemPath>etat.h</itemPath>
       <itemPath>UART.h</itemPath>
       <itemPath>CB_TX1.h</itemPath>
+      <itemPath>CB_RX1.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -34,6 +35,7 @@
       <itemPath>etat.c</itemPath>
       <itemPath>UART.c</itemPath>
       <itemPath>CB_TX1.c</itemPath>
+      <itemPath>CB_RX1.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -51,7 +53,7 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>ICD4Tool</platformTool>
         <languageToolchain>XC16</languageToolchain>
-        <languageToolchainVersion>1.60</languageToolchainVersion>
+        <languageToolchainVersion>1.61</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <packs>
