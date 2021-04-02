@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <xc.h>
+ #include <libpic30.h>
 #include "ChipConfig.h"
 #include "IO.h"
 #include "timer.h"
@@ -10,6 +11,8 @@
 #include "main.h"
 #include "etat.h"
 #include "UART.h"
+#include "CB_TX1.h"
+#include "CB_RX1.h"
 
 #define STATE_ATTENTE 0
 #define STATE_ATTENTE_EN_COURS 1
@@ -43,7 +46,9 @@
 #define TUNNEL_GAUCHE 6
 #define TUNNEL_DROITE 7
 
-unsigned int mode, vr = 15, rdm = 0; //  vitesses (manoeuvre,route) et modes
+unsigned int mode, vr = 15, rdm = 0,i; //  vitesses (manoeuvre,route) et modes
+unsigned char message;
+unsigned char* test= "tortuga" ;
 
 int main(void) 
 {
@@ -73,25 +78,13 @@ int main(void)
             robotState.distanceTelemetreGauche = 34 / volts - 5;
             volts = ((float) result [3])*3.3 / 4096 * 3.2;
             robotState.distanceTelemetreGauche2 = 34 / volts - 5;
-            
-//            float seuil = 30;
-//            if(robotState.distanceTelemetreGauche2 < seuil || robotState.distanceTelemetreGauche < seuil)
-//                LED_BLANCHE = 1;
-//            else
-//                LED_BLANCHE = 0;
-//                        
-//            if(robotState.distanceTelemetreDroit2 < seuil || robotState.distanceTelemetreDroit < seuil)
-//                LED_ORANGE = 1;
-//            else
-//                LED_ORANGE = 0;
-//                        
-//            if(robotState.distanceTelemetreCentre < seuil)
-//                LED_BLEUE = 1;
-//            else
-//                LED_BLEUE = 0;
         }
-        //SendMessageDirect((unsigned char*) "BONJOUR" , 7);
-        //__delay32(40000000);
+        for (i=0;i<CB_RX1_GetDataSize();i++)
+        {
+            message=CB_RX1_Get();
+            SendMessage(&message , 1 ) ;
+        }
+        __delay32(1000);
     }
     return (EXIT_SUCCESS);
 }

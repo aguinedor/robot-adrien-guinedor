@@ -10,7 +10,6 @@ C:\Github\robot-adrien-guinedor\c#\Interfacerobot\obj\Debug\MainWindow.baml
 C:\Github\robot-adrien-guinedor\c#\Interfacerobot\obj\Debug\Interfacerobot.g.resources
 C:\Github\robot-adrien-guinedor\c#\Interfacerobot\obj\Debug\Interfacerobot.Properties.Resources.resources
 C:\Github\robot-adrien-guinedor\c#\Interfacerobot\obj\Debug\Interfacerobot.csproj.GenerateResource.cache
-C:\Github\robot-adrien-guinedor\c#\Interfacerobot\obj\Debug\Interfacerobot.csproj.CoreCompileInputs.cache
 C:\Github\robot-adrien-guinedor\c#\Interfacerobot\obj\Debug\Interfacerobot.exe
 C:\Github\robot-adrien-guinedor\c#\Interfacerobot\obj\Debug\Interfacerobot.pdb
 D:\OneDrive\Drive\Documents\GitHub\robot-adrien-guinedor\c#\Interfacerobot\obj\Debug\Interfacerobot.csprojAssemblyReference.cache
