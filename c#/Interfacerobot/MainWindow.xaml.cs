@@ -63,7 +63,13 @@ namespace Interfacerobot
             }
         }
 
-        private void textBox_TextChanged(object sender, TextChangedEventArgs e) 
+        int checksum = 0;
+        byte CalculateChecksum(int msgFunction, int msgPayloadLength, byte[] msgPayload) //stackoverflow
+        {
+
+        }
+
+        /*private void textBox_TextChanged(object sender, TextChangedEventArgs e) 
         {
 
         }
