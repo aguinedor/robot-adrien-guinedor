@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 using ExtendedSerialPort;
 using System.Windows.Threading;
 
-
 namespace Interfacerobot
 {
     public partial class MainWindow : Window
     {
+
         ReliableSerialPort serialPort1;
         DispatcherTimer timerAffichage;
         Robot robot = new Robot();
@@ -28,7 +28,7 @@ namespace Interfacerobot
         public MainWindow()
         {
             InitializeComponent();
-            serialPort1 = new ReliableSerialPort("COM3", 115200, Parity.None, 8, StopBits.One);
+            serialPort1 = new ReliableSerialPort("COM4", 115200, Parity.None, 8, StopBits.One);
             serialPort1.DataReceived += SerialPort1_DataReceived;
             serialPort1.Open();
 
@@ -63,13 +63,40 @@ namespace Interfacerobot
             }
         }
 
-        int checksum = 0;
-        byte CalculateChecksum(int msgFunction, int msgPayloadLength, byte[] msgPayload) //stackoverflow
+        public byte CalculateChecksum(int msgFunction, int msgPayloadLength, byte[] msgPayload)
         {
-
+            byte checksum = 0;
+            checksum ^= 0xFE;
+            checksum ^= (byte)(msgFunction >> 8);
+            checksum ^= (byte)(msgFunction >> 0);
+            checksum ^= (byte)(msgPayloadLength >> 8);
+            checksum ^= (byte)(msgPayloadLength >> 0);
+            for (int i = 0 ; i < msgPayload.Length; i++)
+            {
+                checksum ^= msgPayload[i];
+            }
+            return checksum;
         }
 
-        /*private void textBox_TextChanged(object sender, TextChangedEventArgs e) 
+        public void UartEncodeAndSendMessage(int msgFunction,int msgPayloadLength, byte [ ] msgPayload)
+        {
+            byte[] trame = new byte[6 + msgPayload.Length];
+            int pos = 0;
+            int i;
+            trame[pos++] = 0xFE ;
+            trame[pos++] = (byte)(msgFunction >> 8);
+            trame[pos++] = (byte)(msgFunction >> 0);
+            trame[pos++] = (byte)(msgPayloadLength >> 8);
+            trame[pos++] = (byte)(msgPayloadLength >> 0);
+            for (i = 0; i < msgPayload.Length; i++)
+            {
+                trame[pos++]= msgPayload[i];
+            }
+            trame[pos++] = CalculateChecksum(msgFunction, msgPayloadLength,  msgPayload);
+            serialPort1.Write(trame, 0, pos);
+        }
+
+        private void textBox_TextChanged(object sender, TextChangedEventArgs e) 
         {
 
         }
@@ -110,33 +137,10 @@ namespace Interfacerobot
         }
 
         int cpt = 0;
-        private void buttonColor_Click(object sender, RoutedEventArgs e)
+        private void buttonTest2_Click(object sender, RoutedEventArgs e)
         {
-            
-            if (cpt==0)
-            {
-                buttonColor.Background = Brushes.Red;
-                buttonColor.Content = "RED";
-                TextBoxEmission.Foreground = Brushes.Red;
-                TextBoxReception.Foreground = Brushes.Red;
-                cpt++;
-            }
-            else if (cpt==1)
-            {
-                buttonColor.Background = Brushes.Green;
-                buttonColor.Content = "GREEN";
-                TextBoxEmission.Foreground = Brushes.Green;
-                TextBoxReception.Foreground = Brushes.Green;
-                cpt++;
-            }
-            else if (cpt == 2)
-            {
-                buttonColor.Background = Brushes.White;
-                buttonColor.Content = "WHITE";
-                TextBoxEmission.Foreground = Brushes.White;
-                TextBoxReception.Foreground = Brushes.White;
-                cpt =0;
-            }
+            byte[] message = Encoding.ASCII.GetBytes("Bonjour");
+            UartEncodeAndSendMessage(0x0080 , 7, message);
         }
 
         

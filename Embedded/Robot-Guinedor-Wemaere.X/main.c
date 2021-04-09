@@ -48,7 +48,7 @@
 
 unsigned int mode, vr = 15, rdm = 0,i; //  vitesses (manoeuvre,route) et modes
 unsigned char message;
-unsigned char* test= "tortuga" ;
+unsigned char* test= "bonjour" ;
 
 int main(void) 
 {

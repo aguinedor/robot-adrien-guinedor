@@ -1,0 +1,1 @@
+C:\Github\robot-adrien-guinedor\c#\ExtendedSerialPort\obj\Debug\ExtendedSerialPort.csproj.CoreCompileInputs.cache

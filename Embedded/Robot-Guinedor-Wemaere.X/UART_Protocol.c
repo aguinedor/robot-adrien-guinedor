@@ -1,6 +1,6 @@
 #include <xc.h>
 #include "UART_Protocol.h"
-
+/*
 public enum StateReception 
 {
     Waiting,
@@ -51,7 +51,7 @@ private void DecodeMessage(byte c) {
     }
 }
 
-/*unsigned char UartCalculateChecksum(int msgFunction,int msgPayloadLength, unsigned char* msgPayload)
+unsigned char UartCalculateChecksum(int msgFunction,int msgPayloadLength, unsigned char* msgPayload)
 {
 //Fonction prenant entrée la trame et sa longueur pour calculer le checksum
 }

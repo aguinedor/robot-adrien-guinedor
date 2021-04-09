@@ -33,3 +33,4 @@ D:\OneDrive\Drive\Documents\GitHub\robot-adrien-guinedor\c#\Interfacerobot\bin\D
 D:\OneDrive\Drive\Documents\GitHub\robot-adrien-guinedor\c#\Interfacerobot\bin\Debug\ExtendedSerialPort.pdb
 D:\OneDrive\Drive\Documents\GitHub\robot-adrien-guinedor\c#\Interfacerobot\obj\Debug\Interfacerobot.csproj.CopyComplete
 C:\Github\robot-adrien-guinedor\c#\Interfacerobot\bin\Debug\ExtendedSerialPort.dll
+C:\Github\robot-adrien-guinedor\c#\Interfacerobot\obj\Debug\Interfacerobot.csproj.CoreCompileInputs.cache
