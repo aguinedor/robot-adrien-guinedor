@@ -28,7 +28,7 @@ namespace Interfacerobot
         public MainWindow()
         {
             InitializeComponent();
-            serialPort1 = new ReliableSerialPort("COM4", 115200, Parity.None, 8, StopBits.One);
+            serialPort1 = new ReliableSerialPort("COM8", 115200, Parity.None, 8, StopBits.One);
             serialPort1.DataReceived += SerialPort1_DataReceived;
             serialPort1.Open();
 
@@ -51,6 +51,7 @@ namespace Interfacerobot
                 string receivedText = "0x" + byteReceived.ToString("X2") + " " ;
                 //char receivedText = Convert.ToChar(byteReceived);
                 TextBoxReception.Text += receivedText;
+                ProcessDecodedMessage(msgDecodedFunction, msgDecodedPayloadLength, msgDecodedPayload);
             }
         }
 
@@ -60,10 +61,11 @@ namespace Interfacerobot
             for (int i = 0; i < e.Data.Length; i++)
             {
                 robot.byteListReceived.Enqueue(e.Data[i]);
+                DecodeMessage(e.Data[i]);
             }
         }
 
-        public byte CalculateChecksum(int msgFunction, int msgPayloadLength, byte[] msgPayload)
+        byte CalculateChecksum(int msgFunction, int msgPayloadLength, byte[] msgPayload)
         {
             byte checksum = 0;
             checksum ^= 0xFE;
@@ -78,7 +80,7 @@ namespace Interfacerobot
             return checksum;
         }
 
-        public void UartEncodeAndSendMessage(int msgFunction,int msgPayloadLength, byte [ ] msgPayload)
+        void UartEncodeAndSendMessage(int msgFunction,int msgPayloadLength, byte [ ] msgPayload)
         {
             byte[] trame = new byte[6 + msgPayload.Length];
             int pos = 0;
@@ -96,6 +98,149 @@ namespace Interfacerobot
             serialPort1.Write(trame, 0, pos);
         }
 
+        public enum StateReception
+        {
+            Waiting,
+            FunctionMSB,
+            FunctionLSB,
+            PayloadLengthMSB,
+            PayloadLengthLSB,
+            Payload,
+            CheckSum
+        }
+
+        StateReception rcvState = StateReception.Waiting;
+        int msgDecodedFunction = 0;
+        int msgDecodedPayloadLength = 0;
+        byte[] msgDecodedPayload;
+        int msgDecodedPayloadIndex = 0;
+
+        private void DecodeMessage(byte c)
+        {
+            int i = 0;
+            switch (rcvState)
+            {
+                case StateReception.Waiting:
+                    if (c == 0xFE)
+                    {
+                        rcvState = StateReception.FunctionMSB;
+                    }
+                break;
+
+                case StateReception.FunctionMSB:
+                    msgDecodedFunction = (byte)(c << 8);
+                    rcvState = StateReception.FunctionLSB;
+                break;
+
+                case StateReception.FunctionLSB:
+                    msgDecodedFunction += (byte)(c << 0);
+                    rcvState = StateReception.PayloadLengthMSB;
+                break;
+
+                case StateReception.PayloadLengthMSB:
+                    msgDecodedPayloadLength = (byte)(c << 8);
+                    rcvState = StateReception.PayloadLengthLSB;
+                break;
+
+                case StateReception.PayloadLengthLSB:
+                    msgDecodedPayloadLength += (byte)(c << 0);
+                    if(msgDecodedPayloadLength != 0)
+                    {
+                        msgDecodedPayload = new byte[msgDecodedPayloadLength];
+                        rcvState = StateReception.Payload;
+                    }
+                    else
+                    {
+                        rcvState = StateReception.CheckSum;
+                    }
+                break;
+
+                case StateReception.Payload:
+                    msgDecodedPayload[i] = c;
+                    i++;
+                    if(i > msgDecodedPayloadLength)
+                    {
+                        rcvState = StateReception.CheckSum;
+                    }
+                break;
+
+                case StateReception.CheckSum:
+                    byte calculatedChecksum, receivedChecksum;
+                    receivedChecksum = c;
+                    calculatedChecksum = CalculateChecksum(msgDecodedFunction, msgDecodedPayloadLength, msgDecodedPayload);
+                    if (calculatedChecksum == receivedChecksum)
+                    {
+                        TextBoxReception.Text = TextBoxReception.Text + "\n\rLe message est correct"; //Success, on a un message valide
+                    }
+                    else
+                    {
+                        TextBoxReception.Text = TextBoxReception.Text + "\n\rLe message est corrumpu";
+                    }
+                break;
+
+                default:
+                    rcvState = StateReception.Waiting;
+                break;
+            }
+        }
+
+        void ProcessDecodedMessage(int msgFunction, int msgPayloadLenght, byte[] msgPayload)
+        {
+            int numLed, etatLed, IRGauche, IRCentre, IRDroite, MG, MD;
+            if(msgDecodedFunction==0x0020) //leds
+            {
+                numLed = msgPayload[0];
+                etatLed = msgPayload[1];
+                if(numLed == 1)
+                {
+                    if(etatLed == 1)
+                    {
+                        CheckBoxLed1.IsChecked = true;
+                    }
+                    else
+                    {
+                        CheckBoxLed1.IsChecked = false;
+                    }
+                }
+                else if (numLed == 2)
+                {
+                    if (etatLed == 1)
+                    {
+                        CheckBoxLed1.IsChecked = true;
+                    }
+                    else
+                    {
+                        CheckBoxLed1.IsChecked = false;
+                    }
+                }
+                else if (numLed == 2)
+                {
+                    if (etatLed == 1)
+                    {
+                        CheckBoxLed1.IsChecked = true;
+                    }
+                    else
+                    {
+                        CheckBoxLed1.IsChecked = false;
+                    }
+                }
+            }
+            else if(msgDecodedFunction == 0x0030) //IR
+            {
+                IRDroite = msgPayload[0];
+                IRCentre = msgPayload[1];
+                IRGauche = msgPayload[2];
+                TextBoxTelemetres.Text = "IR Gauche:" + IRGauche.ToString() + "cm\n\r" + "IR Centre:" + IRCentre.ToString() + "cm\n\r" + "IR Droite:" + IRDroite.ToString() + "cm";
+            }
+            else if(msgDecodedFunction == 0x0040) //moteurs
+            {
+                MG = msgPayload[0];
+                MD = msgPayload[1];
+                TextBoxMoteurs.Text = "Vitesse Gauche:" + MG.ToString() + "%\n\r" + "Vitesse Droite:" + MD.ToString() + "%\n\r";
+            }
+        }
+
+        #region Boutons 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e) 
         {
 
@@ -125,25 +270,19 @@ namespace Interfacerobot
             serialPort1.Write(TextBoxEmission.Text);
             TextBoxEmission.Text = "";
         }
-
         private void buttonTest_Click(object sender, RoutedEventArgs e)
         {
-            byte[] byteList= new byte[20];
-            for (i= 0;i < 20;i++)
-            {
-                byteList[i] = (byte)(2 * i);
-            }
-            serialPort1.Write(byteList,0,byteList.Length);
+            //byte[] message = Encoding.ASCII.GetBytes("Bonjour");
+            //UartEncodeAndSendMessage(0x0080, 7, message);
+            //UartEncodeAndSendMessage(0x0020, 2, new byte[] { 1, 1 });
+            //UartEncodeAndSendMessage(0x0020, 2, new byte[] { 2, 1 });
+            //UartEncodeAndSendMessage(0x0020, 2, new byte[] { 3, 1 });
+            //UartEncodeAndSendMessage(0x0030, 3, new byte[] { 25, 30, 25 });
+            UartEncodeAndSendMessage(0x0040, 2, new byte[] { 41, 38 });
         }
 
-        int cpt = 0;
-        private void buttonTest2_Click(object sender, RoutedEventArgs e)
-        {
-            byte[] message = Encoding.ASCII.GetBytes("Bonjour");
-            UartEncodeAndSendMessage(0x0080 , 7, message);
-        }
+        #endregion
 
-        
     }
 }
 
