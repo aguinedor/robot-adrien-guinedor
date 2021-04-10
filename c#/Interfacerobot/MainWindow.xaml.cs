@@ -41,17 +41,18 @@ namespace Interfacerobot
 
         private void TimerAffichage_Tick(object sender, EventArgs e)
         {
-            int x=0;
+            byte[] message = Encoding.ASCII.GetBytes("Bonjour");
             /*TextBoxReception.Text += robot.ReceivedText;
             robot.ReceivedText = "";*/
-            while(robot.byteListReceived.Count > 0)
+            while (robot.byteListReceived.Count > 0)
             {
                 //TextBoxReception.Text += robot.byteListReceived.Dequeue();
-                byte byteReceived = robot.byteListReceived.Dequeue();
-                string receivedText = "0x" + byteReceived.ToString("X2") + " " ;
+                //byte byteReceived = robot.byteListReceived.Dequeue();
+                //string receivedText = "0x" + byteReceived.ToString("X2") + " " ;
                 //char receivedText = Convert.ToChar(byteReceived);
-                TextBoxReception.Text += receivedText;
-                ProcessDecodedMessage(msgDecodedFunction, msgDecodedPayloadLength, msgDecodedPayload);
+                // TextBoxReception.Text += receivedText;
+                ProcessDecodedMessage(0x0080, message.Length, message);
+                //ProcessDecodedMessage(0x0020, 2, new byte[] { 1, 1 });
             }
         }
 
@@ -238,6 +239,10 @@ namespace Interfacerobot
                 MD = msgPayload[1];
                 TextBoxMoteurs.Text = "Vitesse Gauche:" + MG.ToString() + "%\n\r" + "Vitesse Droite:" + MD.ToString() + "%\n\r";
             }
+            else if(msgDecodedFunction == 0x0080)
+            {
+                TextBoxReception.Text += Encoding.UTF8.GetString(msgPayload, 0, msgPayload.Length) + "\n";
+            }
         }
 
         #region Boutons 
@@ -272,13 +277,14 @@ namespace Interfacerobot
         }
         private void buttonTest_Click(object sender, RoutedEventArgs e)
         {
-            //byte[] message = Encoding.ASCII.GetBytes("Bonjour");
+            byte[] message = Encoding.ASCII.GetBytes("Bonjour");
             //UartEncodeAndSendMessage(0x0080, 7, message);
-            //UartEncodeAndSendMessage(0x0020, 2, new byte[] { 1, 1 });
-            //UartEncodeAndSendMessage(0x0020, 2, new byte[] { 2, 1 });
-            //UartEncodeAndSendMessage(0x0020, 2, new byte[] { 3, 1 });
-            //UartEncodeAndSendMessage(0x0030, 3, new byte[] { 25, 30, 25 });
-            UartEncodeAndSendMessage(0x0040, 2, new byte[] { 41, 38 });
+            UartEncodeAndSendMessage(0x0020, 2, new byte[] { 1, 1 });   //led 1 true
+            //UartEncodeAndSendMessage(0x0020, 2, new byte[] { 2, 1 });   //led 2 true
+            //UartEncodeAndSendMessage(0x0020, 2, new byte[] { 3, 1 });   //led 3 true
+            //UartEncodeAndSendMessage(0x0030, 3, new byte[] { 25, 30, 25 });  //IR 25cm 30cm 25cm
+            //UartEncodeAndSendMessage(0x0040, 2, new byte[] { 41, 38 });  // Moteur1 41% Moteur2 38%
+            UartEncodeAndSendMessage(0x0080, (UInt16)message.Length, message);
         }
 
         #endregion
