@@ -28,7 +28,7 @@ namespace Interfacerobot
         public MainWindow()
         {
             InitializeComponent();
-            serialPort1 = new ReliableSerialPort("COM8", 115200, Parity.None, 8, StopBits.One);
+            serialPort1 = new ReliableSerialPort("COM4", 115200, Parity.None, 8, StopBits.One);
             serialPort1.DataReceived += SerialPort1_DataReceived;
             serialPort1.Open();
 
@@ -46,14 +46,14 @@ namespace Interfacerobot
             robot.ReceivedText = "";*/
             while (robot.byteListReceived.Count > 0)
             {
+                DecodeMessage(robot.byteListReceived.Dequeue());
                 //TextBoxReception.Text += robot.byteListReceived.Dequeue();
                 //byte byteReceived = robot.byteListReceived.Dequeue();
                 //string receivedText = "0x" + byteReceived.ToString("X2") + " " ;
                 //char receivedText = Convert.ToChar(byteReceived);
                 // TextBoxReception.Text += receivedText;
-                ProcessDecodedMessage(0x0080, message.Length, message);
-                //ProcessDecodedMessage(0x0020, 2, new byte[] { 1, 1 });
             }
+
         }
 
         private void SerialPort1_DataReceived(object sender, DataReceivedArgs e)
@@ -62,7 +62,6 @@ namespace Interfacerobot
             for (int i = 0; i < e.Data.Length; i++)
             {
                 robot.byteListReceived.Enqueue(e.Data[i]);
-                DecodeMessage(e.Data[i]);
             }
         }
 
@@ -118,7 +117,6 @@ namespace Interfacerobot
 
         private void DecodeMessage(byte c)
         {
-            int i = 0;
             switch (rcvState)
             {
                 case StateReception.Waiting:
@@ -126,6 +124,9 @@ namespace Interfacerobot
                     {
                         rcvState = StateReception.FunctionMSB;
                     }
+                    msgDecodedFunction = 0;
+                    msgDecodedPayloadIndex = 0;
+                    msgDecodedPayloadLength = 0;
                 break;
 
                 case StateReception.FunctionMSB:
@@ -148,6 +149,7 @@ namespace Interfacerobot
                     if(msgDecodedPayloadLength != 0)
                     {
                         msgDecodedPayload = new byte[msgDecodedPayloadLength];
+                        msgDecodedPayloadIndex = 0;
                         rcvState = StateReception.Payload;
                     }
                     else
@@ -157,9 +159,9 @@ namespace Interfacerobot
                 break;
 
                 case StateReception.Payload:
-                    msgDecodedPayload[i] = c;
-                    i++;
-                    if(i > msgDecodedPayloadLength)
+                    msgDecodedPayload[msgDecodedPayloadIndex] = c;
+                    msgDecodedPayloadIndex++;
+                    if(msgDecodedPayloadIndex >= msgDecodedPayloadLength)
                     {
                         rcvState = StateReception.CheckSum;
                     }
@@ -171,13 +173,15 @@ namespace Interfacerobot
                     calculatedChecksum = CalculateChecksum(msgDecodedFunction, msgDecodedPayloadLength, msgDecodedPayload);
                     if (calculatedChecksum == receivedChecksum)
                     {
-                        TextBoxReception.Text = TextBoxReception.Text + "\n\rLe message est correct"; //Success, on a un message valide
+                        TextBoxReception.Text = TextBoxReception.Text + "\n\rLe message est correct "; //Success, on a un message valide
+                        ProcessDecodedMessage(msgDecodedFunction, msgDecodedPayloadLength, msgDecodedPayload);
                     }
                     else
                     {
-                        TextBoxReception.Text = TextBoxReception.Text + "\n\rLe message est corrumpu";
+                        TextBoxReception.Text = TextBoxReception.Text + "\n\rLe message est corrumpu ";
                     }
-                break;
+                    rcvState = StateReception.Waiting;
+                    break;
 
                 default:
                     rcvState = StateReception.Waiting;
@@ -185,63 +189,75 @@ namespace Interfacerobot
             }
         }
 
-        void ProcessDecodedMessage(int msgFunction, int msgPayloadLenght, byte[] msgPayload)
+        public enum Functions
+        {
+            LEDS = 0x0020,
+            telemetres = 0x0030,
+            moteurs = 0x0040,
+            message = 0x0080,
+        }
+
+        void ProcessDecodedMessage(int msgFunction, int msgPayloadLength, byte[] msgPayload)
         {
             int numLed, etatLed, IRGauche, IRCentre, IRDroite, MG, MD;
-            if(msgDecodedFunction==0x0020) //leds
+
+            switch((Functions)msgFunction)
             {
-                numLed = msgPayload[0];
-                etatLed = msgPayload[1];
-                if(numLed == 1)
-                {
-                    if(etatLed == 1)
+                case Functions.LEDS:
+                    numLed = msgPayload[0];
+                    etatLed = msgPayload[1];
+                    if (numLed == 1)
                     {
-                        CheckBoxLed1.IsChecked = true;
+                        if (etatLed == 1)
+                        {
+                            CheckBoxLed1.IsChecked = true;
+                        }
+                        else
+                        {
+                            CheckBoxLed1.IsChecked = false;
+                        }
                     }
-                    else
+                    else if (numLed == 2)
                     {
-                        CheckBoxLed1.IsChecked = false;
+                        if (etatLed == 1)
+                        {
+                            CheckBoxLed2.IsChecked = true;
+                        }
+                        else
+                        {
+                            CheckBoxLed2.IsChecked = false;
+                        }
                     }
-                }
-                else if (numLed == 2)
-                {
-                    if (etatLed == 1)
+                    else if (numLed == 3)
                     {
-                        CheckBoxLed1.IsChecked = true;
+                        if (etatLed == 1)
+                        {
+                            CheckBoxLed3.IsChecked = true;
+                        }
+                        else
+                        {
+                            CheckBoxLed3.IsChecked = false;
+                        }
                     }
-                    else
-                    {
-                        CheckBoxLed1.IsChecked = false;
-                    }
-                }
-                else if (numLed == 2)
-                {
-                    if (etatLed == 1)
-                    {
-                        CheckBoxLed1.IsChecked = true;
-                    }
-                    else
-                    {
-                        CheckBoxLed1.IsChecked = false;
-                    }
-                }
-            }
-            else if(msgDecodedFunction == 0x0030) //IR
-            {
-                IRDroite = msgPayload[0];
-                IRCentre = msgPayload[1];
-                IRGauche = msgPayload[2];
-                TextBoxTelemetres.Text = "IR Gauche:" + IRGauche.ToString() + "cm\n\r" + "IR Centre:" + IRCentre.ToString() + "cm\n\r" + "IR Droite:" + IRDroite.ToString() + "cm";
-            }
-            else if(msgDecodedFunction == 0x0040) //moteurs
-            {
-                MG = msgPayload[0];
-                MD = msgPayload[1];
-                TextBoxMoteurs.Text = "Vitesse Gauche:" + MG.ToString() + "%\n\r" + "Vitesse Droite:" + MD.ToString() + "%\n\r";
-            }
-            else if(msgDecodedFunction == 0x0080)
-            {
-                TextBoxReception.Text += Encoding.UTF8.GetString(msgPayload, 0, msgPayload.Length) + "\n";
+                break;
+
+                case Functions.telemetres:
+                    IRDroite = msgPayload[0];
+                    IRCentre = msgPayload[1];
+                    IRGauche = msgPayload[2];
+                    TextBoxTelemetres.Text = "IR Gauche:" + IRGauche.ToString() + "cm\n\r" + "IR Centre:" + IRCentre.ToString() + "cm\n\r" + "IR Droite:" + IRDroite.ToString() + "cm";
+                break;
+
+                case Functions.moteurs:
+                    MG = msgPayload[0];
+                    MD = msgPayload[1];
+                    TextBoxMoteurs.Text = "Vitesse Gauche:" + MG.ToString() + "%\n\r" + "Vitesse Droite:" + MD.ToString() + "%\n\r";
+                break;
+
+                case Functions.message:
+                    TextBoxReception.Text += Encoding.UTF8.GetString(msgPayload, 0, msgPayload.Length) + "\n";
+                break;
+
             }
         }
 
@@ -275,16 +291,17 @@ namespace Interfacerobot
             serialPort1.Write(TextBoxEmission.Text);
             TextBoxEmission.Text = "";
         }
+
         private void buttonTest_Click(object sender, RoutedEventArgs e)
         {
             byte[] message = Encoding.ASCII.GetBytes("Bonjour");
-            //UartEncodeAndSendMessage(0x0080, 7, message);
-            UartEncodeAndSendMessage(0x0020, 2, new byte[] { 1, 1 });   //led 1 true
-            //UartEncodeAndSendMessage(0x0020, 2, new byte[] { 2, 1 });   //led 2 true
-            //UartEncodeAndSendMessage(0x0020, 2, new byte[] { 3, 1 });   //led 3 true
-            //UartEncodeAndSendMessage(0x0030, 3, new byte[] { 25, 30, 25 });  //IR 25cm 30cm 25cm
-            //UartEncodeAndSendMessage(0x0040, 2, new byte[] { 41, 38 });  // Moteur1 41% Moteur2 38%
-            UartEncodeAndSendMessage(0x0080, (UInt16)message.Length, message);
+           UartEncodeAndSendMessage(0x0020, 2, new byte[] { 3, 1 });   //led 3 true
+           UartEncodeAndSendMessage(0x0030, 3, new byte[] { 25, 30, 25 });  //IR 25cm 30cm 25cm
+           UartEncodeAndSendMessage(0x0040, 2, new byte[] { 41, 38 });  // Moteur1 41% Moteur2 38%
+           //UartEncodeAndSendMessage(0x0080, 7, message);
+           UartEncodeAndSendMessage(0x0020, 2, new byte[] { 1, 1 });   //led 1 true
+           UartEncodeAndSendMessage(0x0020, 2, new byte[] { 2, 1 });   //led 2 true        
+           // UartEncodeAndSendMessage(0x0080, (UInt16)message.Length, message);
         }
 
         #endregion

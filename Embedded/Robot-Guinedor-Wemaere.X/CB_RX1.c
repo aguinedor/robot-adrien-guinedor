@@ -19,7 +19,7 @@ void CB_RX1_Add(unsigned char value)
     if(cbRx1Head >= 127)
         cbRx1Head=0;
     else 
-        cbRx1Head+=1;
+        cbRx1Head += 1;
     }
 }
 

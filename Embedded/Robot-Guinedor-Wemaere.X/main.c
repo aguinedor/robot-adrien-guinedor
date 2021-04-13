@@ -48,7 +48,7 @@
 
 unsigned int mode, vr = 15, rdm = 0,i; //  vitesses (manoeuvre,route) et modes
 unsigned char message;
-unsigned char* test= "bonjour" ;
+unsigned char* test= "Bonjour" ;
 
 int main(void) 
 {
@@ -79,12 +79,22 @@ int main(void)
             volts = ((float) result [3])*3.3 / 4096 * 3.2;
             robotState.distanceTelemetreGauche2 = 34 / volts - 5;
         }
+        unsigned char IR[] ={robotState.distanceTelemetreGauche,robotState.distanceTelemetreCentre,robotState.distanceTelemetreDroit};
+        unsigned char MOTEUR[] = {robotState.vitesseGaucheConsigne,robotState.vitesseDroiteConsigne};
+        unsigned char LED1[]={1,LED_ORANGE};
+        unsigned char LED2[]={2,LED_BLEUE};
+        unsigned char LED3[]={3,LED_BLANCHE};
+        UartEncodeAndSendMessage(0x0030,3,IR);
+        UartEncodeAndSendMessage(0x0040,2,MOTEUR);
+        UartEncodeAndSendMessage(0x0020,2,LED1);
+        UartEncodeAndSendMessage(0x0020,2,LED2);
+        UartEncodeAndSendMessage(0x0020,2,LED3);
         for (i=0;i<CB_RX1_GetDataSize();i++)
         {
             message=CB_RX1_Get();
             SendMessage(&message , 1 ) ;
         }
-        __delay32(1000);
+        __delay32(2000000);
     }
     return (EXIT_SUCCESS);
 }
@@ -96,16 +106,19 @@ void OperatingSystemLoop(void) {
         vr = 15; //vitesse de manoeuvre, obstacle a proximité
         LED_BLANCHE=0;
         LED_BLEUE=0;
+        LED_ORANGE=1;
     }
     else if (mode == 2){
         vr = 20; //vitesse moyenne, pour ralentir
         LED_BLANCHE=1;
         LED_BLEUE=0;
+        LED_ORANGE=0;
     }
     else if (mode == 3){
         vr = 30; //vitesse de pointe, obstacle a + de 60cm
         LED_BLANCHE=0;
         LED_BLEUE=1;
+        LED_ORANGE=0;
     } 
 
     switch (stateRobot) {
