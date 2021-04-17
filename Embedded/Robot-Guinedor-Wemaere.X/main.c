@@ -99,15 +99,19 @@ void SetRobotState(unsigned char RobotState)
 }
 
 unsigned char AutoMode=0;
+unsigned char ModeAuto=0;
+
 void SetRobotAutoControlState(unsigned char ReceivedControl)
 {
     if(ReceivedControl==0)
     {
         AutoMode=0;
+        ModeAuto=0;
     }
     else if(ReceivedControl==1)
     {
         AutoMode=1;
+        ModeAuto=1;
     }
 }
 

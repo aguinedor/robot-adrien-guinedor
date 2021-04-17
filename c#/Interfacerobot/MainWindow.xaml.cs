@@ -15,6 +15,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ExtendedSerialPort;
 using System.Windows.Threading;
+using MouseKeyboardActivityMonitor.WinApi;
+using MouseKeyboardActivityMonitor;
+using System.Windows.Forms;
 
 namespace Interfacerobot
 {
@@ -24,11 +27,13 @@ namespace Interfacerobot
         ReliableSerialPort serialPort1;
         DispatcherTimer timerAffichage;
         Robot robot = new Robot();
+        private readonly KeyboardHookListener m_KeyboardHookManager;
+
         int i;
         public MainWindow()
         {
             InitializeComponent();
-            serialPort1 = new ReliableSerialPort("COM4", 115200, Parity.None, 8, StopBits.One);
+            serialPort1 = new ReliableSerialPort("COM8", 115200, Parity.None, 8, StopBits.One);
             serialPort1.DataReceived += SerialPort1_DataReceived;
             serialPort1.Open();
 
@@ -36,7 +41,44 @@ namespace Interfacerobot
             timerAffichage.Interval = new TimeSpan(0, 0, 0, 0, 100);
             timerAffichage.Tick += TimerAffichage_Tick;
             timerAffichage.Start();
+            m_KeyboardHookManager = new KeyboardHookListener(new GlobalHooker());
+            m_KeyboardHookManager.Enabled = true;
+            m_KeyboardHookManager.KeyDown += HookManager_KeyDown;    
+        }
 
+        bool autoControlActivated = false;
+        private void HookManager_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            if (autoControlActivated == true)
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.Left:
+                        UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_TOURNE_SUR_PLACE_GAUCHE });
+                        TextBoxReception.Text = "Left\n\r";
+                        break;
+
+                    case Keys.Right:
+                        UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_TOURNE_SUR_PLACE_DROITE });
+                        TextBoxReception.Text = "Right\n\r";
+                        break;
+
+                    case Keys.Up:
+                        UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_AVANCE });
+                        TextBoxReception.Text = "up\n\r";
+                        break;
+
+                    case Keys.Down:
+                        UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_RECULE });
+                        TextBoxReception.Text = "down\n\r";
+                        break;
+
+                    case Keys.PageDown:
+                        UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_ARRET });
+                        TextBoxReception.Text = "Pagedown\n\r";
+                        break;
+                }
+            }
         }
 
         private void TimerAffichage_Tick(object sender, EventArgs e)
@@ -195,6 +237,27 @@ namespace Interfacerobot
             telemetres = 0x0030,
             moteurs = 0x0040,
             message = 0x0080,
+            RobotState=0x0050,
+        }
+
+        public enum StateRobot
+        {
+            STATE_ATTENTE=0,
+            STATE_ATTENTE_EN_COURS=1,
+            STATE_AVANCE=2,
+            STATE_AVANCE_EN_COURS=3,
+            STATE_TOURNE_GAUCHE=4,
+            STATE_TOURNE_GAUCHE_EN_COURS=5,
+            STATE_TOURNE_DROITE=6,
+            STATE_TOURNE_DROITE_EN_COURS=7,
+            STATE_TOURNE_SUR_PLACE_GAUCHE=8,
+            STATE_TOURNE_SUR_PLACE_GAUCHE_EN_COURS=9,
+            STATE_TOURNE_SUR_PLACE_DROITE=10,
+            STATE_TOURNE_SUR_PLACE_DROITE_EN_COURS=11,
+            STATE_ARRET=12,
+            STATE_ARRET_EN_COURS=13,
+            STATE_RECULE=14,
+            STATE_RECULE_EN_COURS=15,
         }
 
         void ProcessDecodedMessage(int msgFunction, int msgPayloadLength, byte[] msgPayload)
@@ -258,6 +321,10 @@ namespace Interfacerobot
                     TextBoxReception.Text += Encoding.UTF8.GetString(msgPayload, 0, msgPayload.Length) + "\n";
                 break;
 
+                case Functions.RobotState:
+                    int instant = (((int)msgPayload[1]) << 24) + (((int)msgPayload[2]) << 16) + (((int)msgPayload[3]) << 8) + (((int)msgPayload[4]) << 4);
+                    RtbReception.Text += "\nRobot State : " + ((StateRobot)(msgPayload[0])).ToString() + " - " + instant.ToString() + " ms";
+                break;
             }
         }
 
@@ -265,14 +332,6 @@ namespace Interfacerobot
         private void textBox_TextChanged(object sender, TextChangedEventArgs e) 
         {
 
-        }
-        
-        private void TextBoxEmission_KeyUp(object sender, KeyEventArgs e)
-        {
-            if(e.Key == Key.Enter)
-            {
-                sendMessage();
-            }
         }
 
         private void buttonEnvoyer_Click(object sender, RoutedEventArgs e)
@@ -304,8 +363,36 @@ namespace Interfacerobot
            // UartEncodeAndSendMessage(0x0080, (UInt16)message.Length, message);
         }
 
-        #endregion
+        private void TextBoxEmission_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                sendMessage();
+            }
+        }
 
+        bool cpt = false;
+        private void buttonControl_Click(object sender, RoutedEventArgs e)
+        {
+            if(!cpt)
+            {
+                buttonControl.Background = Brushes.Green;
+                buttonControl.Content = "Automatique";
+                autoControlActivated = false;
+                TextBoxReception.Text = "test1";
+                cpt=true;
+            }
+            else
+            {
+                buttonControl.Background = Brushes.Red;
+                buttonControl.Content = "Manuel";
+                autoControlActivated = true;
+                TextBoxReception.Text = "test2";
+                cpt = false;
+            }
+        }
+
+        #endregion
     }
 }
 
