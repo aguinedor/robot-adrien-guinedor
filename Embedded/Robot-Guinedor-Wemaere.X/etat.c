@@ -10,7 +10,7 @@
 #define OBSTACLE_SUR_LA_DROITE 4 //tourne sur place vers la gauche
 #define OBSTACLE_EN_FACE 5 //tourne sur place vers la gauche/la droite 
 #define TUNNEL_GAUCHE 6
- #define TUNNEL_DROITE 7
+#define TUNNEL_DROITE 7
 
 int obstacle;
 

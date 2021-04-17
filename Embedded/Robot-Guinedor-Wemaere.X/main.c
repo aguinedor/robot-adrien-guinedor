@@ -13,6 +13,7 @@
 #include "UART.h"
 #include "CB_TX1.h"
 #include "CB_RX1.h"
+#include "UART_Protocol.h"
 
 #define STATE_ATTENTE 0
 #define STATE_ATTENTE_EN_COURS 1
@@ -48,7 +49,7 @@
 
 unsigned int mode, vr = 15, rdm = 0,i; //  vitesses (manoeuvre,route) et modes
 unsigned char message;
-unsigned char* test= "Bonjour" ;
+//unsigned char* test= "Bonjour" ;
 
 int main(void) 
 {
@@ -79,16 +80,7 @@ int main(void)
             volts = ((float) result [3])*3.3 / 4096 * 3.2;
             robotState.distanceTelemetreGauche2 = 34 / volts - 5;
         }
-        unsigned char IR[] ={robotState.distanceTelemetreGauche,robotState.distanceTelemetreCentre,robotState.distanceTelemetreDroit};
-        unsigned char MOTEUR[] = {robotState.vitesseGaucheConsigne,robotState.vitesseDroiteConsigne};
-        unsigned char LED1[]={1,LED_ORANGE};
-        unsigned char LED2[]={2,LED_BLEUE};
-        unsigned char LED3[]={3,LED_BLANCHE};
-        UartEncodeAndSendMessage(0x0030,3,IR);
-        UartEncodeAndSendMessage(0x0040,2,MOTEUR);
-        UartEncodeAndSendMessage(0x0020,2,LED1);
-        UartEncodeAndSendMessage(0x0020,2,LED2);
-        UartEncodeAndSendMessage(0x0020,2,LED3);
+        SendInfos();
         for (i=0;i<CB_RX1_GetDataSize();i++)
         {
             message=CB_RX1_Get();
@@ -100,6 +92,24 @@ int main(void)
 }
 
 unsigned char stateRobot=STATE_ATTENTE;
+
+void SetRobotState(unsigned char RobotState)
+{
+    stateRobot=RobotState;
+}
+
+unsigned char AutoMode=0;
+void SetRobotAutoControlState(unsigned char ReceivedControl)
+{
+    if(ReceivedControl==0)
+    {
+        AutoMode=0;
+    }
+    else if(ReceivedControl==1)
+    {
+        AutoMode=1;
+    }
+}
 
 void OperatingSystemLoop(void) {
     if (mode == 1){
@@ -121,104 +131,107 @@ void OperatingSystemLoop(void) {
         LED_ORANGE=0;
     } 
 
-    switch (stateRobot) {
-        case STATE_ATTENTE:
-            timestamp = 0;
-            PWMSetSpeedConsigne(0, MOTEUR_DROIT);
-            PWMSetSpeedConsigne(0, MOTEUR_GAUCHE);
-            stateRobot = STATE_ATTENTE_EN_COURS;
+    if(AutoMode==1)
+    {
+        switch (stateRobot) {
+            case STATE_ATTENTE:
+                timestamp = 0;
+                PWMSetSpeedConsigne(0, MOTEUR_DROIT);
+                PWMSetSpeedConsigne(0, MOTEUR_GAUCHE);
+                stateRobot = STATE_ATTENTE_EN_COURS;
 
-        case STATE_ATTENTE_EN_COURS:
-            if (timestamp > 1000)
-                stateRobot = STATE_AVANCE;
-            break;
+            case STATE_ATTENTE_EN_COURS:
+                if (timestamp > 1000)
+                    stateRobot = STATE_AVANCE;
+                break;
 
-        case STATE_AVANCE:
-            rdm = rdm + 1;
-            PWMSetSpeedConsigne(vr, MOTEUR_DROIT);
-            PWMSetSpeedConsigne(vr, MOTEUR_GAUCHE);
+            case STATE_AVANCE:
+                rdm = rdm + 1;
+                PWMSetSpeedConsigne(vr, MOTEUR_DROIT);
+                PWMSetSpeedConsigne(vr, MOTEUR_GAUCHE);
 
-            stateRobot = STATE_AVANCE_EN_COURS;
-            break;
-        case STATE_AVANCE_EN_COURS:
-            SetNextRobotStateInAutomaticMode();
-            break;
+                stateRobot = STATE_AVANCE_EN_COURS;
+                break;
+            case STATE_AVANCE_EN_COURS:
+                SetNextRobotStateInAutomaticMode();
+                break;
 
-        case STATE_TOURNE_GAUCHE_DOUX:
-            PWMSetSpeedConsigne(15, MOTEUR_DROIT);
-            PWMSetSpeedConsigne(8, MOTEUR_GAUCHE);
-            stateRobot = STATE_TOURNE_GAUCHE_DOUX_EN_COURS;
-            break;
-        case STATE_TOURNE_GAUCHE_DOUX_EN_COURS:
-            SetNextRobotStateInAutomaticMode();
-            break;
+            case STATE_TOURNE_GAUCHE_DOUX:
+                PWMSetSpeedConsigne(15, MOTEUR_DROIT);
+                PWMSetSpeedConsigne(8, MOTEUR_GAUCHE);
+                stateRobot = STATE_TOURNE_GAUCHE_DOUX_EN_COURS;
+                break;
+            case STATE_TOURNE_GAUCHE_DOUX_EN_COURS:
+                SetNextRobotStateInAutomaticMode();
+                break;
 
-        case STATE_TOURNE_DROITE_DOUX:
-            PWMSetSpeedConsigne(8, MOTEUR_DROIT);
-            PWMSetSpeedConsigne(15, MOTEUR_GAUCHE);
-            stateRobot = STATE_TOURNE_DROITE_DOUX_EN_COURS;
-            break;
-        case STATE_TOURNE_DROITE_DOUX_EN_COURS:
-            SetNextRobotStateInAutomaticMode();
-            break;
+            case STATE_TOURNE_DROITE_DOUX:
+                PWMSetSpeedConsigne(8, MOTEUR_DROIT);
+                PWMSetSpeedConsigne(15, MOTEUR_GAUCHE);
+                stateRobot = STATE_TOURNE_DROITE_DOUX_EN_COURS;
+                break;
+            case STATE_TOURNE_DROITE_DOUX_EN_COURS:
+                SetNextRobotStateInAutomaticMode();
+                break;
 
-        case STATE_TOURNE_GAUCHE:
-            PWMSetSpeedConsigne(15, MOTEUR_DROIT);
-            PWMSetSpeedConsigne(0, MOTEUR_GAUCHE);
-            stateRobot = STATE_TOURNE_GAUCHE_EN_COURS;
-            break;
-        case STATE_TOURNE_GAUCHE_EN_COURS:
-            SetNextRobotStateInAutomaticMode();
-            break;
+            case STATE_TOURNE_GAUCHE:
+                PWMSetSpeedConsigne(15, MOTEUR_DROIT);
+                PWMSetSpeedConsigne(0, MOTEUR_GAUCHE);
+                stateRobot = STATE_TOURNE_GAUCHE_EN_COURS;
+                break;
+            case STATE_TOURNE_GAUCHE_EN_COURS:
+                SetNextRobotStateInAutomaticMode();
+                break;
 
-        case STATE_TOURNE_DROITE:
-            PWMSetSpeedConsigne(0, MOTEUR_DROIT);
-            PWMSetSpeedConsigne(15, MOTEUR_GAUCHE);
-            stateRobot = STATE_TOURNE_DROITE_EN_COURS;
-            break;
-        case STATE_TOURNE_DROITE_EN_COURS:
-            SetNextRobotStateInAutomaticMode();
-            break;
+            case STATE_TOURNE_DROITE:
+                PWMSetSpeedConsigne(0, MOTEUR_DROIT);
+                PWMSetSpeedConsigne(15, MOTEUR_GAUCHE);
+                stateRobot = STATE_TOURNE_DROITE_EN_COURS;
+                break;
+            case STATE_TOURNE_DROITE_EN_COURS:
+                SetNextRobotStateInAutomaticMode();
+                break;
 
-        case STATE_TOURNE_SUR_PLACE_GAUCHE:
-            PWMSetSpeedConsigne(10, MOTEUR_DROIT);
-            PWMSetSpeedConsigne(-10, MOTEUR_GAUCHE);
-            stateRobot = STATE_TOURNE_SUR_PLACE_GAUCHE_EN_COURS;
-            break;
-        case STATE_TOURNE_SUR_PLACE_GAUCHE_EN_COURS:
-            SetNextRobotStateInAutomaticMode();
-            break;
+            case STATE_TOURNE_SUR_PLACE_GAUCHE:
+                PWMSetSpeedConsigne(10, MOTEUR_DROIT);
+                PWMSetSpeedConsigne(-10, MOTEUR_GAUCHE);
+                stateRobot = STATE_TOURNE_SUR_PLACE_GAUCHE_EN_COURS;
+                break;
+            case STATE_TOURNE_SUR_PLACE_GAUCHE_EN_COURS:
+                SetNextRobotStateInAutomaticMode();
+                break;
 
-        case STATE_TOURNE_SUR_PLACE_DROITE:
-            PWMSetSpeedConsigne(-10, MOTEUR_DROIT);
-            PWMSetSpeedConsigne(10, MOTEUR_GAUCHE);
-            stateRobot = STATE_TOURNE_SUR_PLACE_DROITE_EN_COURS;
-            break;
-        case STATE_TOURNE_SUR_PLACE_DROITE_EN_COURS:
-            SetNextRobotStateInAutomaticMode();
-            break;
+            case STATE_TOURNE_SUR_PLACE_DROITE:
+                PWMSetSpeedConsigne(-10, MOTEUR_DROIT);
+                PWMSetSpeedConsigne(10, MOTEUR_GAUCHE);
+                stateRobot = STATE_TOURNE_SUR_PLACE_DROITE_EN_COURS;
+                break;
+            case STATE_TOURNE_SUR_PLACE_DROITE_EN_COURS:
+                SetNextRobotStateInAutomaticMode();
+                break;
 
-        case STATE_DROITE_TUNNEL:
-            PWMSetSpeedConsigne(8, MOTEUR_DROIT);
-            PWMSetSpeedConsigne(0, MOTEUR_GAUCHE);
-            stateRobot = STATE_DROITE_TUNNEL_EN_COURS;
-            break;
-        case STATE_DROITE_TUNNEL_EN_COURS:
-            SetNextRobotStateInAutomaticMode();
-            break;
+            case STATE_DROITE_TUNNEL:
+                PWMSetSpeedConsigne(8, MOTEUR_DROIT);
+                PWMSetSpeedConsigne(0, MOTEUR_GAUCHE);
+                stateRobot = STATE_DROITE_TUNNEL_EN_COURS;
+                break;
+            case STATE_DROITE_TUNNEL_EN_COURS:
+                SetNextRobotStateInAutomaticMode();
+                break;
 
-        case STATE_GAUCHE_TUNNEL:
-            PWMSetSpeedConsigne(0, MOTEUR_DROIT);
-            PWMSetSpeedConsigne(8, MOTEUR_GAUCHE);
-            stateRobot = STATE_GAUCHE_TUNNEL_EN_COURS;
-            break;
-        case STATE_GAUCHE_TUNNEL_EN_COURS:
-            SetNextRobotStateInAutomaticMode();
-            break;
+            case STATE_GAUCHE_TUNNEL:
+                PWMSetSpeedConsigne(0, MOTEUR_DROIT);
+                PWMSetSpeedConsigne(8, MOTEUR_GAUCHE);
+                stateRobot = STATE_GAUCHE_TUNNEL_EN_COURS;
+                break;
+            case STATE_GAUCHE_TUNNEL_EN_COURS:
+                SetNextRobotStateInAutomaticMode();
+                break;
 
-        default:
-            stateRobot = STATE_ATTENTE;
-            break;
+            default:
+                stateRobot = STATE_ATTENTE;
+                break;
+        }
     }
 }
 
@@ -275,4 +288,26 @@ void SetNextRobotStateInAutomaticMode(void) {
     //Si l'on n?est pas dans la transition de l?étape en cours
     if (nextStateRobot != stateRobot - 1);
     stateRobot = nextStateRobot;
+}
+
+void SendInfos(void)
+{
+    int pos=0;
+    unsigned char IR[] = {robotState.distanceTelemetreGauche,robotState.distanceTelemetreCentre,robotState.distanceTelemetreDroit};
+    unsigned char MOTEUR[] = {robotState.vitesseGaucheConsigne,robotState.vitesseDroiteConsigne};
+    unsigned char LED1[]={1,LED_ORANGE};
+    unsigned char LED2[]={2,LED_BLEUE};
+    unsigned char LED3[]={3,LED_BLANCHE};
+    unsigned char RobotState[4];
+    RobotState[pos++]=(unsigned char)stateRobot;
+    RobotState[pos++]=(unsigned char)(timestamp << 24);
+    RobotState[pos++]=(unsigned char)(timestamp << 16);
+    RobotState[pos++]=(unsigned char)(timestamp << 8);
+    RobotState[pos++]=(unsigned char)(timestamp << 0);
+    UartEncodeAndSendMessage(0x0030,3,IR);
+    UartEncodeAndSendMessage(0x0040,2,MOTEUR);
+    UartEncodeAndSendMessage(0x0020,2,LED1);
+    UartEncodeAndSendMessage(0x0020,2,LED2);
+    UartEncodeAndSendMessage(0x0020,2,LED3);
+    UartEncodeAndSendMessage(0x0050,5,RobotState);
 }
