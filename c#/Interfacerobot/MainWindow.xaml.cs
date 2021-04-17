@@ -46,40 +46,7 @@ namespace Interfacerobot
             m_KeyboardHookManager.KeyDown += HookManager_KeyDown;    
         }
 
-        bool autoControlActivated = false;
-        private void HookManager_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
-        {
-            if (autoControlActivated == true)
-            {
-                switch (e.KeyCode)
-                {
-                    case Keys.Left:
-                        UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_TOURNE_SUR_PLACE_GAUCHE });
-                        TextBoxReception.Text = "Left\n\r";
-                        break;
-
-                    case Keys.Right:
-                        UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_TOURNE_SUR_PLACE_DROITE });
-                        TextBoxReception.Text = "Right\n\r";
-                        break;
-
-                    case Keys.Up:
-                        UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_AVANCE });
-                        TextBoxReception.Text = "up\n\r";
-                        break;
-
-                    case Keys.Down:
-                        UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_RECULE });
-                        TextBoxReception.Text = "down\n\r";
-                        break;
-
-                    case Keys.PageDown:
-                        UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_ARRET });
-                        TextBoxReception.Text = "Pagedown\n\r";
-                        break;
-                }
-            }
-        }
+        
 
         private void TimerAffichage_Tick(object sender, EventArgs e)
         {
@@ -107,38 +74,15 @@ namespace Interfacerobot
             }
         }
 
-        byte CalculateChecksum(int msgFunction, int msgPayloadLength, byte[] msgPayload)
-        {
-            byte checksum = 0;
-            checksum ^= 0xFE;
-            checksum ^= (byte)(msgFunction >> 8);
-            checksum ^= (byte)(msgFunction >> 0);
-            checksum ^= (byte)(msgPayloadLength >> 8);
-            checksum ^= (byte)(msgPayloadLength >> 0);
-            for (int i = 0 ; i < msgPayload.Length; i++)
-            {
-                checksum ^= msgPayload[i];
-            }
-            return checksum;
-        }
 
-        void UartEncodeAndSendMessage(int msgFunction,int msgPayloadLength, byte [ ] msgPayload)
-        {
-            byte[] trame = new byte[6 + msgPayload.Length];
-            int pos = 0;
-            int i;
-            trame[pos++] = 0xFE ;
-            trame[pos++] = (byte)(msgFunction >> 8);
-            trame[pos++] = (byte)(msgFunction >> 0);
-            trame[pos++] = (byte)(msgPayloadLength >> 8);
-            trame[pos++] = (byte)(msgPayloadLength >> 0);
-            for (i = 0; i < msgPayload.Length; i++)
-            {
-                trame[pos++]= msgPayload[i];
-            }
-            trame[pos++] = CalculateChecksum(msgFunction, msgPayloadLength,  msgPayload);
-            serialPort1.Write(trame, 0, pos);
-        }
+
+        #region Encodage/Decodage
+
+        StateReception rcvState = StateReception.Waiting;
+        int msgDecodedFunction = 0;
+        int msgDecodedPayloadLength = 0;
+        byte[] msgDecodedPayload;
+        int msgDecodedPayloadIndex = 0;
 
         public enum StateReception
         {
@@ -151,86 +95,6 @@ namespace Interfacerobot
             CheckSum
         }
 
-        StateReception rcvState = StateReception.Waiting;
-        int msgDecodedFunction = 0;
-        int msgDecodedPayloadLength = 0;
-        byte[] msgDecodedPayload;
-        int msgDecodedPayloadIndex = 0;
-
-        private void DecodeMessage(byte c)
-        {
-            switch (rcvState)
-            {
-                case StateReception.Waiting:
-                    if (c == 0xFE)
-                    {
-                        rcvState = StateReception.FunctionMSB;
-                    }
-                    msgDecodedFunction = 0;
-                    msgDecodedPayloadIndex = 0;
-                    msgDecodedPayloadLength = 0;
-                break;
-
-                case StateReception.FunctionMSB:
-                    msgDecodedFunction = (byte)(c << 8);
-                    rcvState = StateReception.FunctionLSB;
-                break;
-
-                case StateReception.FunctionLSB:
-                    msgDecodedFunction += (byte)(c << 0);
-                    rcvState = StateReception.PayloadLengthMSB;
-                break;
-
-                case StateReception.PayloadLengthMSB:
-                    msgDecodedPayloadLength = (byte)(c << 8);
-                    rcvState = StateReception.PayloadLengthLSB;
-                break;
-
-                case StateReception.PayloadLengthLSB:
-                    msgDecodedPayloadLength += (byte)(c << 0);
-                    if(msgDecodedPayloadLength != 0)
-                    {
-                        msgDecodedPayload = new byte[msgDecodedPayloadLength];
-                        msgDecodedPayloadIndex = 0;
-                        rcvState = StateReception.Payload;
-                    }
-                    else
-                    {
-                        rcvState = StateReception.CheckSum;
-                    }
-                break;
-
-                case StateReception.Payload:
-                    msgDecodedPayload[msgDecodedPayloadIndex] = c;
-                    msgDecodedPayloadIndex++;
-                    if(msgDecodedPayloadIndex >= msgDecodedPayloadLength)
-                    {
-                        rcvState = StateReception.CheckSum;
-                    }
-                break;
-
-                case StateReception.CheckSum:
-                    byte calculatedChecksum, receivedChecksum;
-                    receivedChecksum = c;
-                    calculatedChecksum = CalculateChecksum(msgDecodedFunction, msgDecodedPayloadLength, msgDecodedPayload);
-                    if (calculatedChecksum == receivedChecksum)
-                    {
-                        TextBoxReception.Text = TextBoxReception.Text + "\n\rLe message est correct "; //Success, on a un message valide
-                        ProcessDecodedMessage(msgDecodedFunction, msgDecodedPayloadLength, msgDecodedPayload);
-                    }
-                    else
-                    {
-                        TextBoxReception.Text = TextBoxReception.Text + "\n\rLe message est corrumpu ";
-                    }
-                    rcvState = StateReception.Waiting;
-                    break;
-
-                default:
-                    rcvState = StateReception.Waiting;
-                break;
-            }
-        }
-
         public enum Functions
         {
             LEDS = 0x0020,
@@ -238,6 +102,7 @@ namespace Interfacerobot
             moteurs = 0x0040,
             message = 0x0080,
             RobotState=0x0050,
+            Clavier=0x0053,
         }
 
         public enum StateRobot
@@ -258,6 +123,120 @@ namespace Interfacerobot
             STATE_ARRET_EN_COURS=13,
             STATE_RECULE=14,
             STATE_RECULE_EN_COURS=15,
+        }
+
+        byte CalculateChecksum(int msgFunction, int msgPayloadLength, byte[] msgPayload)
+        {
+            byte checksum = 0;
+            checksum ^= 0xFE;
+            checksum ^= (byte)(msgFunction >> 8);
+            checksum ^= (byte)(msgFunction >> 0);
+            checksum ^= (byte)(msgPayloadLength >> 8);
+            checksum ^= (byte)(msgPayloadLength >> 0);
+            for (int i = 0; i < msgPayload.Length; i++)
+            {
+                checksum ^= msgPayload[i];
+            }
+            return checksum;
+        }
+
+        void UartEncodeAndSendMessage(int msgFunction, int msgPayloadLength, byte[] msgPayload)
+        {
+            byte[] trame = new byte[6 + msgPayload.Length];
+            int pos = 0;
+            int i;
+            trame[pos++] = 0xFE;
+            trame[pos++] = (byte)(msgFunction >> 8);
+            trame[pos++] = (byte)(msgFunction >> 0);
+            trame[pos++] = (byte)(msgPayloadLength >> 8);
+            trame[pos++] = (byte)(msgPayloadLength >> 0);
+            for (i = 0; i < msgPayload.Length; i++)
+            {
+                trame[pos++] = msgPayload[i];
+            }
+            trame[pos++] = CalculateChecksum(msgFunction, msgPayloadLength, msgPayload);
+            serialPort1.Write(trame, 0, pos);
+        }
+
+        private void DecodeMessage(byte c)
+        {
+            switch (rcvState)
+            {
+                case StateReception.Waiting:
+                    if (c == 0xFE)
+                    {
+                        rcvState = StateReception.FunctionMSB;
+                    }
+                    msgDecodedFunction = 0;
+                    msgDecodedPayloadIndex = 0;
+                    msgDecodedPayloadLength = 0;
+                    break;
+
+                case StateReception.FunctionMSB:
+                    msgDecodedFunction = (byte)(c << 8);
+                    rcvState = StateReception.FunctionLSB;
+                    break;
+
+                case StateReception.FunctionLSB:
+                    msgDecodedFunction += (byte)(c << 0);
+                    rcvState = StateReception.PayloadLengthMSB;
+                    break;
+
+                case StateReception.PayloadLengthMSB:
+                    msgDecodedPayloadLength = (byte)(c << 8);
+                    rcvState = StateReception.PayloadLengthLSB;
+                    break;
+
+                case StateReception.PayloadLengthLSB:
+                    msgDecodedPayloadLength += (byte)(c << 0);
+                    if (msgDecodedPayloadLength != 0)
+                    {
+                        msgDecodedPayload = new byte[msgDecodedPayloadLength];
+                        msgDecodedPayloadIndex = 0;
+                        rcvState = StateReception.Payload;
+                    }
+                    else
+                    {
+                        rcvState = StateReception.CheckSum;
+                    }
+                    break;
+
+                case StateReception.Payload:
+                    msgDecodedPayload[msgDecodedPayloadIndex] = c;
+                    msgDecodedPayloadIndex++;
+                    if (msgDecodedPayloadIndex >= msgDecodedPayloadLength)
+                    {
+                        rcvState = StateReception.CheckSum;
+                    }
+                    break;
+
+                case StateReception.CheckSum:
+                    byte calculatedChecksum, receivedChecksum;
+                    receivedChecksum = c;
+                    calculatedChecksum = CalculateChecksum(msgDecodedFunction, msgDecodedPayloadLength, msgDecodedPayload);
+                    if (calculatedChecksum == receivedChecksum)
+                    {
+                        CheckBoxMessage.IsChecked = true;//Success, on a un message valide
+                        CheckBoxMessage.Background = Brushes.Green;
+                        CheckBoxMessage.Foreground = Brushes.Green;
+                        CheckBoxMessage.Content = " Message Correct";
+                        ProcessDecodedMessage(msgDecodedFunction, msgDecodedPayloadLength, msgDecodedPayload);
+                    }
+                    else
+                    {
+                        CheckBoxMessage.IsChecked = false;
+                        CheckBoxMessage.Background = Brushes.Red;
+                        CheckBoxMessage.Foreground = Brushes.Red;
+                        CheckBoxMessage.Content = " /!\\ Message Corrompu";
+                        TextBoxReception.Text += "/!\\ Attention, message corrompu";
+                    }
+                    rcvState = StateReception.Waiting;
+                    break;
+
+                default:
+                    rcvState = StateReception.Waiting;
+                    break;
+            }
         }
 
         void ProcessDecodedMessage(int msgFunction, int msgPayloadLength, byte[] msgPayload)
@@ -323,10 +302,51 @@ namespace Interfacerobot
 
                 case Functions.RobotState:
                     int instant = (((int)msgPayload[1]) << 24) + (((int)msgPayload[2]) << 16) + (((int)msgPayload[3]) << 8) + (((int)msgPayload[4]) << 4);
-                    RtbReception.Text += "\nRobot State : " + ((StateRobot)(msgPayload[0])).ToString() + " - " + instant.ToString() + " ms";
+                    RtbReception.Text += "Robot State : " + ((StateRobot)(msgPayload[0])).ToString() + "\n\rTemps: " + instant.ToString() + " ms";
+                break;
+
+                case Functions.Clavier:
+                    textBoxPilotage.Text = "Instruction reçue: " + ((StateRobot)msgPayload[0]).ToString() ;
                 break;
             }
         }
+
+        bool autoControlActivated = false;
+        private void HookManager_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            if (autoControlActivated == true)
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.Left:
+                        UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_TOURNE_SUR_PLACE_GAUCHE });
+                        TextBoxReception.Text = "Left\n\r";
+                        break;
+
+                    case Keys.Right:
+                        UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_TOURNE_SUR_PLACE_DROITE });
+                        TextBoxReception.Text = "Right\n\r";
+                        break;
+
+                    case Keys.Up:
+                        UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_AVANCE });
+                        TextBoxReception.Text = "up\n\r";
+                        break;
+
+                    case Keys.Down:
+                        UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_RECULE });
+                        TextBoxReception.Text = "down\n\r";
+                        break;
+
+                    case Keys.PageDown:
+                        UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_ARRET });
+                        TextBoxReception.Text = "Pagedown\n\r";
+                        break;
+                }
+            }
+        }
+
+        #endregion
 
         #region Boutons 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e) 
@@ -361,6 +381,8 @@ namespace Interfacerobot
            UartEncodeAndSendMessage(0x0020, 2, new byte[] { 1, 1 });   //led 1 true
            UartEncodeAndSendMessage(0x0020, 2, new byte[] { 2, 1 });   //led 2 true        
            // UartEncodeAndSendMessage(0x0080, (UInt16)message.Length, message);
+            UartEncodeAndSendMessage(0x0053, 1, new byte[] { 2 });
+            UartEncodeAndSendMessage(0x0050, 5, new byte[] { 2, 0, 0, 0, 10 });
         }
 
         private void TextBoxEmission_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
@@ -371,23 +393,23 @@ namespace Interfacerobot
             }
         }
 
-        bool cpt = false;
+        bool cpt = true;
         private void buttonControl_Click(object sender, RoutedEventArgs e)
         {
-            if(!cpt)
+            
+            if (!cpt)
             {
-                buttonControl.Background = Brushes.Green;
+                buttonControl.Background = Brushes.White;
                 buttonControl.Content = "Automatique";
                 autoControlActivated = false;
-                TextBoxReception.Text = "test1";
-                cpt=true;
+                cpt = true;
+
             }
             else
             {
                 buttonControl.Background = Brushes.Red;
                 buttonControl.Content = "Manuel";
                 autoControlActivated = true;
-                TextBoxReception.Text = "test2";
                 cpt = false;
             }
         }
