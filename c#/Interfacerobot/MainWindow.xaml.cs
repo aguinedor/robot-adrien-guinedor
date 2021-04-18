@@ -75,7 +75,6 @@ namespace Interfacerobot
         }
 
 
-
         #region Encodage/Decodage
 
         StateReception rcvState = StateReception.Waiting;
@@ -314,33 +313,44 @@ namespace Interfacerobot
         bool autoControlActivated = false;
         private void HookManager_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
+            var imageBrush = new ImageBrush();
             if (autoControlActivated == true)
             {
                 switch (e.KeyCode)
                 {
                     case Keys.Left:
                         UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_TOURNE_SUR_PLACE_GAUCHE });
-                        TextBoxReception.Text = "Left\n\r";
+                        //TextBoxReception.Text = "Left\n\r";
+                        imageBrush.ImageSource = new BitmapImage(new Uri("keyboard_key_left.png", UriKind.Relative));
+                        BoxClavier.Background = imageBrush;
                         break;
 
                     case Keys.Right:
                         UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_TOURNE_SUR_PLACE_DROITE });
-                        TextBoxReception.Text = "Right\n\r";
+                        //TextBoxReception.Text = "Right\n\r";
+                        imageBrush.ImageSource = new BitmapImage(new Uri("keyboard_key_right.png", UriKind.Relative));
+                        BoxClavier.Background = imageBrush;
                         break;
 
                     case Keys.Up:
                         UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_AVANCE });
-                        TextBoxReception.Text = "up\n\r";
+                        //TextBoxReception.Text = "up\n\r";
+                        imageBrush.ImageSource = new BitmapImage(new Uri("keyboard_key_up.png", UriKind.Relative));
+                        BoxClavier.Background = imageBrush;
                         break;
 
                     case Keys.Down:
                         UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_RECULE });
-                        TextBoxReception.Text = "down\n\r";
+                        //TextBoxReception.Text = "down\n\r";
+                        imageBrush.ImageSource = new BitmapImage(new Uri("keyboard_key_down.png", UriKind.Relative));
+                        BoxClavier.Background = imageBrush;
                         break;
 
                     case Keys.PageDown:
                         UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_ARRET });
-                        TextBoxReception.Text = "Pagedown\n\r";
+                        //TextBoxReception.Text = "Pagedown\n\r";
+                        imageBrush.ImageSource = new BitmapImage(new Uri("keyboard_key_page_down.png", UriKind.Relative));
+                        BoxClavier.Background = imageBrush;
                         break;
                 }
             }
@@ -389,7 +399,11 @@ namespace Interfacerobot
         {
             if (e.Key == Key.Enter)
             {
-                sendMessage();
+                //sendMessage();
+                string message = TextBoxEmission.Text;
+                byte[] array = Encoding.ASCII.GetBytes(message);
+                UartEncodeAndSendMessage(0x0080, (UInt16)array.Length, array);
+                TextBoxEmission.Text = "";
             }
         }
 
@@ -403,7 +417,8 @@ namespace Interfacerobot
                 buttonControl.Content = "Automatique";
                 autoControlActivated = false;
                 cpt = true;
-
+                BoxClavier.Visibility = Visibility.Hidden;
+                BoxClavier.Background = Brushes.Black;
             }
             else
             {
@@ -411,6 +426,7 @@ namespace Interfacerobot
                 buttonControl.Content = "Manuel";
                 autoControlActivated = true;
                 cpt = false;
+                BoxClavier.Visibility = Visibility.Visible;
             }
         }
 

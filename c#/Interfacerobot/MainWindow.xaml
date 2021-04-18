@@ -35,11 +35,13 @@
         <GroupBox x:Name="Moteurs" Header="Moteurs" Foreground="White" Margin="286,0,297,0" Background="Black" BorderBrush="Black" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3" >
             <TextBox x:Name="TextBoxMoteurs" Margin="0" TextWrapping="Wrap" Text="" TextChanged="textBox_TextChanged" Foreground="White" Background="{x:Null}" BorderBrush="{x:Null}" IsReadOnly="True" />
         </GroupBox>
-        <GroupBox x:Name="RtbState" Header="Robots states" Foreground="White" Background="Black" BorderBrush="Black" Grid.Row="3" Grid.Column="3" Margin="80,0,10,50">
+        <GroupBox x:Name="RtbState" Header="Robot state" Foreground="White" Background="Black" BorderBrush="Black" Grid.Row="3" Grid.Column="3" Margin="80,0,10,50">
             <TextBox x:Name="RtbReception" Margin="0" TextWrapping="Wrap" Text="" TextChanged="textBox_TextChanged" Foreground="White" Background="{x:Null}" BorderBrush="{x:Null}" IsReadOnly="True"/>
         </GroupBox>
         <GroupBox x:Name="Pilotage" Header="Pilotage Clavier" Foreground="White" Background="Black" BorderBrush="Black" Grid.Row="3" Grid.Column="3" Margin="80,90,10,0">
             <TextBox x:Name="textBoxPilotage" Margin="0" TextWrapping="Wrap" Text="" TextChanged="textBox_TextChanged" Foreground="White" Background="{x:Null}" BorderBrush="{x:Null}" IsReadOnly="True"/>
+        </GroupBox>
+        <GroupBox x:Name="BoxClavier" Header="" Grid.Column="3" Margin="231.6,94.6,5.4,4.2" Grid.Row="1" Foreground="White" BorderBrush="Black" Background="Black"  BorderThickness="0" Visibility="Visible">
         </GroupBox>
         <Button x:Name="buttonEnvoyer" Content="clear" Grid.Column="1" Grid.Row="2" Margin="68,5,208,5" Background="White" Click="buttonEnvoyer_Click"/>
         <Button x:Name="buttonTest" Content="Test " Grid.Column="1" Grid.Row="2" Margin="208,5,68,5"  Background="White" Click="buttonTest_Click" />

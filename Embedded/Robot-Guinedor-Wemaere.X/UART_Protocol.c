@@ -129,6 +129,7 @@ void UartProcessDecodedMessage(unsigned char function,unsigned char payloadLengt
     {
         case SET_ROBOT_STATE:
             SetRobotState(payload[0]);
+            UartEncodeAndSendMessage(0x0053,1,payload[0]);
         break;
         
         case SET_ROBOT_MANUAL_CONTROL:
