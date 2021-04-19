@@ -23,20 +23,24 @@
 #define STATE_TOURNE_GAUCHE_EN_COURS 5
 #define STATE_TOURNE_DROITE 6
 #define STATE_TOURNE_DROITE_EN_COURS 7
-#define STATE_TOURNE_GAUCHE_DOUX 8
-#define STATE_TOURNE_GAUCHE_DOUX_EN_COURS 9
-#define STATE_TOURNE_DROITE_DOUX 10
-#define STATE_TOURNE_DROITE_DOUX_EN_COURS 11
-#define STATE_TOURNE_SUR_PLACE_GAUCHE 12
-#define STATE_TOURNE_SUR_PLACE_GAUCHE_EN_COURS 13
-#define STATE_TOURNE_SUR_PLACE_DROITE 14
-#define STATE_TOURNE_SUR_PLACE_DROITE_EN_COURS 15
-#define STATE_DROITE_TUNNEL 16
-#define STATE_DROITE_TUNNEL_EN_COURS 17
-#define STATE_GAUCHE_TUNNEL 18
-#define STATE_GAUCHE_TUNNEL_EN_COURS 19
-#define STATE_ARRET 20
-#define STATE_ARRET_EN_COURS 21
+#define STATE_TOURNE_SUR_PLACE_GAUCHE 8
+#define STATE_TOURNE_SUR_PLACE_GAUCHE_EN_COURS 9
+#define STATE_TOURNE_SUR_PLACE_DROITE 10
+#define STATE_TOURNE_SUR_PLACE_DROITE_EN_COURS 11
+#define STATE_ARRET 12
+#define STATE_ARRET_EN_COURS 13
+#define STATE_RECULE 14
+#define STATE_RECULE_EN_COURS 15
+#define STATE_TOURNE_GAUCHE_DOUX 16
+#define STATE_TOURNE_GAUCHE_DOUX_EN_COURS 17
+#define STATE_TOURNE_DROITE_DOUX 18
+#define STATE_TOURNE_DROITE_DOUX_EN_COURS 19
+
+#define STATE_DROITE_TUNNEL 20
+#define STATE_DROITE_TUNNEL_EN_COURS 21
+#define STATE_GAUCHE_TUNNEL 22
+#define STATE_GAUCHE_TUNNEL_EN_COURS 23
+
 
 #define PAS_D_OBSTACLE 0
 #define OBSTACLE_A_GAUCHE 1 //tourne en avançant vers la droite
@@ -50,6 +54,7 @@
 unsigned int mode, vr = 15, rdm = 0,i; //  vitesses (manoeuvre,route) et modes
 unsigned char message;
 //unsigned char* test= "Bonjour" ;
+
 
 int main(void) 
 {
@@ -80,12 +85,12 @@ int main(void)
             volts = ((float) result [3])*3.3 / 4096 * 3.2;
             robotState.distanceTelemetreGauche2 = 34 / volts - 5;
         }
-        SendInfos();
+        //SendInfos();
         for (i=0;i<CB_RX1_GetDataSize();i++)
         {
             message=CB_RX1_Get();
             UartDecodeMessage(message);
-           // SendMessage(&message , 1 ) ;
+            SendMessage(&message, 1 ) ;
         }
         
         __delay32(2000000);
@@ -102,15 +107,18 @@ void SetRobotState(unsigned char RobotState)
 
 unsigned char ModeAuto=0;
 
+
 void SetRobotAutoControlState(unsigned char ReceivedControl)
 {
     if(ReceivedControl==0)
     {
         ModeAuto=0;
+        stateRobot=STATE_ATTENTE;
     }
     else if(ReceivedControl==1)
     {
         ModeAuto=1;
+        stateRobot=STATE_ARRET;
     }
 }
 
@@ -145,6 +153,14 @@ void OperatingSystemLoop(void) {
             if (timestamp > 1000)
                 stateRobot = STATE_AVANCE;
             break;
+            
+        case STATE_ARRET:
+            PWMSetSpeedConsigne(0, MOTEUR_DROIT);
+            PWMSetSpeedConsigne(0, MOTEUR_GAUCHE);
+            stateRobot = STATE_ARRET_EN_COURS;
+
+        case STATE_ARRET_EN_COURS:
+            break;
 
         case STATE_AVANCE:
             rdm = rdm + 1;
@@ -153,7 +169,18 @@ void OperatingSystemLoop(void) {
 
             stateRobot = STATE_AVANCE_EN_COURS;
             break;
+            
         case STATE_AVANCE_EN_COURS:
+            SetNextRobotStateInAutomaticMode();
+            break;
+            
+         case STATE_RECULE:
+            PWMSetSpeedConsigne(-15, MOTEUR_DROIT);
+            PWMSetSpeedConsigne(-15, MOTEUR_GAUCHE);
+            stateRobot = STATE_RECULE_EN_COURS;
+         break;
+            
+        case STATE_RECULE_EN_COURS:
             SetNextRobotStateInAutomaticMode();
             break;
 
@@ -296,7 +323,7 @@ void SetNextRobotStateInAutomaticMode(void) {
 void SendInfos(void)
 {
     int pos=0;
-    unsigned char IR[] = {robotState.distanceTelemetreGauche,robotState.distanceTelemetreCentre,robotState.distanceTelemetreDroit};
+    unsigned char IR[] = {robotState.distanceTelemetreDroit,robotState.distanceTelemetreCentre,robotState.distanceTelemetreGauche};
     unsigned char MOTEUR[] = {robotState.vitesseGaucheConsigne,robotState.vitesseDroiteConsigne};
     unsigned char LED1[]={1,LED_ORANGE};
     unsigned char LED2[]={2,LED_BLEUE};

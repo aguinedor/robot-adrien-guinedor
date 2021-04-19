@@ -33,7 +33,7 @@ namespace Interfacerobot
         public MainWindow()
         {
             InitializeComponent();
-            serialPort1 = new ReliableSerialPort("COM8", 115200, Parity.None, 8, StopBits.One);
+            serialPort1 = new ReliableSerialPort("COM5", 115200, Parity.None, 8, StopBits.One);
             serialPort1.DataReceived += SerialPort1_DataReceived;
             serialPort1.Open();
 
@@ -419,6 +419,7 @@ namespace Interfacerobot
                 cpt = true;
                 BoxClavier.Visibility = Visibility.Hidden;
                 BoxClavier.Background = Brushes.Black;
+                UartEncodeAndSendMessage(0x0052, 1, new byte[] {1});
             }
             else
             {
@@ -427,6 +428,7 @@ namespace Interfacerobot
                 autoControlActivated = true;
                 cpt = false;
                 BoxClavier.Visibility = Visibility.Visible;
+                UartEncodeAndSendMessage(0x0052, 1, new byte[] {0});
             }
         }
 
