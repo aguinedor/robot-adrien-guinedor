@@ -106,10 +106,16 @@ void SetFreqTimer4(float freq) {
 }
 // Interruption du timer 4
 
+unsigned long millis=0;
 void __attribute__((interrupt, no_auto_psv)) _T4Interrupt(void) {
     IFS1bits.T4IF = 0;
     timestamp++;
     OperatingSystemLoop();
+    if(timestamp - millis >= 1/2)
+    {
+        millis=timestamp;
+        SendInfos();
+    }
     //LED_BLANCHE = !LED_BLANCHE;
 }
 

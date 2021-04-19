@@ -85,7 +85,7 @@ int main(void)
             volts = ((float) result [3])*3.3 / 4096 * 3.2;
             robotState.distanceTelemetreGauche2 = 34 / volts - 5;
         }
-        //SendInfos();
+      
         for (i=0;i<CB_RX1_GetDataSize();i++)
         {
             message=CB_RX1_Get();
@@ -93,7 +93,7 @@ int main(void)
             SendMessage(&message, 1 ) ;
         }
         
-        __delay32(2000000);
+        //__delay32(1000);
     }
     return (EXIT_SUCCESS);
 }
@@ -105,7 +105,7 @@ void SetRobotState(unsigned char RobotState)
     stateRobot=RobotState;
 }
 
-unsigned char ModeAuto=0;
+unsigned char ModeAuto=1;
 
 
 void SetRobotAutoControlState(unsigned char ReceivedControl)
@@ -113,12 +113,12 @@ void SetRobotAutoControlState(unsigned char ReceivedControl)
     if(ReceivedControl==0)
     {
         ModeAuto=0;
-        stateRobot=STATE_ATTENTE;
+        stateRobot=STATE_ARRET;
     }
     else if(ReceivedControl==1)
     {
         ModeAuto=1;
-        stateRobot=STATE_ARRET;
+        stateRobot=STATE_ATTENTE;
     }
 }
 
@@ -264,7 +264,8 @@ void OperatingSystemLoop(void) {
 
 unsigned char nextStateRobot = 0;
 
-void SetNextRobotStateInAutomaticMode(void) {
+void SetNextRobotStateInAutomaticMode(void) 
+{
     if(ModeAuto==1)
     {
         unsigned char positionObstacle = PAS_D_OBSTACLE;
