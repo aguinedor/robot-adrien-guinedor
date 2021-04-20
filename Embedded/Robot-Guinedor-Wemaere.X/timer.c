@@ -4,6 +4,8 @@
 #include "PWM.h"
 #include "ADC.h"
 #include "main.h"
+#include "robot.h"
+#include "UART_Protocol.h"
 // Initialisation d?un timer 32 bits
 unsigned long timestamp;
 
@@ -70,11 +72,22 @@ void SetFreqTimer1(float freq) {
 }
 
 // Interruption du timer 1
+int subSamplingCounterT1 = 0;
 
 void __attribute__((interrupt, no_auto_psv)) _T1Interrupt(void) {
     IFS0bits.T1IF = 0;
     ADC1StartConversionSequence();
     PWMUpdateSpeed();
+    if (subSamplingCounterT1++ % 10 == 0) {
+        unsigned char MOTEUR[] = {MOTEUR_GAUCHE_DUTY_CYCLE/40,MOTEUR_DROIT_DUTY_CYCLE/40} ;
+        unsigned char LED1[] = {1, LED_ORANGE};
+        unsigned char LED2[] = {2, LED_BLEUE};
+        unsigned char LED3[] = {3, LED_BLANCHE};
+        UartEncodeAndSendMessage(0x0040, 2, MOTEUR);
+        UartEncodeAndSendMessage(0x0020, 2, LED1);
+        UartEncodeAndSendMessage(0x0020, 2, LED2);
+        UartEncodeAndSendMessage(0x0020, 2, LED3);
+    }
     //LED_BLANCHE = !LED_BLANCHE;
 }
 
@@ -106,16 +119,11 @@ void SetFreqTimer4(float freq) {
 }
 // Interruption du timer 4
 
-unsigned long millis=0;
+unsigned long millis = 0;
+
 void __attribute__((interrupt, no_auto_psv)) _T4Interrupt(void) {
     IFS1bits.T4IF = 0;
     timestamp++;
     OperatingSystemLoop();
-    if(timestamp - millis >= 1/2)
-    {
-        millis=timestamp;
-        SendInfos();
-    }
-    //LED_BLANCHE = !LED_BLANCHE;
 }
 

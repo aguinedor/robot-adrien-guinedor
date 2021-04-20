@@ -122,6 +122,14 @@ namespace Interfacerobot
             STATE_ARRET_EN_COURS=13,
             STATE_RECULE=14,
             STATE_RECULE_EN_COURS=15,
+            STATE_TOURNE_GAUCHE_DOUX =16,
+            STATE_TOURNE_GAUCHE_DOUX_EN_COURS= 17,
+            STATE_TOURNE_DROITE_DOUX=19,
+            STATE_TOURNE_DROITE_DOUX_EN_COURS=18 ,
+            STATE_DROITE_TUNNEL =20,
+            STATE_DROITE_TUNNEL_EN_COURS= 21,
+            STATE_GAUCHE_TUNNEL= 22,
+            STATE_GAUCHE_TUNNEL_EN_COURS= 23,
         }
 
         byte CalculateChecksum(int msgFunction, int msgPayloadLength, byte[] msgPayload)
@@ -227,7 +235,7 @@ namespace Interfacerobot
                         CheckBoxMessage.Background = Brushes.Red;
                         CheckBoxMessage.Foreground = Brushes.Red;
                         CheckBoxMessage.Content = " /!\\ Message Corrompu";
-                        TextBoxReception.Text += "/!\\ Attention, message corrompu";
+                        TextBoxReception.Text += "\n\r/!\\ Attention, message corrompu. fonctions: " + "0x" + msgDecodedFunction.ToString("X4");
                     }
                     rcvState = StateReception.Waiting;
                     break;
@@ -300,8 +308,8 @@ namespace Interfacerobot
                 break;
 
                 case Functions.RobotState:
-                    int instant = (((int)msgPayload[1]) << 24) + (((int)msgPayload[2]) << 16) + (((int)msgPayload[3]) << 8) + (((int)msgPayload[4]) << 4);
-                    RtbReception.Text += "Robot State : " + ((StateRobot)(msgPayload[0])).ToString() + "\n\rTemps: " + instant.ToString() + " ms";
+                    int instant = (((int)msgPayload[1]) << 24) + (((int)msgPayload[2]) << 16) + (((int)msgPayload[3]) << 8) + (((int)msgPayload[4]));
+                    RtbReception.Text = ((StateRobot)(msgPayload[0])).ToString() + "\n\rTemps: " + instant.ToString() + " ms";
                 break;
 
                 case Functions.Clavier:
@@ -391,7 +399,7 @@ namespace Interfacerobot
            UartEncodeAndSendMessage(0x0020, 2, new byte[] { 1, 1 });   //led 1 true
            UartEncodeAndSendMessage(0x0020, 2, new byte[] { 2, 1 });   //led 2 true        
            // UartEncodeAndSendMessage(0x0080, (UInt16)message.Length, message);
-            UartEncodeAndSendMessage(0x0053, 1, new byte[] { 2 });
+            UartEncodeAndSendMessage(0x0053, 1, new byte[] { 4 });
             UartEncodeAndSendMessage(0x0050, 5, new byte[] { 2, 0, 0, 0, 10 });
         }
 
@@ -427,7 +435,7 @@ namespace Interfacerobot
                 buttonControl.Content = "Manuel";
                 autoControlActivated = true;
                 cpt = false;
-                BoxClavier.Visibility = Visibility.Visible;
+                BoxClavier.Visibility = Visibility.Hidden;
                 UartEncodeAndSendMessage(0x0052, 1, new byte[] {0});
             }
         }

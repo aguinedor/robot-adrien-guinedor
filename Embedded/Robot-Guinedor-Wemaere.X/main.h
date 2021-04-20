@@ -7,6 +7,6 @@ void OperatingSystemLoop(void);
 void SetNextRobotStateInAutomaticMode(void);
 void SetRobotState(unsigned char RobotState);
 void SetRobotAutoControlState(unsigned char SetRobotState);
-void SendInfos(void);
+void SendRobotState(void);
 
 #endif

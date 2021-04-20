@@ -84,16 +84,17 @@ int main(void)
             robotState.distanceTelemetreGauche = 34 / volts - 5;
             volts = ((float) result [3])*3.3 / 4096 * 3.2;
             robotState.distanceTelemetreGauche2 = 34 / volts - 5;
+            
+            unsigned char IR[] = {robotState.distanceTelemetreDroit,robotState.distanceTelemetreCentre,robotState.distanceTelemetreGauche};
+            UartEncodeAndSendMessage(0x0030,3,IR);    
         }
       
         for (i=0;i<CB_RX1_GetDataSize();i++)
         {
             message=CB_RX1_Get();
             UartDecodeMessage(message);
-            SendMessage(&message, 1 ) ;
+            //SendMessage(&message, 1 ) ;
         }
-        
-        //__delay32(1000);
     }
     return (EXIT_SUCCESS);
 }
@@ -114,6 +115,7 @@ void SetRobotAutoControlState(unsigned char ReceivedControl)
     {
         ModeAuto=0;
         stateRobot=STATE_ARRET;
+        vr=15;
     }
     else if(ReceivedControl==1)
     {
@@ -166,7 +168,6 @@ void OperatingSystemLoop(void) {
             rdm = rdm + 1;
             PWMSetSpeedConsigne(vr, MOTEUR_DROIT);
             PWMSetSpeedConsigne(vr, MOTEUR_GAUCHE);
-
             stateRobot = STATE_AVANCE_EN_COURS;
             break;
             
@@ -241,6 +242,7 @@ void OperatingSystemLoop(void) {
         case STATE_DROITE_TUNNEL:
             PWMSetSpeedConsigne(8, MOTEUR_DROIT);
             PWMSetSpeedConsigne(0, MOTEUR_GAUCHE);
+            SendRobotState();
             stateRobot = STATE_DROITE_TUNNEL_EN_COURS;
             break;
         case STATE_DROITE_TUNNEL_EN_COURS:
@@ -316,29 +318,16 @@ void SetNextRobotStateInAutomaticMode(void)
             nextStateRobot = STATE_GAUCHE_TUNNEL;
 
         //Si l'on n?est pas dans la transition de l?étape en cours
-        if (nextStateRobot != stateRobot - 1);
-        stateRobot = nextStateRobot;
+        if (nextStateRobot != stateRobot - 1)
+        {
+            stateRobot = nextStateRobot;            
+            SendRobotState();
+        }            
     }
 }
 
-void SendInfos(void)
+void SendRobotState(void)
 {
-    int pos=0;
-    unsigned char IR[] = {robotState.distanceTelemetreDroit,robotState.distanceTelemetreCentre,robotState.distanceTelemetreGauche};
-    unsigned char MOTEUR[] = {robotState.vitesseGaucheConsigne,robotState.vitesseDroiteConsigne};
-    unsigned char LED1[]={1,LED_ORANGE};
-    unsigned char LED2[]={2,LED_BLEUE};
-    unsigned char LED3[]={3,LED_BLANCHE};
-    unsigned char RobotState[4];
-    RobotState[pos++]=(unsigned char)stateRobot;
-    RobotState[pos++]=(unsigned char)(timestamp << 24);
-    RobotState[pos++]=(unsigned char)(timestamp << 16);
-    RobotState[pos++]=(unsigned char)(timestamp << 8);
-    RobotState[pos++]=(unsigned char)(timestamp << 0);
-    UartEncodeAndSendMessage(0x0030,3,IR);
-    UartEncodeAndSendMessage(0x0040,2,MOTEUR);
-    UartEncodeAndSendMessage(0x0020,2,LED1);
-    UartEncodeAndSendMessage(0x0020,2,LED2);
-    UartEncodeAndSendMessage(0x0020,2,LED3);
+    unsigned char RobotState[5]={(unsigned char)stateRobot,(unsigned char)(timestamp >> 24),(unsigned char)(timestamp >> 16),(unsigned char)(timestamp >> 8),(unsigned char)(timestamp >> 0)};
     UartEncodeAndSendMessage(0x0050,5,RobotState);
 }
