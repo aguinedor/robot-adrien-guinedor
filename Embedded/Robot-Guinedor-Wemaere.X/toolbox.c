@@ -1,13 +1,13 @@
 #include "toolbox.h"
 
-float Abs(float value)
+float Abs1(float value)
 {
 if (value >= 0)
 return value;
 else return -value;
 }
 
-float Max(float value, float value2)
+float Max1(float value, float value2)
 {
 if (value > value2)
 return value;
@@ -15,7 +15,7 @@ else
 return value2;
 }
 
-float Min(float value, float value2)
+float Min1(float value, float value2)
 {
 if (value < value2)
 return value;
@@ -23,7 +23,7 @@ else
 return value2;
 }
 
-float LimitToInterval(float value, float lowLimit, float highLimit)
+float LimitToInterval1(float value, float lowLimit, float highLimit)
 {
 if (value > highLimit)
 value = highLimit;

@@ -6,6 +6,7 @@
 #include "main.h"
 #include "robot.h"
 #include "UART_Protocol.h"
+#include "QEI.h"
 // Initialisation d?un timer 32 bits
 unsigned long timestamp;
 
@@ -87,8 +88,10 @@ void __attribute__((interrupt, no_auto_psv)) _T1Interrupt(void) {
         UartEncodeAndSendMessage(0x0020, 2, LED1);
         UartEncodeAndSendMessage(0x0020, 2, LED2);
         UartEncodeAndSendMessage(0x0020, 2, LED3);
+        SendPositionData();
     }
-    //LED_BLANCHE = !LED_BLANCHE;
+    
+    //LED_BLANCHE = !LED_BLANCHE; 
 }
 
 void InitTimer4(void) {

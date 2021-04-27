@@ -37,4 +37,11 @@ void InitIO()
     // échange données PC
     _U1RXR=24; // config sortie RP vers entrée Rx1
     _RP36R=0b00001; // config sortie Tx vers entrée RP 
+    
+    //QEI (odométrie)
+    _QEA2R = 97;    //assign QEI A to pin RP97
+    _QEB2R = 96;    //assign QEI B to pin RP96
+    
+    _QEA1R = 70;    //assign QEI A to pin RP70
+    _QEB1R = 69;    //assign QEI B to pin RP69
 }

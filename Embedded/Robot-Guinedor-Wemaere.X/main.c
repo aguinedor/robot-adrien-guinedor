@@ -14,6 +14,7 @@
 #include "CB_TX1.h"
 #include "CB_RX1.h"
 #include "UART_Protocol.h"
+#include "QEI.h"
 
 #define STATE_ATTENTE 0
 #define STATE_ATTENTE_EN_COURS 1
@@ -66,6 +67,8 @@ int main(void)
     InitTimer23();
     InitTimer4();
     InitUART();
+    InitQEI1();
+    InitQEI2();
     //   PWMSetSpeedConsigne(-20, MOTEUR_DROIT);
     //   PWMSetSpeedConsigne(-20, MOTEUR_GAUCHE);
 

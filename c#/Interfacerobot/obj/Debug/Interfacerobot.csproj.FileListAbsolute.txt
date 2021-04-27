@@ -35,3 +35,5 @@ C:\Github\robot-adrien-guinedor\c#\Interfacerobot\bin\Debug\ExtendedSerialPort.d
 C:\Github\robot-adrien-guinedor\c#\Interfacerobot\obj\Debug\Interfacerobot.csproj.CoreCompileInputs.cache
 D:\OneDrive\Drive\Documents\GitHub\robot-adrien-guinedor\c#\Interfacerobot\bin\Debug\ExtendedSerialPort.dll
 D:\OneDrive\Drive\Documents\GitHub\robot-adrien-guinedor\c#\Interfacerobot\bin\Debug\MouseKeyboardActivityMonitor.dll
+C:\Github\robot-adrien-guinedor\c#\Interfacerobot\bin\Debug\Utilities.dll
+C:\Github\robot-adrien-guinedor\c#\Interfacerobot\bin\Debug\Utilities.pdb
