@@ -1,5 +1,4 @@
 #include "QEI.h"
-#include "IO.h"
 #include <p33EP512GM306.h>
 #include "robot.h"
 #include <math.h>
@@ -8,7 +7,7 @@
 #include "UART_Protocol.h"
 
 #define DISTROUES 281.2
-#define FREQ_ECH_QEI 1
+#define FREQ_ECH_QEI 250
 #define POSITION_DATA 0x0061
 
 double QeiDroitPosition_T_1,QeiGauchePosition_T_1,QeiDroitPosition,QeiGauchePosition,delta_d,delta_g,delta_theta ,dx;
@@ -43,8 +42,8 @@ void QEIUpdateData(void)
     QEI2RawValue += ((long)POS2HLD<<16);
 
     // Conversion en mm ( r\ 'egl \ 'e pour la taille des roues codeuses )
-    QeiDroitPosition = 0.01620*QEI1RawValue ;
-    QeiGauchePosition = -0.01620*QEI2RawValue;
+    QeiDroitPosition = -0.01620*QEI1RawValue ;
+    QeiGauchePosition = 0.01620*QEI2RawValue;
 
     //calcul des deltas de positions
     delta_d = QeiDroitPosition - QeiDroitPosition_T_1; 
@@ -67,9 +66,9 @@ void QEIUpdateData(void)
     robotState.angleRadianFromOdometry_1 = robotState.angleRadianFromOdometry ;
 
     // Calcul des positions dans le referentiel du terrain
-    robotState.xPosFromOdometry = robotState.xPosFromOdometry_1 + (robotState.vitesseLineaireFromOdometry/FREQ_ECH_QEI) * cos(robotState.angleRadianFromOdometry_1);
-    robotState.yPosFromOdometry = robotState.yPosFromOdometry_1 + (robotState.vitesseLineaireFromOdometry/FREQ_ECH_QEI) * sin(robotState.angleRadianFromOdometry_1);
-    robotState.angleRadianFromOdometry = robotState.angleRadianFromOdometry_1 + delta_theta;
+    robotState.xPosFromOdometry = robotState.xPosFromOdometry + (robotState.vitesseLineaireFromOdometry/FREQ_ECH_QEI )* cos(robotState.angleRadianFromOdometry_1);
+    robotState.yPosFromOdometry = robotState.yPosFromOdometry + (robotState.vitesseLineaireFromOdometry/FREQ_ECH_QEI )* sin(robotState.angleRadianFromOdometry_1);
+    robotState.angleRadianFromOdometry = robotState.angleRadianFromOdometry_1 + delta_theta; 
     if ( robotState.angleRadianFromOdometry > PI )
         robotState.angleRadianFromOdometry -= 2*PI ;
     if ( robotState.angleRadianFromOdometry < -PI )

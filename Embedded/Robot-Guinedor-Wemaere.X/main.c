@@ -89,7 +89,7 @@ int main(void)
             robotState.distanceTelemetreGauche2 = 34 / volts - 5;
             
             unsigned char IR[] = {robotState.distanceTelemetreDroit,robotState.distanceTelemetreCentre,robotState.distanceTelemetreGauche};
-            UartEncodeAndSendMessage(0x0030,3,IR);    
+            //UartEncodeAndSendMessage(0x0030,3,IR);    
         }
       
         for (i=0;i<CB_RX1_GetDataSize();i++)
@@ -98,6 +98,8 @@ int main(void)
             UartDecodeMessage(message);
             //SendMessage(&message, 1 ) ;
         }
+        
+        QEIUpdateData();
     }
     return (EXIT_SUCCESS);
 }

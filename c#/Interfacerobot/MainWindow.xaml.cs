@@ -34,7 +34,7 @@ namespace Interfacerobot
         public MainWindow()
         {
             InitializeComponent();
-            serialPort1 = new ReliableSerialPort("COM5", 115200, Parity.None, 8, StopBits.One);
+            serialPort1 = new ReliableSerialPort("COM3", 115200, Parity.None, 8, StopBits.One);
             serialPort1.DataReceived += SerialPort1_DataReceived;
             serialPort1.Open();
 
@@ -324,14 +324,14 @@ namespace Interfacerobot
                     tab = msgPayload.GetRange(8, 4);
                     robot.positionYOdo = tab.GetFloat();
                     tab = msgPayload.GetRange(12, 4);
-                    robot.AngleRadOdo = tab.GetFloat()* (float)(180 / 3.141592653589793);
+                    robot.AngleRadOdo = tab.GetFloat() * (float)(180 / 3.141592653589793);
                     tab = msgPayload.GetRange(16, 4);
                     robot.vLinéaireOdo = tab.GetFloat();
                     tab = msgPayload.GetRange(20, 4);
-                    robot.vAngulaireOdo = tab.GetFloat();
+                    robot.vAngulaireOdo = tab.GetFloat() * (float)(180 / 3.141592653589793);
                     textBoxPosition.Text = "Pos X: " + robot.positionXOdo.ToString() + "\n\r";
                     textBoxPosition.Text += "Pos Y: " + robot.positionYOdo.ToString() + "\n\r";
-                    textBoxPosition.Text += "Angle en °: " + robot.AngleRadOdo.ToString() + "\n\r";
+                    textBoxPosition.Text += "Angle en ° : " + robot.AngleRadOdo.ToString() + "\n\r";
                     textBoxPosition.Text += "Vitesse linéaire: " + robot.vLinéaireOdo.ToString() + "\n\r";
                     textBoxPosition.Text += "Vitesse Angulaire: " + robot.vAngulaireOdo.ToString();
                     break;
@@ -455,7 +455,7 @@ namespace Interfacerobot
                 buttonControl.Content = "Manuel";
                 autoControlActivated = true;
                 cpt = false;
-                BoxClavier.Visibility = Visibility.Hidden;
+                BoxClavier.Visibility = Visibility.Visible;
                 UartEncodeAndSendMessage(0x0052, 1, new byte[] {0});
             }
         }
