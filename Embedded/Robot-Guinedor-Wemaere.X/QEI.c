@@ -30,9 +30,16 @@ void InitQEI2(void)
 
 void QEIUpdateData(void)
 {
+    
     // on sauvgarde les ancinees valeurs 
     QeiDroitPosition_T_1 = QeiDroitPosition;
     QeiGauchePosition_T_1 = QeiGauchePosition;
+    
+    if(reset==1)
+    {
+        QeiDroitPosition_T_1 = 0;
+        QeiGauchePosition_T_1 = 0;
+    }
 
     //On réactualise les valeurs des positions
     long QEI1RawValue =POS1CNTL;
@@ -73,6 +80,7 @@ void QEIUpdateData(void)
         robotState.angleRadianFromOdometry -= 2*PI ;
     if ( robotState.angleRadianFromOdometry < -PI )
         robotState.angleRadianFromOdometry += 2*PI ;
+    
 } 
 
 void SendPositionData(void)

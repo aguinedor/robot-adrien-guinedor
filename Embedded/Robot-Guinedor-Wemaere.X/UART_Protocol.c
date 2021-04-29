@@ -9,6 +9,7 @@ int msgDecodedFunction = 0;
 int msgDecodedPayloadLength = 0;
 unsigned char msgDecodedPayload[128];
 int msgDecodedPayloadIndex = 0;
+int reset;
 
 typedef enum {
     Waiting,
@@ -133,6 +134,10 @@ void UartProcessDecodedMessage(unsigned char function,unsigned char payloadLengt
         
         case SET_ROBOT_MANUAL_CONTROL:
             SetRobotAutoControlState(payload[0]);
+        break;
+        
+        case RESET_ODO:
+            reset=1;
         break;
     }
 }

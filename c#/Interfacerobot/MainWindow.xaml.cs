@@ -461,6 +461,11 @@ namespace Interfacerobot
         }
 
         #endregion
+
+        private void buttonReset_Click(object sender, RoutedEventArgs e)
+        {
+            UartEncodeAndSendMessage(0x0062,1, new byte[] {0});
+        }
     }
 }
 

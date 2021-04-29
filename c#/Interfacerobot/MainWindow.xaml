@@ -48,6 +48,7 @@
         <Button x:Name="buttonEnvoyer" Content="clear" Grid.Column="1" Grid.Row="2" Margin="68,5,208,5" Background="White" Click="buttonEnvoyer_Click"/>
         <Button x:Name="buttonTest" Content="Test " Grid.Column="1" Grid.Row="2" Margin="208,5,68,5"  Background="White" Click="buttonTest_Click" />
         <Button x:Name="buttonControl" Content="Automatique" Grid.Column="3" Grid.Row="2" Margin="10,5,265,5" Background="White" Click="buttonControl_Click"/>
+        <Button x:Name="buttonReset" Content="Reset odometry" Grid.Column="1" Grid.Row="4" Margin="246,18,5,-18" Background="White" Click="buttonReset_Click"/>
         <CheckBox x:Name="CheckBoxLed1" Content="Led 1"  Foreground="White"  HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="0,30,0,0" Grid.Row="3"/>
         <CheckBox x:Name="CheckBoxLed2" Content="Led 2"  Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="0,60,0,0" Grid.Row="3"/>
         <CheckBox x:Name="CheckBoxLed3" Content="Led 3"  Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="0,90,0,0" Grid.Row="3"/>
