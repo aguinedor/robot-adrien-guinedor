@@ -13,6 +13,7 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,19 +49,12 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="AsservissementRobot2RouesDisplay.xaml">
+    <Page Include="AsservissementXYThetaControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="AsservissementRobot4RouesHoloDisplay.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="AsservissementRobot2RouesDisplay.xaml.cs">
-      <DependentUpon>AsservissementRobot2RouesDisplay.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="AsservissementRobot4RouesHoloDisplay.xaml.cs">
-      <DependentUpon>AsservissementRobot4RouesHoloDisplay.xaml</DependentUpon>
+    <Compile Include="AsservissementXYThetaControl.xaml.cs">
+      <DependentUpon>AsservissementXYThetaControl.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -88,12 +82,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Constants\Constants.csproj">
-      <Project>{0540B497-B2CE-40A1-84B5-3109CE2F3146}</Project>
-      <Name>Constants</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
-      <Project>{8E7D0DA4-9A13-4B18-A90E-0243BBCCE40A}</Project>
+      <Project>{8e7d0da4-9a13-4b18-a90e-0243bbcce40a}</Project>
       <Name>Utilities</Name>
     </ProjectReference>
   </ItemGroup>

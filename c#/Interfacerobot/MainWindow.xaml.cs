@@ -34,7 +34,7 @@ namespace Interfacerobot
         public MainWindow()
         {
             InitializeComponent();
-            serialPort1 = new ReliableSerialPort("COM3", 115200, Parity.None, 8, StopBits.One);
+            serialPort1 = new ReliableSerialPort("COM5", 115200, Parity.None, 8, StopBits.One);
             serialPort1.DataReceived += SerialPort1_DataReceived;
             serialPort1.Open();
 
@@ -421,6 +421,7 @@ namespace Interfacerobot
            // UartEncodeAndSendMessage(0x0080, (UInt16)message.Length, message);
             UartEncodeAndSendMessage(0x0053, 1, new byte[] { 4 });
             UartEncodeAndSendMessage(0x0050, 5, new byte[] { 2, 0, 0, 0, 10 });
+            UartEncodeAndSendMessage(0x0061, 5, new byte[] { 0, 0, 0, 0, 0 });
         }
 
         private void TextBoxEmission_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
