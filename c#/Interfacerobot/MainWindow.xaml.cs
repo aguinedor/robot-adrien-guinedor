@@ -412,6 +412,8 @@ namespace Interfacerobot
         private void buttonTest_Click(object sender, RoutedEventArgs e)
         {
             byte[] message = Encoding.ASCII.GetBytes("Bonjour");
+
+           // ProcessDecodedMessage(0x0020, 2, new byte[] { 3,1 });
            UartEncodeAndSendMessage(0x0020, 2, new byte[] { 3, 1 });   //led 3 true
            UartEncodeAndSendMessage(0x0030, 3, new byte[] { 25, 30, 25 });  //IR 25cm 30cm 25cm
            UartEncodeAndSendMessage(0x0040, 2, new byte[] { 41, 38 });  // Moteur1 41% Moteur2 38%

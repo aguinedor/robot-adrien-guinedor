@@ -88,8 +88,8 @@ int main(void)
             volts = ((float) result [3])*3.3 / 4096 * 3.2;
             robotState.distanceTelemetreGauche2 = 34 / volts - 5;
             
-            //unsigned char IR[] = {robotState.distanceTelemetreDroit,robotState.distanceTelemetreCentre,robotState.distanceTelemetreGauche};
-            //UartEncodeAndSendMessage(0x0030,3,IR);    
+            unsigned char IR[] = {robotState.distanceTelemetreDroit,robotState.distanceTelemetreCentre,robotState.distanceTelemetreGauche};
+            UartEncodeAndSendMessage(0x0030,3,IR);    
         }
       
         for (i=0;i<CB_RX1_GetDataSize();i++)

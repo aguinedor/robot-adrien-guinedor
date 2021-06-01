@@ -93,7 +93,7 @@ void UartDecodeMessage(unsigned char c)
                 msgDecodedPayloadIndex = 0;
                 rcvState = Payload;
             }
-            else
+            else 
             {
                 rcvState = CheckSum;
             }
@@ -129,6 +129,7 @@ void UartProcessDecodedMessage(unsigned char function,unsigned char payloadLengt
     switch(function)
     {
         case SET_ROBOT_STATE:
+            
             SetRobotState(payload[0]);
             UartEncodeAndSendMessage(0x0053,1, payload);
         
