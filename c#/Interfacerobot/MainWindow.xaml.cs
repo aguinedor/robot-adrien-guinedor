@@ -103,7 +103,6 @@ namespace Interfacerobot
             message = 0x0080,
             RobotState=0x0050,
             Clavier=0x0053,
-            Position=0x0061,
         }
 
         public enum StateRobot
@@ -318,23 +317,6 @@ namespace Interfacerobot
                     textBoxPilotage.Text = "Instruction reçue: " + ((StateRobot)msgPayload[0]).ToString() ;
                 break;
 
-                case Functions.Position:
-                    byte[] tab = msgPayload.GetRange(4, 4);
-                    robot.positionXOdo = tab.GetFloat();
-                    tab = msgPayload.GetRange(8, 4);
-                    robot.positionYOdo = tab.GetFloat();
-                    tab = msgPayload.GetRange(12, 4);
-                    robot.AngleRadOdo = tab.GetFloat() * (float)(180 / 3.141592653589793);
-                    tab = msgPayload.GetRange(16, 4);
-                    robot.vLinéaireOdo = tab.GetFloat();
-                    tab = msgPayload.GetRange(20, 4);
-                    robot.vAngulaireOdo = tab.GetFloat() * (float)(180 / 3.141592653589793);
-                    textBoxPosition.Text = "Pos X: " + robot.positionXOdo.ToString() + "\n\r";
-                    textBoxPosition.Text += "Pos Y: " + robot.positionYOdo.ToString() + "\n\r";
-                    textBoxPosition.Text += "Angle en ° : " + robot.AngleRadOdo.ToString() + "\n\r";
-                    textBoxPosition.Text += "Vitesse linéaire: " + robot.vLinéaireOdo.ToString() + "\n\r";
-                    textBoxPosition.Text += "Vitesse Angulaire: " + robot.vAngulaireOdo.ToString();
-                    break;
             }
         }
 
