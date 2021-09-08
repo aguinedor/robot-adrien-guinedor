@@ -136,7 +136,7 @@ void UartProcessDecodedMessage(unsigned char function,unsigned char payloadLengt
         case SET_ROBOT_MANUAL_CONTROL:
             SetRobotAutoControlState(payload[0]);
         break;
-        
+            
         case RESET_ODO:
             reset=1;
         break;

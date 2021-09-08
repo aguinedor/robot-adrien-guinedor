@@ -34,7 +34,7 @@ namespace Interfacerobot
         public MainWindow()
         {
             InitializeComponent();
-            serialPort1 = new ReliableSerialPort("COM5", 115200, Parity.None, 8, StopBits.One);
+            serialPort1 = new ReliableSerialPort("COM3", 115200, Parity.None, 8, StopBits.One);
             serialPort1.DataReceived += SerialPort1_DataReceived;
             serialPort1.Open();
 
@@ -323,44 +323,24 @@ namespace Interfacerobot
         bool autoControlActivated = false;
         private void HookManager_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
-            var imageBrush = new ImageBrush();
             if (autoControlActivated == true)
             {
                 switch (e.KeyCode)
                 {
                     case Keys.Left:
-                        UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_TOURNE_SUR_PLACE_GAUCHE });
-                        //TextBoxReception.Text = "Left\n\r";
-                        imageBrush.ImageSource = new BitmapImage(new Uri("keyboard_key_left.png", UriKind.Relative));
-                        BoxClavier.Background = imageBrush;
+                        UartEncodeAndSendMessage(0x0051,1,new byte[] { (byte)StateRobot.STATE_TOURNE_SUR_PLACE_GAUCHE });
                         break;
-
                     case Keys.Right:
                         UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_TOURNE_SUR_PLACE_DROITE });
-                        //TextBoxReception.Text = "Right\n\r";
-                        imageBrush.ImageSource = new BitmapImage(new Uri("keyboard_key_right.png", UriKind.Relative));
-                        BoxClavier.Background = imageBrush;
                         break;
-
                     case Keys.Up:
                         UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_AVANCE });
-                        //TextBoxReception.Text = "up\n\r";
-                        imageBrush.ImageSource = new BitmapImage(new Uri("keyboard_key_up.png", UriKind.Relative));
-                        BoxClavier.Background = imageBrush;
                         break;
-
                     case Keys.Down:
-                        UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_RECULE });
-                        //TextBoxReception.Text = "down\n\r";
-                        imageBrush.ImageSource = new BitmapImage(new Uri("keyboard_key_down.png", UriKind.Relative));
-                        BoxClavier.Background = imageBrush;
-                        break;
-
-                    case Keys.PageDown:
                         UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_ARRET });
-                        //TextBoxReception.Text = "Pagedown\n\r";
-                        imageBrush.ImageSource = new BitmapImage(new Uri("keyboard_key_page_down.png", UriKind.Relative));
-                        BoxClavier.Background = imageBrush;
+                        break;
+                    case Keys.PageDown:
+                        UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_RECULE });
                         break;
                 }
             }
@@ -420,26 +400,26 @@ namespace Interfacerobot
             }
         }
 
-        bool cpt = true;
+        bool compteur_etat = true;
         private void buttonControl_Click(object sender, RoutedEventArgs e)
         {
             
-            if (!cpt)
+            if (!compteur_etat)
             {
-                buttonControl.Background = Brushes.White;
+                buttonControl.Background = Brushes.Red;
                 buttonControl.Content = "Automatique";
                 autoControlActivated = false;
-                cpt = true;
+                compteur_etat = true;
                 BoxClavier.Visibility = Visibility.Hidden;
                 BoxClavier.Background = Brushes.Black;
                 UartEncodeAndSendMessage(0x0052, 1, new byte[] {1});
             }
             else
             {
-                buttonControl.Background = Brushes.Red;
+                buttonControl.Background = Brushes.Green;
                 buttonControl.Content = "Manuel";
                 autoControlActivated = true;
-                cpt = false;
+                compteur_etat = false;
                 BoxClavier.Visibility = Visibility.Visible;
                 UartEncodeAndSendMessage(0x0052, 1, new byte[] {0});
             }

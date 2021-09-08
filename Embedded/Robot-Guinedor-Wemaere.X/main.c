@@ -52,7 +52,7 @@
 #define TUNNEL_GAUCHE 6
 #define TUNNEL_DROITE 7
 
-unsigned int mode, vr = 15, rdm = 0,i; //  vitesses (manoeuvre,route) et modes
+unsigned int mode, vr = 30, rdm = 0,i; //  vitesses (manoeuvre,route) et modes
 unsigned char message;
 //unsigned char* test= "Bonjour" ;
 
@@ -126,6 +126,7 @@ void SetRobotAutoControlState(unsigned char ReceivedControl)
     {
         ModeAuto=1;
         stateRobot=STATE_ATTENTE;
+      //  UartEncodeAndSendMessage(0x0080,2, unsigned char* = "ok" );
     }
 }
 
@@ -227,8 +228,8 @@ void OperatingSystemLoop(void) {
             break;
 
         case STATE_TOURNE_SUR_PLACE_GAUCHE:
-            PWMSetSpeedConsigne(10, MOTEUR_DROIT);
-            PWMSetSpeedConsigne(-10, MOTEUR_GAUCHE);
+            PWMSetSpeedConsigne(20, MOTEUR_DROIT);
+            PWMSetSpeedConsigne(-20, MOTEUR_GAUCHE);
             stateRobot = STATE_TOURNE_SUR_PLACE_GAUCHE_EN_COURS;
             break;
         case STATE_TOURNE_SUR_PLACE_GAUCHE_EN_COURS:
@@ -236,8 +237,8 @@ void OperatingSystemLoop(void) {
             break;
 
         case STATE_TOURNE_SUR_PLACE_DROITE:
-            PWMSetSpeedConsigne(-10, MOTEUR_DROIT);
-            PWMSetSpeedConsigne(10, MOTEUR_GAUCHE);
+            PWMSetSpeedConsigne(-20, MOTEUR_DROIT);
+            PWMSetSpeedConsigne(20, MOTEUR_GAUCHE);
             stateRobot = STATE_TOURNE_SUR_PLACE_DROITE_EN_COURS;
             break;
         case STATE_TOURNE_SUR_PLACE_DROITE_EN_COURS:
