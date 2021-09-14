@@ -30,7 +30,6 @@
 //JACK
 #define JACK _RA1
 
-
 // Prototypes fonctions
 void InitIO();
 

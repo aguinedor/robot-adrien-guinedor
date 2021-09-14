@@ -14,3 +14,9 @@ C:\Users\TABLE 6\Downloads\ExtendedSerialPort\ExtendedSerialPort\bin\Debug\Exten
 C:\Users\TABLE 6\Downloads\ExtendedSerialPort\ExtendedSerialPort\obj\Debug\ExtendedSerialPort.csproj.CoreCompileInputs.cache
 C:\Users\TABLE 6\Downloads\ExtendedSerialPort\ExtendedSerialPort\obj\Debug\ExtendedSerialPort.dll
 C:\Users\TABLE 6\Downloads\ExtendedSerialPort\ExtendedSerialPort\obj\Debug\ExtendedSerialPort.pdb
+C:\Github\robot-adrien-guinedor\c#\ExtendedSerialPort\ExtendedSerialPort\bin\Debug\ExtendedSerialPort.dll
+C:\Github\robot-adrien-guinedor\c#\ExtendedSerialPort\ExtendedSerialPort\bin\Debug\ExtendedSerialPort.pdb
+C:\Github\robot-adrien-guinedor\c#\ExtendedSerialPort\ExtendedSerialPort\obj\Debug\ExtendedSerialPort.csprojAssemblyReference.cache
+C:\Github\robot-adrien-guinedor\c#\ExtendedSerialPort\ExtendedSerialPort\obj\Debug\ExtendedSerialPort.csproj.CoreCompileInputs.cache
+C:\Github\robot-adrien-guinedor\c#\ExtendedSerialPort\ExtendedSerialPort\obj\Debug\ExtendedSerialPort.dll
+C:\Github\robot-adrien-guinedor\c#\ExtendedSerialPort\ExtendedSerialPort\obj\Debug\ExtendedSerialPort.pdb

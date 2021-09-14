@@ -113,14 +113,14 @@ void SetRobotState(unsigned char RobotState)
 
 unsigned char ModeAuto=1;
 
-
 void SetRobotAutoControlState(unsigned char ReceivedControl)
 {
     if(ReceivedControl==0)
     {
         ModeAuto=0;
         stateRobot=STATE_ARRET;
-        vr=15;
+        LED_BLEUE=1;
+        LED_ORANGE=1;
     }
     else if(ReceivedControl==1)
     {
@@ -135,18 +135,18 @@ void OperatingSystemLoop(void) {
         vr = 15; //vitesse de manoeuvre, obstacle a proximité
         LED_BLANCHE=0;
         LED_BLEUE=0;
-        LED_ORANGE=1;
+        LED_ORANGE=0;
     }
     else if (mode == 2){
         vr = 20; //vitesse moyenne, pour ralentir
-        LED_BLANCHE=1;
+        LED_BLANCHE=0;
         LED_BLEUE=0;
         LED_ORANGE=0;
     }
     else if (mode == 3){
         vr = 30; //vitesse de pointe, obstacle a + de 60cm
         LED_BLANCHE=0;
-        LED_BLEUE=1;
+        LED_BLEUE=0;
         LED_ORANGE=0;
     } 
 

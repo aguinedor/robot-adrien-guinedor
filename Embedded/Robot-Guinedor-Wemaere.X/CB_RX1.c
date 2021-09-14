@@ -45,25 +45,22 @@ void __attribute__((interrupt, no_auto_psv)) _U1RXInterrupt(void)
 {
     IFS0bits.U1RXIF = 0; // clear RX interrupt flag
     /* check for receive errors */
-    if (U1STAbits.FERR == 1) 
-    {
+    if (U1STAbits.FERR == 1){
         U1STAbits.FERR = 0;
     }
     /* must clear the overrun error to keep uart receiving */
-    if (U1STAbits.OERR == 1) 
-    {
+    if (U1STAbits.OERR == 1){
         U1STAbits.OERR = 0;
     }
     /* get the data */
-    while (U1STAbits.URXDA == 1) 
-    {
+    while (U1STAbits.URXDA == 1){
         CB_RX1_Add(U1RXREG);
     }
 }
 
 int CB_RX1_GetRemainingSize(void) 
 {
-    if (cbRx1Head > cbRx1Tail)
+    if (cbRx1Head >= cbRx1Tail)
     {
         return CBRX1_BUFFER_SIZE - (cbRx1Head - cbRx1Tail);
     }
