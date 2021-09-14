@@ -4,6 +4,7 @@
 #include "CB_TX1.h"
 #include "UART.h"
 #include "main.h"
+#include "IO.h"
 
 int msgDecodedFunction = 0;
 int msgDecodedPayloadLength = 0;
@@ -133,6 +134,8 @@ void UartProcessDecodedMessage(unsigned char function,unsigned char payloadLengt
         
         case SET_ROBOT_MANUAL_CONTROL:
             SetRobotAutoControlState(payload[0]);
+            LED_BLEUE=1;
+            LED_ORANGE=1;
         break;
             
         case RESET_ODO:
