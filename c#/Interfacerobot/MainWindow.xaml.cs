@@ -71,7 +71,8 @@ namespace Interfacerobot
             //robot.ReceivedText += Encoding.UTF8.GetString(e.Data, 0, e.Data.Length);
             for (int i = 0; i < e.Data.Length; i++)
             {
-                robot.byteListReceived.Enqueue(e.Data[i]);
+                DecodeMessage(e.Data[i]);
+                //robot.byteListReceived.Enqueue(e.Data[i]);
             }
         }
 
@@ -103,6 +104,7 @@ namespace Interfacerobot
             message = 0x0080,
             RobotState=0x0050,
             Clavier=0x0053,
+            Odometrie=0x0061,
         }
 
         public enum StateRobot
@@ -224,19 +226,20 @@ namespace Interfacerobot
                     calculatedChecksum = CalculateChecksum(msgDecodedFunction, msgDecodedPayloadLength, msgDecodedPayload);
                     if (calculatedChecksum == receivedChecksum)
                     {
-                        CheckBoxMessage.IsChecked = true;//Success, on a un message valide
-                        CheckBoxMessage.Background = Brushes.Green;
-                        CheckBoxMessage.Foreground = Brushes.Green;
-                        CheckBoxMessage.Content = " Message Correct";
-                        ProcessDecodedMessage(msgDecodedFunction, msgDecodedPayloadLength, msgDecodedPayload);
+                        //CheckBoxMessage.IsChecked = true;//Success, on a un message valide
+                        //CheckBoxMessage.Background = Brushes.Green;
+                        //CheckBoxMessage.Foreground = Brushes.Green;
+                        //CheckBoxMessage.Content = " Message Correct";
+                        Dispatcher.Invoke(delegate { ProcessDecodedMessage(msgDecodedFunction, msgDecodedPayloadLength, msgDecodedPayload); });
+                        
                     }
                     else
                     {
-                        CheckBoxMessage.IsChecked = false;
-                        CheckBoxMessage.Background = Brushes.Red;
-                        CheckBoxMessage.Foreground = Brushes.Red;
-                        CheckBoxMessage.Content = " /!\\ Message Corrompu";
-                        TextBoxReception.Text += "\n\r/!\\ Attention, message corrompu. fonctions: " + "0x" + msgDecodedFunction.ToString("X4");
+                        //CheckBoxMessage.IsChecked = false;
+                        //CheckBoxMessage.Background = Brushes.Red;
+                        //CheckBoxMessage.Foreground = Brushes.Red;
+                        //CheckBoxMessage.Content = " /!\\ Message Corrompu";
+                        Dispatcher.Invoke(delegate { TextBoxReception.Text += "\n\r/!\\ Attention, message corrompu. fonctions: " + "0x" + msgDecodedFunction.ToString("X4"); });
                     }
                     rcvState = StateReception.Waiting;
                     break;
@@ -313,9 +316,11 @@ namespace Interfacerobot
                     RtbReception.Text = ((StateRobot)(msgPayload[0])).ToString() + "\n\rTemps: " + instant.ToString() + " ms";
                 break;
 
-                case Functions.Clavier:
-                    textBoxPilotage.Text = "Instruction reçue: " + ((StateRobot)msgPayload[0]).ToString() ;
+                case Functions.Odometrie:
+                    
                 break;
+
+                        
 
             }
         }
@@ -329,18 +334,23 @@ namespace Interfacerobot
                 {
                     case Keys.Left:
                         UartEncodeAndSendMessage(0x0051,1,new byte[] { (byte)StateRobot.STATE_TOURNE_SUR_PLACE_GAUCHE });
+                        textBoxClavier.Text = "Gauche";
                         break;
                     case Keys.Right:
                         UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_TOURNE_SUR_PLACE_DROITE });
+                        textBoxClavier.Text = "Droite";
                         break;
                     case Keys.Up:
                         UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_AVANCE });
+                        textBoxClavier.Text = "Avance";
                         break;
                     case Keys.Down:
                         UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_RECULE });
+                        textBoxClavier.Text = "Recule";
                         break;
                     case Keys.PageDown:
                         UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_ARRET });
+                        textBoxClavier.Text = "Arret";
                         break;
                 }
             }
@@ -408,8 +418,10 @@ namespace Interfacerobot
                 autoControlActivated = false;
                 compteur_etat = true;
                 UartEncodeAndSendMessage(0x0052, 1, new byte[] {1});
+                textBoxClavier.Text = "";
             }
-            else{         
+            else
+            {         
                 buttonControl.Content = "Manuel";
                 autoControlActivated = true;
                 compteur_etat = false;
