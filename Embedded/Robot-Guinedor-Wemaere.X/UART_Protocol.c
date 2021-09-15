@@ -14,6 +14,7 @@ int reset;
 
 typedef enum {
     Waiting,
+            
     FunctionMSB,
     FunctionLSB,
     PayloadLengthMSB,

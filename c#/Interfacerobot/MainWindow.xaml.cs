@@ -337,10 +337,10 @@ namespace Interfacerobot
                         UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_AVANCE });
                         break;
                     case Keys.Down:
-                        UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_ARRET });
+                        UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_RECULE });
                         break;
                     case Keys.PageDown:
-                        UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_RECULE });
+                        UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_ARRET });
                         break;
                 }
             }
@@ -402,25 +402,17 @@ namespace Interfacerobot
 
         bool compteur_etat = true;
         private void buttonControl_Click(object sender, RoutedEventArgs e)
-        {
-            
-            if (!compteur_etat)
-            {
-                buttonControl.Background = Brushes.Red;
+        {            
+            if (!compteur_etat){
                 buttonControl.Content = "Automatique";
                 autoControlActivated = false;
                 compteur_etat = true;
-                BoxClavier.Visibility = Visibility.Hidden;
-                BoxClavier.Background = Brushes.Black;
                 UartEncodeAndSendMessage(0x0052, 1, new byte[] {1});
             }
-            else
-            {
-                buttonControl.Background = Brushes.Green;
+            else{         
                 buttonControl.Content = "Manuel";
                 autoControlActivated = true;
                 compteur_etat = false;
-                BoxClavier.Visibility = Visibility.Visible;
                 UartEncodeAndSendMessage(0x0052, 1, new byte[] {0});
             }
         }
