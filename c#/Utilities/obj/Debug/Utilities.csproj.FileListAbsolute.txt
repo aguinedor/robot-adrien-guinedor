@@ -47,3 +47,9 @@ C:\Github\robot-adrien-guinedor\c#\Utilities\obj\Debug\Utilities.csprojAssemblyR
 C:\Github\robot-adrien-guinedor\c#\Utilities\obj\Debug\Utilities.csproj.CoreCompileInputs.cache
 C:\Github\robot-adrien-guinedor\c#\Utilities\obj\Debug\Utilities.dll
 C:\Github\robot-adrien-guinedor\c#\Utilities\obj\Debug\Utilities.pdb
+C:\Users\Adrien\Documents\GitHub\robot-adrien-guinedor\c#\Utilities\bin\Debug\Utilities.dll
+C:\Users\Adrien\Documents\GitHub\robot-adrien-guinedor\c#\Utilities\bin\Debug\Utilities.pdb
+C:\Users\Adrien\Documents\GitHub\robot-adrien-guinedor\c#\Utilities\obj\Debug\Utilities.csprojAssemblyReference.cache
+C:\Users\Adrien\Documents\GitHub\robot-adrien-guinedor\c#\Utilities\obj\Debug\Utilities.csproj.CoreCompileInputs.cache
+C:\Users\Adrien\Documents\GitHub\robot-adrien-guinedor\c#\Utilities\obj\Debug\Utilities.dll
+C:\Users\Adrien\Documents\GitHub\robot-adrien-guinedor\c#\Utilities\obj\Debug\Utilities.pdb
