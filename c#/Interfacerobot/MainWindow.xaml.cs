@@ -226,19 +226,11 @@ namespace Interfacerobot
                     calculatedChecksum = CalculateChecksum(msgDecodedFunction, msgDecodedPayloadLength, msgDecodedPayload);
                     if (calculatedChecksum == receivedChecksum)
                     {
-                        //CheckBoxMessage.IsChecked = true;//Success, on a un message valide
-                        //CheckBoxMessage.Background = Brushes.Green;
-                        //CheckBoxMessage.Foreground = Brushes.Green;
-                        //CheckBoxMessage.Content = " Message Correct";
                         Dispatcher.Invoke(delegate { ProcessDecodedMessage(msgDecodedFunction, msgDecodedPayloadLength, msgDecodedPayload); });
                         
                     }
                     else
                     {
-                        //CheckBoxMessage.IsChecked = false;
-                        //CheckBoxMessage.Background = Brushes.Red;
-                        //CheckBoxMessage.Foreground = Brushes.Red;
-                        //CheckBoxMessage.Content = " /!\\ Message Corrompu";
                         Dispatcher.Invoke(delegate { TextBoxReception.Text += "\n\r/!\\ Attention, message corrompu. fonctions: " + "0x" + msgDecodedFunction.ToString("X4"); });
                     }
                     rcvState = StateReception.Waiting;
