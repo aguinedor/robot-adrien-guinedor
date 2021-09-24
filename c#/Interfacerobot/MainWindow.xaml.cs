@@ -245,6 +245,7 @@ namespace Interfacerobot
         void ProcessDecodedMessage(int msgFunction, int msgPayloadLength, byte[] msgPayload)
         {
             int numLed, etatLed, IRGauche, IRCentre, IRDroite, MG, MD;
+            float xpos, ypos, angleRadian, vitesseLineaire, vitesseAngulaire ;
 
             switch((Functions)msgFunction)
             {
@@ -309,8 +310,23 @@ namespace Interfacerobot
                 break;
 
                 case Functions.Odometrie:
-                    
-                break;
+                    byte[] tab = msgPayload.GetRange(4, 4);
+                    xpos = tab.GetFloat();
+                    tab = msgPayload.GetRange(8, 4);
+                    ypos = tab.GetFloat();
+                    tab = msgPayload.GetRange(12, 4);
+                    angleRadian = tab.GetFloat();
+                    tab = msgPayload.GetRange(16, 4);
+                    vitesseLineaire = tab.GetFloat();
+                    tab = msgPayload.GetRange(20, 4);
+                    vitesseAngulaire = tab.GetFloat();
+                    xPos.Text = (xpos).ToString();
+                    yPos.Text = (ypos).ToString();
+                    angleRD.Text = (angleRadian*180/Math.PI).ToString();
+                    vLineaire.Text = (vitesseLineaire).ToString();
+                    vAngulaire.Text = (vitesseAngulaire).ToString();
+
+                    break;
 
                         
 
