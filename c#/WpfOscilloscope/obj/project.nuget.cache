@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "GLX7OfTmNq5IAasRtIRh7zOyvm3s2bJSuRGQRKIw8Mxf5zlIzsrwjxKB/89KWZOUX7FPX9mZBhN+8wd5lQeKPw==",
+  "success": true,
+  "projectFilePath": "C:\\Github\\robot-adrien-guinedor\\c#\\WpfOscilloscope\\WpfOscilloscopeControl.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\TABLE 6\\.nuget\\packages\\scichart\\6.3.0.13476\\scichart.6.3.0.13476.nupkg.sha512"
+  ],
+  "logs": []
+}

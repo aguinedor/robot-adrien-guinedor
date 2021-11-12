@@ -3,13 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:oscillo="clr-namespace:WpfOscilloscopeControl;assembly=WpfOscilloscopeControl"
         xmlns:WpfAsservDisplay="clr-namespace:WpfAsservissementDisplay;assembly=WpfAsservissementDisplay"
         xmlns:local="clr-namespace:Interfacerobot"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800" Background="Black">
+        Title="MainWindow" Height="600" Width="1200" Background="Black">
 
-    <Grid Background="Gray" Margin="0,0,-8,-43">
-
+    <Grid Background="Gray" >
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="7*"/>
@@ -32,6 +32,7 @@
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="7*"/>
         </Grid.ColumnDefinitions>
 
         <GroupBox x:Name="Reception" Header="Reception" Foreground="Black" Margin="0" Background="LightGray" BorderBrush="Black" Grid.Column="5" Grid.ColumnSpan="4" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Disabled">
@@ -48,11 +49,11 @@
             <TextBox x:Name="TextBoxMoteurs" Margin="0" TextWrapping="Wrap" Text="" TextChanged="textBox_TextChanged" Foreground="Black" Background="{x:Null}" BorderBrush="{x:Null}" IsReadOnly="True" />
         </GroupBox>
 
-        <GroupBox x:Name="RtbState" Header="Robot state" Foreground="Black" Grid.ColumnSpan="4"  Background="LightGray" BorderBrush="Black" Grid.Row="5" Grid.Column="5" Margin="0,3">
+        <GroupBox x:Name="RtbState" Header="Robot state" Foreground="Black" Grid.ColumnSpan="1" Grid.RowSpan="3"  Background="LightGray" BorderBrush="Black" Grid.Row="3" Grid.Column="1" Margin="0,3">
             <TextBox x:Name="RtbReception" Margin="0" TextWrapping="Wrap" Text="" TextChanged="textBox_TextChanged" Foreground="Black" Background="{x:Null}" BorderBrush="{x:Null}" IsReadOnly="True"/>
         </GroupBox>
-        <GroupBox x:Name="Pilotage" Header="Pilotage Clavier" Foreground="Black" Grid.ColumnSpan="4" Background="LightGray" BorderBrush="Black" Grid.Row="6" Grid.Column="5" Margin="0,3">
-            <TextBox x:Name="textBoxClavier" Margin="0" TextWrapping="Wrap" Text="" TextChanged="textBox_TextChanged" Foreground="Black" Background="{x:Null}" BorderBrush="{x:Null}" IsReadOnly="True"/>
+        <GroupBox x:Name="Oscillo" Header="Oscilloscope" Foreground="Black" Grid.ColumnSpan="4" Grid.RowSpan="2" Background="LightGray" BorderBrush="Black" Grid.Row="5" Grid.Column="5" Margin="0,3">
+            <oscillo:WpfOscilloscope x:Name="oscilloSpeed"/>
         </GroupBox>
 
         <Button x:Name="buttonEnvoyer" Content="clear" Grid.Column="5" Grid.Row="3" Margin="5,0" Background="Lightgray" Click="buttonEnvoyer_Click"/>

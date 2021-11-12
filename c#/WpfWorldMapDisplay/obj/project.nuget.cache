@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "HEzahd9btzGCv4FjzHJCObbXkP87O/FMGVHYcg0+1MMsFwcNM0xwSFFYeBL29l/hSwFPLy7+tF/rdcldIBI5mA==",
+  "success": true,
+  "projectFilePath": "C:\\Github\\robot-adrien-guinedor\\c#\\WpfWorldMapDisplay\\WpfWorldMapDisplay.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\TABLE 6\\.nuget\\packages\\scichart\\6.3.0.13476\\scichart.6.3.0.13476.nupkg.sha512"
+  ],
+  "logs": []
+}
