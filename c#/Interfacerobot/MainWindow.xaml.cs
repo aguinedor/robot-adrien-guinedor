@@ -304,13 +304,16 @@ namespace Interfacerobot
                     IRDroite = msgPayload[0];
                     IRCentre = msgPayload[1];
                     IRGauche = msgPayload[2];
-                    TextBoxTelemetres.Text = "IR Gauche:" + IRGauche.ToString() + "cm\n\r" + "IR Centre:" + IRCentre.ToString() + "cm\n\r" + "IR Droite:" + IRDroite.ToString() + "cm";
+                    TelemetreGauche.Text = "Gauche : \n\r" + IRGauche.ToString() + " cm";
+                    TelemetreCentre.Text = "Centre : \n\r" + IRCentre.ToString() + " cm";
+                    TelemetreDroite.Text = "Droite : \n\r" + IRDroite.ToString() + " cm";
                 break;
 
                 case Functions.moteurs:
                     MG = msgPayload[0];
                     MD = msgPayload[1];
-                    TextBoxMoteurs.Text = "Vitesse Gauche:" + MG.ToString() + "%\n\r" + "Vitesse Droite:" + MD.ToString() + "%\n\r";
+                    VitesseGauche.Text = "Vitesse Gauche : \n\r" + MG.ToString() + " %";
+                    VitesseDroite.Text = "Vitesse Droite : \n\r" + MD.ToString() + " %";
                 break;
 
                 case Functions.message:
@@ -319,7 +322,7 @@ namespace Interfacerobot
 
                 case Functions.RobotState:
                     int instant = (((int)msgPayload[1]) << 24) + (((int)msgPayload[2]) << 16) + (((int)msgPayload[3]) << 8) + (((int)msgPayload[4]));
-                    RtbReception.Text = ((StateRobot)(msgPayload[0])).ToString() + "\n\rTemps: " + instant.ToString() + " ms";
+                    //RtbReception.Text = ((StateRobot)(msgPayload[0])).ToString() + "\n\rTemps: " + instant.ToString() + " ms";
                 break;
 
                 case Functions.Odometrie:
@@ -395,12 +398,10 @@ namespace Interfacerobot
             robot.ReceivedText = null;
             TextBoxEmission.Text = "";
             TextBoxReception.Text = "";
-
         }
 
         private void sendMessage()
-        {
-            
+        {    
             //TextBoxReception.Text = TextBoxReception.Text + "Message reçu: " + TextBoxEmission.Text + "\r\n";
             //TextBoxEmission.Text = "";
             serialPort1.Write(TextBoxEmission.Text);
@@ -410,7 +411,6 @@ namespace Interfacerobot
         private void buttonTest_Click(object sender, RoutedEventArgs e)
         {
             byte[] message = Encoding.ASCII.GetBytes("Bonjour");
-
            // ProcessDecodedMessage(0x0020, 2, new byte[] { 3,1 });
            UartEncodeAndSendMessage(0x0020, 2, new byte[] { 3, 1 });   //led 3 true
            UartEncodeAndSendMessage(0x0030, 3, new byte[] { 25, 30, 25 });  //IR 25cm 30cm 25cm
@@ -461,6 +461,7 @@ namespace Interfacerobot
         {
             UartEncodeAndSendMessage(0x0062,1, new byte[] {0});
         }
+
     }
 }
 

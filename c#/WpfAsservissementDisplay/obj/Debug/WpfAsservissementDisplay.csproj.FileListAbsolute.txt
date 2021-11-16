@@ -18,7 +18,6 @@ C:\Users\Adrien\Documents\GitHub\robot-adrien-guinedor\c#\WpfAsservissementDispl
 C:\Users\Adrien\Documents\GitHub\robot-adrien-guinedor\c#\WpfAsservissementDisplay\bin\Debug\WpfAsservissementDisplay.pdb
 C:\Users\Adrien\Documents\GitHub\robot-adrien-guinedor\c#\WpfAsservissementDisplay\bin\Debug\Utilities.dll
 C:\Users\Adrien\Documents\GitHub\robot-adrien-guinedor\c#\WpfAsservissementDisplay\bin\Debug\Utilities.pdb
-C:\Users\Adrien\Documents\GitHub\robot-adrien-guinedor\c#\WpfAsservissementDisplay\obj\Debug\WpfAsservissementDisplay.csprojAssemblyReference.cache
 C:\Users\Adrien\Documents\GitHub\robot-adrien-guinedor\c#\WpfAsservissementDisplay\obj\Debug\AsservissementXYThetaControl.g.cs
 C:\Users\Adrien\Documents\GitHub\robot-adrien-guinedor\c#\WpfAsservissementDisplay\obj\Debug\WpfAsservissementDisplay_MarkupCompile.cache
 C:\Users\Adrien\Documents\GitHub\robot-adrien-guinedor\c#\WpfAsservissementDisplay\obj\Debug\WpfAsservissementDisplay_MarkupCompile.lref
@@ -30,3 +29,4 @@ C:\Users\Adrien\Documents\GitHub\robot-adrien-guinedor\c#\WpfAsservissementDispl
 C:\Users\Adrien\Documents\GitHub\robot-adrien-guinedor\c#\WpfAsservissementDisplay\obj\Debug\WpfAsservissementDisplay.csproj.CopyComplete
 C:\Users\Adrien\Documents\GitHub\robot-adrien-guinedor\c#\WpfAsservissementDisplay\obj\Debug\WpfAsservissementDisplay.dll
 C:\Users\Adrien\Documents\GitHub\robot-adrien-guinedor\c#\WpfAsservissementDisplay\obj\Debug\WpfAsservissementDisplay.pdb
+C:\Users\Adrien\Documents\GitHub\robot-adrien-guinedor\c#\WpfAsservissementDisplay\obj\Debug\WpfAsservissementDisplay.csproj.AssemblyReference.cache

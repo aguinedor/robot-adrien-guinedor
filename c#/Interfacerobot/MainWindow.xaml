@@ -7,88 +7,139 @@
         xmlns:WpfAsservDisplay="clr-namespace:WpfAsservissementDisplay;assembly=WpfAsservissementDisplay"
         xmlns:local="clr-namespace:Interfacerobot"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="1200" Background="Black">
+        Title="Goodsoup" Height="600" Width="1067" Background="Black">
 
+    <!-- Fenêtre principale deux colonnes-->
     <Grid Background="Gray" >
-        <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="7*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="2.5*"/>
-            <RowDefinition Height="5*"/>
-
-        </Grid.RowDefinitions>
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
 
-        <GroupBox x:Name="Reception" Header="Reception" Foreground="Black" Margin="0" Background="LightGray" BorderBrush="Black" Grid.Column="5" Grid.ColumnSpan="4" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Disabled">
-            <TextBox x:Name="TextBoxReception" Margin="0" TextWrapping="Wrap" Text="" TextChanged="textBox_TextChanged" Foreground="Black" Background="{x:Null}" BorderBrush="{x:Null}" IsReadOnly="True" />
-        </GroupBox>
-        <GroupBox x:Name="Emission" Header="Emission" Foreground="Black" Margin="0" Background="LightGray" BorderBrush="Black" Grid.ColumnSpan="3"  Grid.Column="1" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Disabled">
-            <TextBox x:Name="TextBoxEmission" Margin="0" TextWrapping="Wrap" Text="" TextChanged="textBox_TextChanged" Foreground="Black" Background="{x:Null}" BorderBrush="{x:Null}" AcceptsReturn="True" KeyUp="TextBoxEmission_KeyUp" />
-        </GroupBox>
+        <!-- Affichage partie Gauche -->
+        <Grid  Grid.Row ="0" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Grille haut transmission  -->
+             <Grid  Grid.Row ="0" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <GroupBox x:Name="Emission" Header="Emission" Foreground="Black"  Background="LightGray" BorderBrush="Black" ScrollViewer.VerticalScrollBarVisibility="Disabled" Grid.Column="0" Grid.Row="0" Margin="5" >
+                    <TextBox x:Name="TextBoxEmission" Margin="0" TextWrapping="Wrap" Text="" TextChanged="textBox_TextChanged" Foreground="Black" Background="{x:Null}" BorderBrush="{x:Null}" AcceptsReturn="True" KeyUp="TextBoxEmission_KeyUp" />
+                </GroupBox>
+                <GroupBox x:Name="Reception" Header="Reception" Foreground="Black"  Background="LightGray" BorderBrush="Black" ScrollViewer.VerticalScrollBarVisibility="Disabled" Grid.Column="1" Margin="5">
+                    <TextBox x:Name="TextBoxReception" Margin="0" TextWrapping="Wrap" Text="" TextChanged="textBox_TextChanged" Foreground="Black" Background="{x:Null}" BorderBrush="{x:Null}" IsReadOnly="True" />
+                </GroupBox>
+             </Grid>
+            
+            <!-- Grille milieu Leds Boutons Moteurs Telemètres -->
+            <Grid  Grid.Row ="1" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.75*"/>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <!-- Leds -->
+                <GroupBox x:Name="test" Header="Leds" Foreground="Black"  Background="LightGray" BorderBrush="Black" Margin="10">
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <CheckBox x:Name="CheckBoxLed1" Content="Led 1" Foreground="Black" Grid.Row="0" Margin="10" />
+                        <CheckBox x:Name="CheckBoxLed2" Content="Led 2" Foreground="Black" Grid.Row="1" Margin="10" />
+                        <CheckBox x:Name="CheckBoxLed3" Content="Led 3" Foreground="Black" Grid.Row="2" Margin="10" />
+                    </Grid>
+                </GroupBox>
+                <!--Boutons -->
+                <GroupBox x:Name="Boutons" Header="Boutons" Foreground="Black" Background="LightGray" BorderBrush="Black" Grid.Column="1" Margin="10" >
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Button x:Name="buttonEnvoyer" Content="clear" Background="Beige" Click="buttonEnvoyer_Click" Grid.Row="0" Margin="7" />
+                        <Button x:Name="buttonTest" Content="Test" Background="Beige" Click="buttonTest_Click" Grid.Row="1" Margin="7" />
+                        <Button x:Name="buttonControl" Content="Automatique" Background="Beige" Click="buttonControl_Click" Grid.Row="2" Margin="7" />
+                    </Grid>
+                </GroupBox>
+                <!--Télemètres -->
+                <GroupBox x:Name="Telemetres" Header="Télemètres" Foreground="Black"  Background="LightGray" BorderBrush="Black" Grid.Column="2" Margin="10" >
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <TextBox x:Name="TelemetreGauche" TextWrapping="Wrap" IsReadOnly="True" Grid.Row="0" Margin="3"/>
+                        <TextBox x:Name="TelemetreCentre" TextWrapping="Wrap" IsReadOnly="True" Grid.Row="1" Margin="3"/>
+                        <TextBox x:Name="TelemetreDroite" TextWrapping="Wrap" IsReadOnly="True" Grid.Row="2" Margin="3"/>
+                    </Grid>
+                </GroupBox>
+                <!--Moteurs -->
+                <GroupBox x:Name="Moteurs" Header="Moteurs" Foreground="Black"  Background="LightGray" BorderBrush="Black" Grid.Column="3" Margin="10">
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <TextBox x:Name="VitesseDroite" TextWrapping="Wrap" IsReadOnly="True" Grid.Row="0" Margin="3"/>
+                        <TextBox x:Name="VitesseGauche" TextWrapping="Wrap" IsReadOnly="True" Grid.Row="1" Margin="3"/>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+            
+            <!-- Grille bas Odométrie -->
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
 
-        <GroupBox x:Name="Telemetres" Header="Télemètres IR" Foreground="Black"  Background="LightGray" BorderBrush="Black" Grid.Column="2" Grid.Row="3" Grid.RowSpan="3" Margin="4,1" >
-            <TextBox x:Name="TextBoxTelemetres" Margin="0,-8,0,8" TextWrapping="Wrap" Text="" TextChanged="textBox_TextChanged" Foreground="Black" Background="{x:Null}" BorderBrush="{x:Null}" IsReadOnly="True" />
-        </GroupBox>
-        <GroupBox x:Name="Moteurs" Header="Moteurs" Foreground="Black"  Background="LightGray" BorderBrush="Black" Grid.Column="3" Grid.Row="3" Grid.RowSpan="3" Margin="4,1">
-            <TextBox x:Name="TextBoxMoteurs" Margin="0" TextWrapping="Wrap" Text="" TextChanged="textBox_TextChanged" Foreground="Black" Background="{x:Null}" BorderBrush="{x:Null}" IsReadOnly="True" />
-        </GroupBox>
-
-        <GroupBox x:Name="RtbState" Header="Robot state" Foreground="Black" Grid.ColumnSpan="1" Grid.RowSpan="3"  Background="LightGray" BorderBrush="Black" Grid.Row="3" Grid.Column="1" Margin="0,3">
-            <TextBox x:Name="RtbReception" Margin="0" TextWrapping="Wrap" Text="" TextChanged="textBox_TextChanged" Foreground="Black" Background="{x:Null}" BorderBrush="{x:Null}" IsReadOnly="True"/>
-        </GroupBox>
-        <GroupBox x:Name="Oscillo" Header="Oscilloscope" Foreground="Black" Grid.ColumnSpan="4" Grid.RowSpan="2" Background="LightGray" BorderBrush="Black" Grid.Row="5" Grid.Column="5" Margin="0,3">
-            <oscillo:WpfOscilloscope x:Name="oscilloSpeed"/>
-        </GroupBox>
-
-        <Button x:Name="buttonEnvoyer" Content="clear" Grid.Column="5" Grid.Row="3" Margin="5,0" Background="Lightgray" Click="buttonEnvoyer_Click"/>
-        <Button x:Name="buttonTest" Content="Test " Grid.Column="6" Grid.Row="3" Margin="5,0"  Background="Lightgray" Click="buttonTest_Click" />
-        <Button x:Name="buttonControl" Content="Automatique" Grid.Column="7" Grid.Row="3" Margin="5,0" Background="Lightgray" Click="buttonControl_Click"/>
-
-        <StackPanel x:Name="test" Background="LightGray" Grid.Row="3" Grid.Column="8" Grid.ColumnSpan="1" Grid.RowSpan="2" FlowDirection="LeftToRight" Orientation="Vertical" Margin="5,0,5,15">
-            <CheckBox x:Name="CheckBoxLed1" Content="Led 1" Foreground="Black" Height="15" Width="49" Margin="0" />
-            <CheckBox x:Name="CheckBoxLed2" Content="Led 2" Foreground="Black" Height="15" Width="49" Margin="0"  />
-            <CheckBox x:Name="CheckBoxLed3" Content="Led 3" Foreground="Black" Height="15" Width="50" Margin="0" />
-        </StackPanel>
-
-        <GroupBox x:Name="Odométrie" Header="Odométrie" Background="LightGray" Foreground="Black" Grid.ColumnSpan="3"   BorderBrush="Black" Grid.Row="6" Grid.Column="1" >
-            <StackPanel>
-                <Grid Grid.Row="6" Background="LightGray" Grid.Column="1">
-                    <Grid.ColumnDefinitions>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="1*"/>
-                    </Grid.RowDefinitions>
-                    <TextBox x:Name="xPos" Foreground="Black"  Text=""  IsReadOnly="True"/>
-                    <TextBox x:Name="yPos" Foreground="Black"  Text=""  IsReadOnly="True" Grid.Row="2"/>
-                    <TextBox x:Name="angleRD" Foreground="Black"  Text=""  IsReadOnly="True" Grid.Row="3"/>
-                    <TextBox x:Name="vLineaire" Foreground="Black" Text=""  IsReadOnly="True"  Grid.Row="4"/>
-                    <TextBox x:Name="vAngulaire" Foreground="Black" Text="" IsReadOnly="True" Grid.Row="5"/>
-                   
-                </Grid>
-            </StackPanel>
-        </GroupBox>
-
-
+                <GroupBox x:Name="Odométrie" Header="Odométrie" Background="LightGray" Foreground="Black" BorderBrush="Black" Margin="5" >
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <TextBox x:Name="xPos" Foreground="Black" Text=""  IsReadOnly="True" Grid.Row="0" Margin="2"/>
+                        <TextBox x:Name="yPos" Foreground="Black" Text=""  IsReadOnly="True" Grid.Row="1" Margin="2"/>
+                        <TextBox x:Name="angleRD" Foreground="Black" Text=""  IsReadOnly="True" Grid.Row="2" Margin="2"/>
+                        <TextBox x:Name="vLineaire" Foreground="Black" Text=""  IsReadOnly="True"  Grid.Row="3" Margin="2"/>
+                        <TextBox x:Name="vAngulaire" Foreground="Black" Text="" IsReadOnly="True" Grid.Row="4" Margin="2"/>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+        </Grid>
+        
+        <!-- Affichage partie Droite -->
+        <Grid Grid.Row ="0" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <!-- Grille Bas oscillo  -->
+            <GroupBox x:Name="Oscillo" Header="Oscilloscope" Foreground="Black" Grid.ColumnSpan="4" Grid.RowSpan="2" Background="LightGray" BorderBrush="Black" Grid.Row="5" Grid.Column="5" Margin="0,3">
+                <oscillo:WpfOscilloscope x:Name="oscilloSpeed"/>
+            </GroupBox>
+        </Grid>
     </Grid>
 </Window>
+
+
+<!--<GroupBox x:Name="RtbState" Header="Robot state" Foreground="Black" Grid.ColumnSpan="1" Grid.RowSpan="3"  Background="LightGray" BorderBrush="Black" Grid.Row="3" Grid.Column="1" Margin="0,3">
+            <TextBox x:Name="RtbReception" Margin="0" TextWrapping="Wrap" Text="" TextChanged="textBox_TextChanged" Foreground="Black" Background="{x:Null}" BorderBrush="{x:Null}" IsReadOnly="True"/>
+        </GroupBox>-->

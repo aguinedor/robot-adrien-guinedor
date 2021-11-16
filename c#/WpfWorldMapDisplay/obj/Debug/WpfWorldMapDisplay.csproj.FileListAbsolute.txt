@@ -47,3 +47,11 @@ C:\Github\robot-adrien-guinedor\c#\WpfWorldMapDisplay\obj\Debug\WpfWorldMapDispl
 C:\Github\robot-adrien-guinedor\c#\WpfWorldMapDisplay\obj\Debug\WpfWorldMapDisplay_MarkupCompile.lref
 C:\Github\robot-adrien-guinedor\c#\WpfWorldMapDisplay\obj\Debug\WpfWorldMapDisplay.dll
 C:\Github\robot-adrien-guinedor\c#\WpfWorldMapDisplay\obj\Debug\WpfWorldMapDisplay.pdb
+C:\Users\Adrien\Documents\GitHub\robot-adrien-guinedor\c#\WpfWorldMapDisplay\obj\Debug\WpfWorldMapDisplay.csproj.AssemblyReference.cache
+C:\Users\Adrien\Documents\GitHub\robot-adrien-guinedor\c#\WpfWorldMapDisplay\obj\Debug\GlobalWorldMapDisplay.g.cs
+C:\Users\Adrien\Documents\GitHub\robot-adrien-guinedor\c#\WpfWorldMapDisplay\obj\Debug\LocalWorldMapDisplay.g.cs
+C:\Users\Adrien\Documents\GitHub\robot-adrien-guinedor\c#\WpfWorldMapDisplay\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Adrien\Documents\GitHub\robot-adrien-guinedor\c#\WpfWorldMapDisplay\obj\Debug\WpfWorldMapDisplay_MarkupCompile.cache
+C:\Users\Adrien\Documents\GitHub\robot-adrien-guinedor\c#\WpfWorldMapDisplay\obj\Debug\WpfWorldMapDisplay_MarkupCompile.lref
+C:\Users\Adrien\Documents\GitHub\robot-adrien-guinedor\c#\WpfWorldMapDisplay\obj\Debug\WpfWorldMapDisplay.dll
+C:\Users\Adrien\Documents\GitHub\robot-adrien-guinedor\c#\WpfWorldMapDisplay\obj\Debug\WpfWorldMapDisplay.pdb
