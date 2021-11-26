@@ -91,7 +91,6 @@ void __attribute__((interrupt, no_auto_psv)) _T1Interrupt(void) {
         //unsigned char message [ ] = {'B','o','n','j','o','u','r'};
         //UartEncodeAndSendMessage(0x0080, 7, message);
         SendPositionData();
-        
     }
     
     //LED_BLANCHE = !LED_BLANCHE; 

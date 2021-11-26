@@ -19,7 +19,6 @@ using MouseKeyboardActivityMonitor.WinApi;
 using MouseKeyboardActivityMonitor;
 using System.Windows.Forms;
 using Utilities;
-using SciChart.Charting.Visuals;
 
 namespace Interfacerobot
 {
@@ -31,14 +30,9 @@ namespace Interfacerobot
         Robot robot = new Robot();
         private readonly KeyboardHookListener m_KeyboardHookManager;
 
-        float VitesseX =0;
-        float VitesseY =0;
         int i;
-
         public MainWindow()
         {
-            // Set this code once in App.xaml.cs or application startup
-            SciChartSurface.SetRuntimeLicenseKey("dhq0GtOnC9RAzpqNik2WdNyDdS86Qptqc+pwmUaTjq+VsYVgQcJp8AWOLubSGkh3zPYOhXWQUcs9yVjSKDvH0d3qyeIozScupsHE2e7hOWdIHr0bB5cveYKbuvuqkCk2Z0JcepYbRpyO8GWJo7umA11+egtfkdz+J7yPpeQRGO4I9PDkj35NQtmTC5Ku6V7ElN597uQoju6fcIxI7poUZmTq2sVDmRHvYPeVGkStboiuaJZWM44K7x1rS1kGf9JBAbm6gJCaNFdREElCM5IBg1Ul7A9XmT8lTiXyVPROlpFUuc5h6/KDIXk+IWzmdqxiL/5ch6E7GrOh8OxAw53mMwnp+ikWsZQ0scRgcoNuUnGNYySOfsflQ8nvxkUX7096Fu+yppK1zBYqplxpnPzV0EuQ/kpKV1IYuAOYbcpv5LdydDpm6Ehcghkb4dUgOCsdnjspMdWC2qzbf5icE2QmhI7GBV/O74liqm5+t7vSwUPjVXF5CyWi+GRLAJvvMBs3hQ==");
             InitializeComponent();
             serialPort1 = new ReliableSerialPort("COM3", 115200, Parity.None, 8, StopBits.One);
             serialPort1.DataReceived += SerialPort1_DataReceived;
@@ -50,13 +44,7 @@ namespace Interfacerobot
             timerAffichage.Start();
             m_KeyboardHookManager = new KeyboardHookListener(new GlobalHooker());
             m_KeyboardHookManager.Enabled = true;
-            m_KeyboardHookManager.KeyDown += HookManager_KeyDown;
-
-
-            oscilloSpeed.AddOrUpdateLine(1, 200, "Ligne1");
-            oscilloSpeed.ChangeLineColor(1, Colors.Red);
-            oscilloSpeed.AddOrUpdateLine(2, 200, "Ligne2");
-            oscilloSpeed.ChangeLineColor(2, Colors.Blue);
+            m_KeyboardHookManager.KeyDown += HookManager_KeyDown;    
         }
 
 
@@ -105,7 +93,7 @@ namespace Interfacerobot
             PayloadLengthMSB,
             PayloadLengthLSB,
             Payload,
-            CheckSum,
+            CheckSum
         }
 
         public enum Functions
@@ -117,7 +105,6 @@ namespace Interfacerobot
             RobotState=0x0050,
             Clavier=0x0053,
             Odometrie=0x0061,
-            Temps=0x0058,
         }
 
         public enum StateRobot
@@ -336,20 +323,15 @@ namespace Interfacerobot
                     vitesseLineaire = tab.GetFloat();
                     tab = msgPayload.GetRange(20, 4);
                     vitesseAngulaire = tab.GetFloat();
-                    xPos.Text = "X position = " + (xpos).ToString();
-                    yPos.Text = "Y position = " + (ypos).ToString();
-                    angleRD.Text = "Angle en radian = " + (angleRadian*180/Math.PI).ToString();
-                    vLineaire.Text = "Vitesse linéaire = " +  (vitesseLineaire).ToString();
-                    vAngulaire.Text = "Vitesse angulaire = " +  (vitesseAngulaire).ToString();
-                    VitesseX = vitesseLineaire;
-                    VitesseY = vitesseAngulaire;
-               break;
+                    xPos.Text = (xpos).ToString();
+                    yPos.Text = (ypos).ToString();
+                    angleRD.Text = (angleRadian*180/Math.PI).ToString();
+                    vLineaire.Text = (vitesseLineaire).ToString();
+                    vAngulaire.Text = (vitesseAngulaire).ToString();
 
-                case Functions.Temps:
-                    int valeurdutemps = (((int)msgPayload[0]) << 24) + (((int)msgPayload[1]) << 16) + (((int)msgPayload[2]) << 8) + (((int)msgPayload[3]));
-                    oscilloSpeed.AddPointToLine(1, (valeurdutemps), VitesseX);
-                    //oscilloSpeed.AddPointToLine(2, (valeurdutemps), VitesseY);
                     break;
+
+                        
 
             }
         }
@@ -363,23 +345,23 @@ namespace Interfacerobot
                 {
                     case Keys.Left:
                         UartEncodeAndSendMessage(0x0051,1,new byte[] { (byte)StateRobot.STATE_TOURNE_SUR_PLACE_GAUCHE });
-                        //textBoxClavier.Text = "Gauche";
+                        textBoxClavier.Text = "Gauche";
                         break;
                     case Keys.Right:
                         UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_TOURNE_SUR_PLACE_DROITE });
-                       // textBoxClavier.Text = "Droite";
+                        textBoxClavier.Text = "Droite";
                         break;
                     case Keys.Up:
                         UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_AVANCE });
-                        //textBoxClavier.Text = "Avance";
+                        textBoxClavier.Text = "Avance";
                         break;
                     case Keys.Down:
                         UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_RECULE });
-                        //textBoxClavier.Text = "Recule";
+                        textBoxClavier.Text = "Recule";
                         break;
                     case Keys.PageDown:
                         UartEncodeAndSendMessage(0x0051, 1, new byte[] { (byte)StateRobot.STATE_ARRET });
-                        //textBoxClavier.Text = "Arret";
+                        textBoxClavier.Text = "Arret";
                         break;
                 }
             }
@@ -444,7 +426,7 @@ namespace Interfacerobot
                 autoControlActivated = false;
                 compteur_etat = true;
                 UartEncodeAndSendMessage(0x0052, 1, new byte[] {1});
-                //textBoxClavier.Text = "";
+                textBoxClavier.Text = "";
             }
             else
             {         
